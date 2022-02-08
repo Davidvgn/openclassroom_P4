@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Mareu</string>
+    <string name="app_name">Maréu</string>
+    <string name="add_meeting">Add new meeting</string>
+    <string name="delete_meeting">Delete meeting</string>
 </resources>
