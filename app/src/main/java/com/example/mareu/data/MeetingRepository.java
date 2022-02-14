@@ -1,7 +1,5 @@
 package com.example.mareu.data;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
@@ -68,6 +66,18 @@ public class MeetingRepository {
 
     public LiveData<List<Meeting>> getMeetingsLiveData() {
         return meetingLiveData;
+    }
+
+    public LiveData<Meeting> getMeetingLiveData(long meetingId) {
+        return Transformations.map(meetingLiveData, meetings -> {
+            for (Meeting meeting : meetings) {
+                if (meeting.getId() == meetingId) {
+                    return meeting;
+                }
+            }
+
+            return null;
+        });
     }
 
     private void generateRandomMeeting() {

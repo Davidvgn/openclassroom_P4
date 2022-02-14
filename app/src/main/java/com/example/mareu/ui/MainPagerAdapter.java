@@ -10,12 +10,8 @@ import com.example.mareu.list.MeetingFragment;
 
 public class MainPagerAdapter extends FragmentPagerAdapter {
 
-    @NonNull
-    private final Context context;
-
     public MainPagerAdapter(@NonNull Context context, @NonNull FragmentManager fm) {
         super(fm);
-        this.context = context;
     }
 
     @Override
