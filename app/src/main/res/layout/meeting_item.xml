@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:id="@+id/meeting_item_tv_meetingRoom"
+        android:id="@+id/meeting_item_iv_meetingRoom"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="16dp"
@@ -19,30 +19,58 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@tools:sample/avatars" />
 
+
     <TextView
         android:id="@+id/meeting_item_tv_subject"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="4dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/meeting_item_tv_meetingRoom"
-        app:layout_constraintEnd_toEndOf="@id/neighbours_item_iv_delete"
-        app:layout_constraintStart_toEndOf="@+id/meeting_item_tv_meetingRoom"
-        app:layout_constraintTop_toTopOf="@+id/meeting_item_tv_meetingRoom"
+        app:layout_constraintBottom_toBottomOf="@+id/meeting_item_iv_meetingRoom"
+        app:layout_constraintEnd_toStartOf="@id/meeting_item_iv_delete"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/meeting_item_iv_meetingRoom"
+        app:layout_constraintTop_toTopOf="@+id/meeting_item_iv_meetingRoom"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/meeting_item_tv_time"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="4dp"
+        android:textStyle="bold"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/meeting_item_tv_subject"
+        app:layout_constraintEnd_toStartOf="@id/meeting_item_iv_delete"
+        app:layout_constraintStart_toEndOf="@+id/meeting_item_iv_meetingRoom"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/meeting_item_tv_emails"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="4dp"
+        android:layout_marginTop="4dp"
+        app:layout_constraintTop_toBottomOf="@id/meeting_item_tv_time"
+        app:layout_constraintEnd_toStartOf="@id/meeting_item_iv_delete"
+        app:layout_constraintStart_toEndOf="@+id/meeting_item_iv_meetingRoom"
         tools:text="@tools:sample/lorem" />
 
     <ImageView
-        android:id="@+id/neighbours_item_iv_delete"
+        android:id="@+id/meeting_item_iv_delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:padding="16dp"
         android:background="?selectableItemBackground"
         android:contentDescription="@string/delete_meeting"
+        android:padding="16dp"
         android:src="@drawable/ic_baseline_delete_24"
-        app:layout_constraintBottom_toBottomOf="@+id/meeting_item_tv_subject"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/meeting_item_tv_subject" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
