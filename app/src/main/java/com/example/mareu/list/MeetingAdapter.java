@@ -49,7 +49,7 @@ public class MeetingAdapter extends ListAdapter<MeetingViewStateItem, MeetingAda
         private final TextView meetingHourView;
         private final TextView meetingMinView;
         private final TextView meetingSubjectView;
-        //        private final TextView meetingParticipantsView;
+        private final TextView meetingParticipantsView;
         private final ImageView deleteImageView;
 
         public ViewHolder(@NonNull View itemView) {
@@ -58,7 +58,7 @@ public class MeetingAdapter extends ListAdapter<MeetingViewStateItem, MeetingAda
             meetingHourView = itemView.findViewById(R.id.meeting_item_tv_hour);
             meetingMinView = itemView.findViewById(R.id.meeting_item_tv_min);
             meetingSubjectView = itemView.findViewById(R.id.meeting_item_tv_subject);
-//            meetingParticipantsView = itemView.findViewById(R.id.meeting_item_tv_emails);
+            meetingParticipantsView = itemView.findViewById(R.id.meeting_item_tv_emails);
             deleteImageView = itemView.findViewById(R.id.meeting_item_iv_delete);
         }
 
@@ -70,6 +70,7 @@ public class MeetingAdapter extends ListAdapter<MeetingViewStateItem, MeetingAda
             meetingHourView.setText(item.getHour());
             meetingMinView.setText(item.getMin());
             meetingSubjectView.setText(item.getMeetingSubject());
+            meetingParticipantsView.setText(item.getParticipants());
             deleteImageView.setOnClickListener(v -> listener.onDeleteMeetingClicked(item.getId()));
         }
 

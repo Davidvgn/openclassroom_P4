@@ -11,13 +11,15 @@ public class MeetingViewStateItem {
     private final String min;
     private final String meetingRoom;
     private final String meetingSubject;
+    private final String participants;
 
-    public MeetingViewStateItem(long id, String hour,String min, String meetingRoom, String meetingSubject) {
+    public MeetingViewStateItem(long id, String hour,String min, String meetingRoom, String meetingSubject, String participants) {
         this.id = id;
         this.hour = hour;
         this.min = min;
         this.meetingRoom = meetingRoom;
         this.meetingSubject = meetingSubject;
+        this.participants = participants;
     }
 
     public long getId() {
@@ -39,18 +41,22 @@ public class MeetingViewStateItem {
         return meetingSubject;
     }
 
+    public String getParticipants() {
+        return participants;
+    }
+
     @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             MeetingViewStateItem that = (MeetingViewStateItem) o;
             return id == that.id && hour.equals(that.hour) && min.equals(that.min) &&  meetingRoom.equals(that
-            .meetingRoom) && meetingSubject.equals(that.meetingSubject);
+            .meetingRoom) && meetingSubject.equals(that.meetingSubject) && participants.equals((that.participants));
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(id, hour, min, meetingRoom, meetingSubject);
+            return Objects.hash(id, hour, min, meetingRoom, meetingSubject, participants);
         }
 
         @NonNull
@@ -62,6 +68,7 @@ public class MeetingViewStateItem {
                     ", min='" + min + '\'' +
                     ", meetingRoom='" + meetingRoom + '\'' +
                     ", meetingSubject='" + meetingSubject + '\'' +
+                    ", participants='" + participants + '\'' +
                     '}';
         }
     }

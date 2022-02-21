@@ -28,7 +28,8 @@ public class MeetingViewModel extends ViewModel {
                         meeting.getHour(),
                         meeting.getMin(),
                         meeting.getMeetingRoom(),
-                        meeting.getMeetingSubject()
+                        meeting.getMeetingSubject(),
+                        meeting.getParticipants()
                 )
                 );
             }
