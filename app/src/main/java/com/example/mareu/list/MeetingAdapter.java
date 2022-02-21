@@ -16,7 +16,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.mareu.R;
 import com.example.mareu.data.Meeting;
 import com.example.mareu.data.MeetingRepository;
-import com.example.mareu.databinding.MeetingItemBinding;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
@@ -47,16 +46,17 @@ public class MeetingAdapter extends ListAdapter<MeetingViewStateItem, MeetingAda
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView meetingRoomView;
-        private final TextView meetingTimeView;
+        private final TextView meetingHourView;
+        private final TextView meetingMinView;
         private final TextView meetingSubjectView;
         //        private final TextView meetingParticipantsView;
         private final ImageView deleteImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
             meetingRoomView = itemView.findViewById(R.id.meeting_item_iv_meetingRoom);
-            meetingTimeView = itemView.findViewById(R.id.meeting_item_tv_time);
+            meetingHourView = itemView.findViewById(R.id.meeting_item_tv_hour);
+            meetingMinView = itemView.findViewById(R.id.meeting_item_tv_min);
             meetingSubjectView = itemView.findViewById(R.id.meeting_item_tv_subject);
 //            meetingParticipantsView = itemView.findViewById(R.id.meeting_item_tv_emails);
             deleteImageView = itemView.findViewById(R.id.meeting_item_iv_delete);
@@ -67,7 +67,8 @@ public class MeetingAdapter extends ListAdapter<MeetingViewStateItem, MeetingAda
                     .load(item.getMeetingRoom())
                     .apply(RequestOptions.circleCropTransform())
                     .into(meetingRoomView);
-            meetingTimeView.setText(item.getTime());
+            meetingHourView.setText(item.getHour());
+            meetingMinView.setText(item.getMin());
             meetingSubjectView.setText(item.getMeetingSubject());
             deleteImageView.setOnClickListener(v -> listener.onDeleteMeetingClicked(item.getId()));
         }

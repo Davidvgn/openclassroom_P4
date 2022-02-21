@@ -25,7 +25,8 @@ public class MeetingViewModel extends ViewModel {
                 meetingViewStateItem.add(
                 new MeetingViewStateItem(
                         meeting.getId(),
-                        meeting.getTime(),
+                        meeting.getHour(),
+                        meeting.getMin(),
                         meeting.getMeetingRoom(),
                         meeting.getMeetingSubject()
                 )

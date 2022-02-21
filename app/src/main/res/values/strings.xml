@@ -4,8 +4,42 @@
     <string name="delete_meeting">Delete meeting</string>
 
     <string name="hour">Hour</string>
+    <string name="min">Min</string>
     <string name="room">Room</string>
     <string name="subject">Subject</string>
     <string name="participants">Participants</string>
     <string name="save">Save</string>
+
+    <string-array name="heures">
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+    </string-array>
+
+    <string-array name="room">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="minutes">
+        <item>00</item>
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+    </string-array>
 </resources>

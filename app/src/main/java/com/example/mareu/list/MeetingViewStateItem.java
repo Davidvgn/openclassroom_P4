@@ -7,13 +7,15 @@ import java.util.Objects;
 public class MeetingViewStateItem {
 
     private final long id;
-    private final String time;
+    private final String hour;
+    private final String min;
     private final String meetingRoom;
     private final String meetingSubject;
 
-    public MeetingViewStateItem(long id, String time, String meetingRoom, String meetingSubject) {
+    public MeetingViewStateItem(long id, String hour,String min, String meetingRoom, String meetingSubject) {
         this.id = id;
-        this.time = time;
+        this.hour = hour;
+        this.min = min;
         this.meetingRoom = meetingRoom;
         this.meetingSubject = meetingSubject;
     }
@@ -22,8 +24,11 @@ public class MeetingViewStateItem {
         return id;
     }
 
-    public String getTime() {
-        return time;
+    public String getHour() {
+        return hour;
+    }
+    public String getMin() {
+        return min;
     }
 
     public String getMeetingRoom() {
@@ -39,13 +44,13 @@ public class MeetingViewStateItem {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             MeetingViewStateItem that = (MeetingViewStateItem) o;
-            return id == that.id && time.equals(that.time) &&  meetingRoom.equals(that
+            return id == that.id && hour.equals(that.hour) && min.equals(that.min) &&  meetingRoom.equals(that
             .meetingRoom) && meetingSubject.equals(that.meetingSubject);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(id, time, meetingRoom, meetingSubject);
+            return Objects.hash(id, hour, min, meetingRoom, meetingSubject);
         }
 
         @NonNull
@@ -53,7 +58,8 @@ public class MeetingViewStateItem {
         public String toString() {
             return "NeighboursViewStateItem{" +
                     "id=" + id +
-                    ", time='" + time + '\'' +
+                    ", hour='" + hour + '\'' +
+                    ", min='" + min + '\'' +
                     ", meetingRoom='" + meetingRoom + '\'' +
                     ", meetingSubject='" + meetingSubject + '\'' +
                     '}';

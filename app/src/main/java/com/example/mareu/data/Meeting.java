@@ -8,54 +8,58 @@ import java.util.Objects;
 public class Meeting {
 
     private final long id;
-    private final String time;
+    private final String hour;
+    private final String min;
     private final String meetingRoom;
     private final String meetingSubject;
-//    private final List<String> participantList;
+    private final String participants;
 
     public Meeting(long id,
-                   String time,
+                   String hour,
+                   String min,
                    String meetingRoom,
-                   String meetingSubject
-//                   List participantList
+                   String meetingSubject,
+                   String participants
     ) {
         this.id = id;
-        this.time = time;
+        this.hour = hour;
+        this.min = min;
         this.meetingRoom = meetingRoom;
         this.meetingSubject = meetingSubject;
-//        this.participantList = participantList;
+        this.participants = participants;
     }
 
     public long getId() {
         return id;
     }
 
-    public String getTime() {
-        return time;
+    public String getHour() {
+        return hour;
     }
-
+    public String getMin() {
+        return min;
+    }
     public String getMeetingRoom() {
         return meetingRoom;
     }
-
     public String getMeetingSubject() {
         return meetingSubject;
     }
+    public String getParticipants() {
+        return participants;
+    }
 
-//    public List<String> getParticipantList() {
-//        return participantList;
-//    }
 @Override
 public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     Meeting meeting = (Meeting) o;
-    return id == meeting.id && time.equals(meeting.time) && Objects.equals(meetingRoom, meeting.meetingRoom) && Objects.equals(meetingSubject, meeting.meetingSubject);
+    return id == meeting.id && hour.equals(meeting.hour) && min.equals(meeting.min) && meetingRoom.equals(meeting.meetingRoom) && meetingSubject.equals(meeting.meetingSubject) && participants.equals(meeting.participants);
 }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, time, meetingRoom, meetingSubject);
+        return Objects.hash(id, hour, min, meetingRoom, meetingSubject, participants);
     }
 
     @NonNull
@@ -63,9 +67,11 @@ public boolean equals(Object o) {
     public String toString() {
         return "Neighbour{" +
                 "id=" + id +
-                ", time='" + time + '\'' +
+                ", hour='" + hour + '\'' +
+                ", min='" + min + '\'' +
                 ", meetingRoom='" + meetingRoom + '\'' +
                 ", meetingSubject='" + meetingSubject + '\'' +
+                ", participants='" + participants + '\'' +
                 '}';
     }
 }

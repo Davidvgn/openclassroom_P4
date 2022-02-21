@@ -20,10 +20,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.add.AddMeetingActivity"
-            />
-
-
+            android:name=".ui.add.AddMeetingActivity" />
 </application>
 
 </manifest>

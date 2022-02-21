@@ -24,10 +24,11 @@ public class MeetingRepository {
     }
 
     public void addMeeting(
-            String time,
+            String hour,
+            String min,
             String meetingRoom,
-            String meetingSubject
-//            List participantList
+            String meetingSubject,
+            String participants
     ) {
         List<Meeting> meetings = meetingLiveData.getValue();
 
@@ -36,10 +37,11 @@ public class MeetingRepository {
         meetings.add(
                 new Meeting(
                         maxId++,
-                        time,
+                        hour,
+                        min,
                         meetingRoom,
-                        meetingSubject
-//                        participantList
+                        meetingSubject,
+                        participants
                 )
         );
 
@@ -82,9 +84,12 @@ public class MeetingRepository {
 
     private void generateRandomMeeting() {
         addMeeting(
-                "14h",
-                "https://i.pravatar.cc/150?u=a042581f4e29026704d",
-                "TEST"
+                "14", "00","https://i.pravatar.cc/150?u=a042581f4e29026704d", "Test 1", "email@email.com"
+
+
+                );
+        addMeeting(
+                "14", "00","https://i.pravatar.cc/150?u=a042581f4e29026704d", "Test 2", "email@email.com"
         );
     }
 }
