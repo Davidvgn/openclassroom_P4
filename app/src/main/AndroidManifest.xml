@@ -21,7 +21,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.add.AddMeetingActivity" />
+            android:name=".ui.add.AddMeetingActivity"
+            android:label="@string/new_reunion"
+            />
 </application>
 
 </manifest>

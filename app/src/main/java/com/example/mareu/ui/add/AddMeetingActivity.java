@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -27,8 +28,15 @@ import com.example.mareu.data.MeetingRepository;
 import com.example.mareu.databinding.AddMeetingActivityBinding;
 import com.example.mareu.ui.ViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
+
+import java.util.ArrayList;
 
 public class AddMeetingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+
+    //todo david test
+    ArrayAdapter<CharSequence> arrayAdapter_room;
+
 
     public static Intent navigate(Context context) {
         return new Intent(context, AddMeetingActivity.class);
@@ -43,20 +51,15 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 
         AddMeetingViewModel viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(AddMeetingViewModel.class);
 
-//        TextInputEditText room = findViewById(R.id.add_meeting_room_edit);
-//        TextInputEditText hourEditText = findViewById(R.id.add_meeting_hour_edit);
-//        TextInputEditText minEditText = findViewById(R.id.add_meeting_min_edit);
         TextInputEditText subjectEditText = findViewById(R.id.add_meeting_subject_edit);
         TextInputEditText participantEditText = findViewById(R.id.add_meeting_participants_edit);
         Button addMeetingButton = findViewById(R.id.add_meeting_button);
 
-
-//        bindHour(viewModel, hourEditText);
-//        bindAddButton(viewModel, room, hourEditText,minEditText, subjectEditText, addMeetingButton);
-
-
-//        viewModel.getCloseActivitySingleLiveEvent().observe(this, aVoid -> finish());
-
+        TextInputLayout roomSpinner = findViewById(R.id.add_meeting_til_room);
+        AutoCompleteTextView act_room = findViewById(R.id.add_meeting_act_room);
+        arrayAdapter_room = ArrayAdapter.createFromResource(this, R.array.room,R.layout.support_simple_spinner_dropdown_item);
+        act_room.setAdapter(arrayAdapter_room);
+        act_room.setThreshold(1);
 
         Spinner hourSpinner = findViewById(R.id.add_meeting_hourSpinner);
         ArrayAdapter<CharSequence> hourAdapter = ArrayAdapter.createFromResource(this, R.array.heures, android.R.layout.simple_spinner_item);
@@ -71,11 +74,6 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         minSpinner.setAdapter(minAdapter);
         minSpinner.setOnItemSelectedListener(this);
 
-        Spinner roomSpinner = findViewById(R.id.add_meeting_room);
-        ArrayAdapter<CharSequence> roomAdapter = ArrayAdapter.createFromResource(this, R.array.room, android.R.layout.simple_spinner_item);
-        roomAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        roomSpinner.setAdapter(roomAdapter);
-        roomSpinner.setOnItemSelectedListener(this);
 
         bindAddButton(viewModel, hourSpinner, minSpinner, roomSpinner, subjectEditText, participantEditText, addMeetingButton);
 
@@ -117,11 +115,11 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 //        ));
 //        viewModel.getIsSaveButtonEnabledLiveData().observe(this, isSaveButtonEnabled -> addMeetingButton.setEnabled(isSaveButtonEnabled));
 //    }
-    private void bindAddButton(AddMeetingViewModel viewModel, Spinner hourSpinner, Spinner minSpinner, Spinner roomSpinner, TextInputEditText subjectEditText,TextInputEditText participantsEditText, Button addMeetingButton) {
+    private void bindAddButton(AddMeetingViewModel viewModel, Spinner hourSpinner, Spinner minSpinner, TextInputLayout roomSpinner, TextInputEditText subjectEditText,TextInputEditText participantsEditText, Button addMeetingButton) {
         addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(
                 hourSpinner.getSelectedItem().toString(),
                 minSpinner.getSelectedItem().toString(),
-                roomSpinner.getSelectedItem().toString(),
+                roomSpinner.getTransitionName(),
                 subjectEditText.getText().toString(),
                 participantsEditText.getText().toString()
         ));

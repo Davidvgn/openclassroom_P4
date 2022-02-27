@@ -100,26 +100,39 @@
         <!--                app:layout_constraintEnd_toEndOf="parent" />-->
         <!--        </com.google.android.material.textfield.TextInputLayout>-->
 
-        <TextView
-            android:id="@+id/add_meeting_roomTitle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Salle"
-            android:layout_marginTop="16dp"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_meeting_hourSpinner"
-            />
-        <Spinner
-            android:id="@+id/add_meeting_room"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+<!--        <TextView-->
+<!--            android:id="@+id/add_meeting_roomTitle"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:text="Salle"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:textSize="16sp"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/add_meeting_hourSpinner"-->
+<!--            />-->
+<!--        -->
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_meeting_til_room"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_meeting_roomTitle" />
+            app:layout_constraintTop_toBottomOf="@id/add_meeting_minSpinner">
 
+            <AutoCompleteTextView
+                android:id="@+id/add_meeting_act_room"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/light_grey"
+                android:hint="@string/room"
+                android:textSize="16dp"
+                android:textStyle="bold"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+<!--fin test-->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/add_meeting_subject"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -128,13 +141,16 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_meeting_room">
+            app:layout_constraintTop_toBottomOf="@id/add_meeting_til_room">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/add_meeting_subject_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/subject"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:background="@color/light_grey"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -154,6 +170,9 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/participants"
                 android:inputType="textEmailAddress"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:background="@color/light_grey"
                 android:minLines="4" />
         </com.google.android.material.textfield.TextInputLayout>
 
