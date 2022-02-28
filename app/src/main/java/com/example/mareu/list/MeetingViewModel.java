@@ -29,15 +29,17 @@ public class MeetingViewModel extends ViewModel {
             List<MeetingViewStateItem> meetingViewStateItem = new ArrayList<>();
 
             for (Meeting meeting : meetings) {
-                SpannableStringBuilder builder = new SpannableStringBuilder();
-                builder.append(meeting.getHour())
-                    .append(" H ", new StyleSpan(BOLD), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
-                    .append(meeting.getMin());
+//                SpannableStringBuilder builder = new SpannableStringBuilder();
+//                builder.append(meeting.getHour())
+//                    .append(" H ", new StyleSpan(BOLD), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+//                    .append(meeting.getMin());
+
 
                 meetingViewStateItem.add(
                     new MeetingViewStateItem(
                         meeting.getId(),
-                        builder,
+//                        builder,
+                            meeting.getTime(),
                         meeting.getMeetingRoom(),
                         meeting.getMeetingSubject(),
                         meeting.getParticipants()

@@ -24,8 +24,9 @@ public class MeetingRepository {
     }
 
     public void addMeeting(
-            String hour,
-            String min,
+//            String hour,
+//            String min,
+            String time,
             String meetingRoom,
             String meetingSubject,
             String participants
@@ -37,8 +38,9 @@ public class MeetingRepository {
         meetings.add(
                 new Meeting(
                         maxId++,
-                        hour,
-                        min,
+//                        hour,
+//                        min,
+                        time,
                         meetingRoom,
                         meetingSubject,
                         participants
@@ -84,12 +86,12 @@ public class MeetingRepository {
 
     private void generateRandomMeeting() {
         addMeeting(
-                "14", "00","https://i.pravatar.cc/150?u=a042581f4e29026704d", "Test 1", "email@email.com"
+                "14", "https://i.pravatar.cc/150?u=a042581f4e29026704d", "Test 1", "email@email.com"
 
 
                 );
         addMeeting(
-                "14", "00","https://i.pravatar.cc/150?u=a042581f4e29026704d", "Test 2", "email@email.com"
+                "14", "https://i.pravatar.cc/150?u=a042581f4e29026704d", "Test 2", "email@email.com"
         );
     }
 }
