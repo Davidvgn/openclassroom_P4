@@ -16,6 +16,8 @@
         android:paddingBottom="16dp"
         tools:context=".ui.add.AddMeetingActivity">
 
+        <!--todo Nino pourquoi j'ai besoind de cliquer 2 fois sur le champ pour faire apparaître l'horloge -->
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/add_meeting_til_time"
             android:layout_width="match_parent"
@@ -32,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:background="@color/light_grey"
-                android:ems="10">
+                android:textSize="16dp">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>

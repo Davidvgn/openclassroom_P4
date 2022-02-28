@@ -66,12 +66,13 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                 final Calendar cldr = Calendar.getInstance();
                 int hour = cldr.get(Calendar.HOUR_OF_DAY);
                 int minutes = cldr.get(Calendar.MINUTE);
+
                 // time picker dialog
                 picker = new TimePickerDialog(AddMeetingActivity.this,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
-                                time_editText.setText(sHour + ":" + sMinute);
+                                time_editText.setText( "" + checkDigit(sHour) + ":" + checkDigit(sMinute));
                             }
                         }, hour, minutes, true);
                 picker.show();
@@ -92,23 +93,23 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void bindHour(AddMeetingViewModel viewModel, TextInputEditText nameEditText) {
-        nameEditText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                viewModel.onNameChanged(s.toString());
-            }
-        });
-    }
+//
+//    private void bindHour(AddMeetingViewModel viewModel, TextInputEditText nameEditText) {
+//        nameEditText.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                viewModel.onNameChanged(s.toString());
+//            }
+//        });
+//    }
 
     private void bindAddButton(AddMeetingViewModel viewModel, TextInputEditText eText, TextInputLayout time, TextInputLayout roomSpinner, TextInputEditText subjectEditText, TextInputEditText participantsEditText, Button addMeetingButton) {
         addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(
@@ -129,6 +130,9 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+    public String checkDigit(int number) {
+        return number <= 9 ? "0" + number : String.valueOf(number);
     }
 
 }
