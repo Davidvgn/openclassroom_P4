@@ -1,7 +1,6 @@
 package com.example.mareu.list;
 
 import androidx.annotation.NonNull;
-
 import java.util.Objects;
 
 public class MeetingViewStateItem {

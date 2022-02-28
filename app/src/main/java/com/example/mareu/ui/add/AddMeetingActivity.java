@@ -71,7 +71,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
                             public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
-                                time_editText.setText( "" + checkDigit(sHour) + ":" + checkDigit(sMinute));
+                                time_editText.setText("" + checkDigit(sHour) + ":" + checkDigit(sMinute));
                             }
                         }, hour, minutes, true);
                 picker.show();
@@ -79,7 +79,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         });
 
         bindHour(viewModel, time_editText);
-        bindAddButton(viewModel, time_editText , roomSpinner, subjectEditText, participantEditText, addMeetingButton);
+        bindAddButton(viewModel, time_editText, roomSpinner, subjectEditText, participantEditText, addMeetingButton);
 
 
         viewModel.getCloseActivitySingleLiveEvent().observe(this, aVoid -> finish());
@@ -94,8 +94,8 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     }
 
 
-    private void bindHour(AddMeetingViewModel viewModel, TextInputEditText nameEditText) {
-        nameEditText.addTextChangedListener(new TextWatcher() {
+    private void bindHour(AddMeetingViewModel viewModel, TextInputEditText time_editText) {
+        time_editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -111,9 +111,9 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         });
     }
 
-    private void bindAddButton(AddMeetingViewModel viewModel, TextInputEditText eText, TextInputLayout roomSpinner, TextInputEditText subjectEditText, TextInputEditText participantsEditText, Button addMeetingButton) {
+    private void bindAddButton(AddMeetingViewModel viewModel, TextInputEditText time_editText, TextInputLayout roomSpinner, TextInputEditText subjectEditText, TextInputEditText participantsEditText, Button addMeetingButton) {
         addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(
-                eText.getText().toString(),
+                time_editText.getText().toString(),
                 roomSpinner.getTransitionName(),
                 subjectEditText.getText().toString(),
                 participantsEditText.getText().toString()
@@ -130,6 +130,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     public void onNothingSelected(AdapterView<?> parent) {
 
     }
+
     public String checkDigit(int number) {
         return number <= 9 ? "0" + number : String.valueOf(number);
     }

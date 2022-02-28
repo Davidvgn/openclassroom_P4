@@ -17,26 +17,27 @@ public class AddMeetingViewModel extends ViewModel {
     public AddMeetingViewModel(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
     }
+
     private final SingleLiveEvent<Void> closeActivitySingleLiveEvent = new SingleLiveEvent<>();
 
     public LiveData<Boolean> getIsSaveButtonEnabledLiveData() {
         return isSaveButtonEnabledMutableLiveData;
     }
+
     public SingleLiveEvent<Void> getCloseActivitySingleLiveEvent() {
         return closeActivitySingleLiveEvent;
     }
+
     public void onNameChanged(String subject) {
         isSaveButtonEnabledMutableLiveData.setValue(!subject.isEmpty());
     }
+
     public void onAddButtonClicked(
-//             String hour,
-//             String min,
             String time,
-             String meetingRoom,
-             String meetingSubject,
-             String participants
+            String meetingRoom,
+            String meetingSubject,
+            String participants
     ) {
-//        meetingRepository.addMeeting(hour, min, meetingRoom, meetingSubject, participants);
         meetingRepository.addMeeting(time, meetingRoom, meetingSubject, participants);
         closeActivitySingleLiveEvent.call();
     }
