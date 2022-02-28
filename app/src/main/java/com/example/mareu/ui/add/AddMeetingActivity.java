@@ -56,7 +56,6 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         act_room.setAdapter(arrayAdapter_room);
         act_room.setThreshold(1);
 
-        TextInputLayout time = findViewById(R.id.add_meeting_til_time);
         TextInputEditText time_editText = findViewById(R.id.add_meeting_tie_time);
         time_editText.setInputType(InputType.TYPE_NULL);
         time_editText.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +78,8 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
             }
         });
 
-        bindAddButton(viewModel, time_editText, time, roomSpinner, subjectEditText, participantEditText, addMeetingButton);
+        bindHour(viewModel, time_editText);
+        bindAddButton(viewModel, time_editText , roomSpinner, subjectEditText, participantEditText, addMeetingButton);
 
 
         viewModel.getCloseActivitySingleLiveEvent().observe(this, aVoid -> finish());
@@ -93,28 +93,27 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         return super.onOptionsItemSelected(item);
     }
 
-//
-//    private void bindHour(AddMeetingViewModel viewModel, TextInputEditText nameEditText) {
-//        nameEditText.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                viewModel.onNameChanged(s.toString());
-//            }
-//        });
-//    }
 
-    private void bindAddButton(AddMeetingViewModel viewModel, TextInputEditText eText, TextInputLayout time, TextInputLayout roomSpinner, TextInputEditText subjectEditText, TextInputEditText participantsEditText, Button addMeetingButton) {
+    private void bindHour(AddMeetingViewModel viewModel, TextInputEditText nameEditText) {
+        nameEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                viewModel.onNameChanged(s.toString());
+            }
+        });
+    }
+
+    private void bindAddButton(AddMeetingViewModel viewModel, TextInputEditText eText, TextInputLayout roomSpinner, TextInputEditText subjectEditText, TextInputEditText participantsEditText, Button addMeetingButton) {
         addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(
                 eText.getText().toString(),
-                time.getTransitionName(),
                 roomSpinner.getTransitionName(),
                 subjectEditText.getText().toString(),
                 participantsEditText.getText().toString()

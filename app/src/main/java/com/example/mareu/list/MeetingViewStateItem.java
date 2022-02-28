@@ -59,7 +59,7 @@ public class MeetingViewStateItem {
     public String toString() {
         return "NeighboursViewStateItem{" +
                 "id=" + id +
-                ", hour='" + time + '\'' +
+                ", time='" + time + '\'' +
                 ", meetingRoom='" + meetingRoom + '\'' +
                 ", meetingSubject='" + meetingSubject + '\'' +
                 ", participants='" + participants + '\'' +
