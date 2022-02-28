@@ -16,101 +16,27 @@
         android:paddingBottom="16dp"
         tools:context=".ui.add.AddMeetingActivity">
 
-
-        <!--        <com.google.android.material.textfield.TextInputLayout-->
-        <!--            android:id="@+id/add_meeting_hour"-->
-        <!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="16dp"-->
-        <!--            app:layout_constraintStart_toStartOf="parent"-->
-        <!--            app:layout_constraintTop_toTopOf="parent">-->
-
-        <!--            <com.google.android.material.textfield.TextInputEditText-->
-        <!--                android:id="@+id/add_meeting_hour_edit"-->
-        <!--                android:layout_width="128dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:gravity="right"-->
-        <!--                android:hint="@string/hour"-->
-        <!--                android:inputType="text" />-->
-        <!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-        <TextView
-            android:id="@+id/add_meeting_hourTitle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:text="Heure"
-            android:layout_marginTop="16dp"
-            android:textSize="16sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
-
-        <Spinner
-            android:id="@+id/add_meeting_hourSpinner"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/add_meeting_til_time"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_meeting_hourTitle" />
-
-        <TextView
-            android:id="@+id/add_meeting_h"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:text="H"
-            android:textAlignment="center"
-            android:textSize="16sp"
+            android:hint="@string/time"
+            android:textSize="16dp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/add_meeting_hourSpinner"
-            app:layout_constraintStart_toEndOf="@+id/add_meeting_hourSpinner" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Spinner
-            android:id="@+id/add_meeting_minSpinner"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            app:layout_constraintStart_toEndOf="@id/add_meeting_h"
-            app:layout_constraintTop_toBottomOf="@id/add_meeting_hourTitle" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/add_meeting_tie_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:background="@color/light_grey"
+                android:ems="10">
 
-        <!--        <com.google.android.material.textfield.TextInputLayout-->
-        <!--            android:id="@+id/add_meeting_min"-->
-        <!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="56dp"-->
-        <!--            android:layout_marginLeft="16dp"-->
-        <!--            android:layout_marginTop="16dp"-->
-        <!--            app:layout_constraintEnd_toEndOf="parent"-->
-        <!--            app:layout_constraintStart_toEndOf="@+id/add_meeting_h"-->
-        <!--            app:layout_constraintTop_toTopOf="parent">-->
+            </com.google.android.material.textfield.TextInputEditText>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <!--            <com.google.android.material.textfield.TextInputEditText-->
-        <!--                android:id="@+id/add_meeting_min_edit"-->
-        <!--                android:layout_width="128dp"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:gravity="right"-->
-        <!--                android:hint="@string/min"-->
-        <!--                android:inputType="text"-->
-        <!--                app:layout_constraintEnd_toEndOf="parent" />-->
-        <!--        </com.google.android.material.textfield.TextInputLayout>-->
-
-<!--        <TextView-->
-<!--            android:id="@+id/add_meeting_roomTitle"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:text="Salle"-->
-<!--            android:layout_marginTop="16dp"-->
-<!--            android:textSize="16sp"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/add_meeting_hourSpinner"-->
-<!--            />-->
-<!--        -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/add_meeting_til_room"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
@@ -119,7 +45,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_meeting_minSpinner">
+            app:layout_constraintTop_toBottomOf="@id/add_meeting_til_time">
 
             <AutoCompleteTextView
                 android:id="@+id/add_meeting_act_room"
@@ -128,13 +54,12 @@
                 android:background="@color/light_grey"
                 android:hint="@string/room"
                 android:textSize="16dp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-<!--fin test-->
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/add_meeting_subject"
+            android:id="@+id/add_meeting_til_subject"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -144,36 +69,36 @@
             app:layout_constraintTop_toBottomOf="@id/add_meeting_til_room">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/add_meeting_subject_edit"
+                android:id="@+id/add_meeting_subject_tie_subject"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/subject"
-                android:textStyle="bold"
-                android:textSize="16dp"
                 android:background="@color/light_grey"
-                android:inputType="text" />
+                android:hint="@string/subject"
+                android:inputType="text"
+                android:textSize="16dp"
+                android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/add_meeting_participants"
+            android:id="@+id/add_meeting_til_participants"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_meeting_subject">
+            app:layout_constraintTop_toBottomOf="@id/add_meeting_til_subject">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/add_meeting_participants_edit"
+                android:id="@+id/add_meeting_tie_participants"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/light_grey"
                 android:hint="@string/participants"
                 android:inputType="textEmailAddress"
-                android:textStyle="bold"
+                android:minLines="4"
                 android:textSize="16dp"
-                android:background="@color/light_grey"
-                android:minLines="4" />
+                android:textStyle="bold" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
@@ -187,7 +112,7 @@
             app:cornerRadius="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_meeting_participants" />
+            app:layout_constraintTop_toBottomOf="@id/add_meeting_til_participants" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

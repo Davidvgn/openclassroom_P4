@@ -4,38 +4,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.app.TimePickerDialog;
+
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.TimePicker;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.example.mareu.R;
-import com.example.mareu.data.MeetingRepository;
-import com.example.mareu.databinding.AddMeetingActivityBinding;
 import com.example.mareu.ui.ViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 
 public class AddMeetingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    //todo david test
     ArrayAdapter<CharSequence> arrayAdapter_room;
+    TimePickerDialog picker;
 
 
     public static Intent navigate(Context context) {
@@ -51,31 +46,40 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 
         AddMeetingViewModel viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(AddMeetingViewModel.class);
 
-        TextInputEditText subjectEditText = findViewById(R.id.add_meeting_subject_edit);
-        TextInputEditText participantEditText = findViewById(R.id.add_meeting_participants_edit);
+        TextInputEditText subjectEditText = findViewById(R.id.add_meeting_subject_tie_subject);
+        TextInputEditText participantEditText = findViewById(R.id.add_meeting_tie_participants);
         Button addMeetingButton = findViewById(R.id.add_meeting_button);
 
         TextInputLayout roomSpinner = findViewById(R.id.add_meeting_til_room);
         AutoCompleteTextView act_room = findViewById(R.id.add_meeting_act_room);
-        arrayAdapter_room = ArrayAdapter.createFromResource(this, R.array.room,R.layout.support_simple_spinner_dropdown_item);
+        arrayAdapter_room = ArrayAdapter.createFromResource(this, R.array.room, R.layout.support_simple_spinner_dropdown_item);
         act_room.setAdapter(arrayAdapter_room);
         act_room.setThreshold(1);
 
-        Spinner hourSpinner = findViewById(R.id.add_meeting_hourSpinner);
-        ArrayAdapter<CharSequence> hourAdapter = ArrayAdapter.createFromResource(this, R.array.heures, android.R.layout.simple_spinner_item);
-        hourAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        hourSpinner.setAdapter(hourAdapter);
-        hourSpinner.setOnItemSelectedListener(this);
+        TextInputLayout time = findViewById(R.id.add_meeting_til_time);
+        TextInputEditText time_editText = findViewById(R.id.add_meeting_tie_time);
+        time_editText.setInputType(InputType.TYPE_NULL);
+        time_editText.setOnClickListener(new View.OnClickListener() {
 
+            @Override
+            public void onClick(View v) {
+                final Calendar cldr = Calendar.getInstance();
+                int hour = cldr.get(Calendar.HOUR_OF_DAY);
+                int minutes = cldr.get(Calendar.MINUTE);
+                // time picker dialog
+                picker = new TimePickerDialog(AddMeetingActivity.this,
+                        new TimePickerDialog.OnTimeSetListener() {
+                            @Override
+                            public void onTimeSet(TimePicker tp, int sHour, int sMinute) {
+                                time_editText.setText(sHour + ":" + sMinute);
+                            }
+                        }, hour, minutes, true);
+                picker.show();
+            }
+        });
 
-        Spinner minSpinner = findViewById(R.id.add_meeting_minSpinner);
-        ArrayAdapter<CharSequence> minAdapter = ArrayAdapter.createFromResource(this, R.array.minutes, android.R.layout.simple_spinner_item);
-        minAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        minSpinner.setAdapter(minAdapter);
-        minSpinner.setOnItemSelectedListener(this);
+        bindAddButton(viewModel, time_editText, time, roomSpinner, subjectEditText, participantEditText, addMeetingButton);
 
-
-        bindAddButton(viewModel, hourSpinner, minSpinner, roomSpinner, subjectEditText, participantEditText, addMeetingButton);
 
         viewModel.getCloseActivitySingleLiveEvent().observe(this, aVoid -> finish());
     }
@@ -106,19 +110,10 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         });
     }
 
-    //    private void bindAddButton(AddMeetingViewModel viewModel, TextInputEditText room, TextInputEditText hourEditText,TextInputEditText minEditText, TextInputEditText subjectEditText, Button addMeetingButton) {
-//        addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(
-//                hourEditText.getText().toString(),
-//                minEditText.getText().toString(),
-//                subjectEditText.getText().toString(),
-//                room.getText().toString()
-//        ));
-//        viewModel.getIsSaveButtonEnabledLiveData().observe(this, isSaveButtonEnabled -> addMeetingButton.setEnabled(isSaveButtonEnabled));
-//    }
-    private void bindAddButton(AddMeetingViewModel viewModel, Spinner hourSpinner, Spinner minSpinner, TextInputLayout roomSpinner, TextInputEditText subjectEditText,TextInputEditText participantsEditText, Button addMeetingButton) {
+    private void bindAddButton(AddMeetingViewModel viewModel, TextInputEditText eText, TextInputLayout time, TextInputLayout roomSpinner, TextInputEditText subjectEditText, TextInputEditText participantsEditText, Button addMeetingButton) {
         addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(
-                hourSpinner.getSelectedItem().toString(),
-                minSpinner.getSelectedItem().toString(),
+                eText.getText().toString(),
+                time.getTransitionName(),
                 roomSpinner.getTransitionName(),
                 subjectEditText.getText().toString(),
                 participantsEditText.getText().toString()
