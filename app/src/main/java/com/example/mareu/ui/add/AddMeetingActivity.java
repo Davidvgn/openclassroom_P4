@@ -8,9 +8,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.app.TimePickerDialog;
 
@@ -29,6 +27,7 @@ import com.example.mareu.ui.ViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
+import java.text.ParseException;
 import java.util.Calendar;
 
 public class AddMeetingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -70,16 +69,16 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                 int mYear = c.get(Calendar.YEAR); // current year
                 int mMonth = c.get(Calendar.MONTH); // current month
                 int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
-                // date picker dialog
                 datePickerDialog = new DatePickerDialog(AddMeetingActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-                                // set day of month , month and year value in the edit text
                                 date.setText(dayOfMonth + "/" + checkDigit(monthOfYear + 1) + "/" + year);
                             }
                         }, mYear, mMonth, mDay);
+                datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+
                 datePickerDialog.show();
             }
         });
@@ -99,6 +98,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
                                 time_editText.setText("" + checkDigit(sHour) + ":" + checkDigit(sMinute));
                             }
                         }, hour, minutes, true);
+
                 picker.show();
             }
         });
@@ -134,6 +134,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
             }
         });
     }
+
 
     private void bindAddButton(AddMeetingViewModel viewModel, TextInputEditText date, TextInputEditText time_editText, TextInputLayout roomSpinner, TextInputEditText subjectEditText, TextInputEditText participantsEditText, Button addMeetingButton) {
         addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(

@@ -18,6 +18,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/add_meeting_tie_day"
+            android:focusableInTouchMode="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -30,10 +31,9 @@
             app:layout_constraintTop_toTopOf="parent">
         </com.google.android.material.textfield.TextInputEditText>
 
-
-        <!--todo Nino pourquoi j'ai besoin de cliquer 2 fois sur le champ pour faire apparaître l'horloge -->
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/add_meeting_tie_time"
+            android:focusableInTouchMode="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
