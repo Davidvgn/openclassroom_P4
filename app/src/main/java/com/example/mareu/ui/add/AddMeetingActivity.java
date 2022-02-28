@@ -1,5 +1,6 @@
 package com.example.mareu.ui.add;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,13 +8,16 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.app.TimePickerDialog;
 
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TimePicker;
 
 import androidx.annotation.Nullable;
@@ -31,6 +35,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 
     ArrayAdapter<CharSequence> arrayAdapter_room;
     TimePickerDialog picker;
+    DatePickerDialog datePickerDialog;
 
 
     public static Intent navigate(Context context) {
@@ -40,7 +45,6 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.add_meeting_activity);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -56,17 +60,38 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         act_room.setAdapter(arrayAdapter_room);
         act_room.setThreshold(1);
 
+
+        TextInputEditText date = findViewById(R.id.add_meeting_tie_day);
+
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR); // current year
+                int mMonth = c.get(Calendar.MONTH); // current month
+                int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
+                // date picker dialog
+                datePickerDialog = new DatePickerDialog(AddMeetingActivity.this,
+                        new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                // set day of month , month and year value in the edit text
+                                date.setText(dayOfMonth + "/" + checkDigit(monthOfYear + 1) + "/" + year);
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
+
         TextInputEditText time_editText = findViewById(R.id.add_meeting_tie_time);
         time_editText.setInputType(InputType.TYPE_NULL);
         time_editText.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 final Calendar cldr = Calendar.getInstance();
                 int hour = cldr.get(Calendar.HOUR_OF_DAY);
                 int minutes = cldr.get(Calendar.MINUTE);
-
-                // time picker dialog
                 picker = new TimePickerDialog(AddMeetingActivity.this,
                         new TimePickerDialog.OnTimeSetListener() {
                             @Override
@@ -78,9 +103,8 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
             }
         });
 
-        bindHour(viewModel, time_editText);
-        bindAddButton(viewModel, time_editText, roomSpinner, subjectEditText, participantEditText, addMeetingButton);
-
+        bindTime(viewModel, date);
+        bindAddButton(viewModel, date, time_editText, roomSpinner, subjectEditText, participantEditText, addMeetingButton);
 
         viewModel.getCloseActivitySingleLiveEvent().observe(this, aVoid -> finish());
     }
@@ -94,8 +118,8 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     }
 
 
-    private void bindHour(AddMeetingViewModel viewModel, TextInputEditText time_editText) {
-        time_editText.addTextChangedListener(new TextWatcher() {
+    private void bindTime(AddMeetingViewModel viewModel, TextInputEditText date) {
+        date.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -106,13 +130,14 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 
             @Override
             public void afterTextChanged(Editable s) {
-                viewModel.onNameChanged(s.toString());
+                viewModel.onValueChanged(s.toString());
             }
         });
     }
 
-    private void bindAddButton(AddMeetingViewModel viewModel, TextInputEditText time_editText, TextInputLayout roomSpinner, TextInputEditText subjectEditText, TextInputEditText participantsEditText, Button addMeetingButton) {
+    private void bindAddButton(AddMeetingViewModel viewModel, TextInputEditText date, TextInputEditText time_editText, TextInputLayout roomSpinner, TextInputEditText subjectEditText, TextInputEditText participantsEditText, Button addMeetingButton) {
         addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(
+                date.getText().toString(),
                 time_editText.getText().toString(),
                 roomSpinner.getTransitionName(),
                 subjectEditText.getText().toString(),
@@ -123,12 +148,10 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
-
     }
 
     public String checkDigit(int number) {

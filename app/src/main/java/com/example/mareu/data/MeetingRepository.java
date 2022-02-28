@@ -24,6 +24,7 @@ public class MeetingRepository {
     }
 
     public void addMeeting(
+            String day,
             String time,
             String meetingRoom,
             String meetingSubject,
@@ -36,6 +37,7 @@ public class MeetingRepository {
         meetings.add(
                 new Meeting(
                         maxId++,
+                        day,
                         time,
                         meetingRoom,
                         meetingSubject,
@@ -82,12 +84,12 @@ public class MeetingRepository {
 
     private void generateRandomMeeting() {
         addMeeting(
-                "14:00", "Salle 4", "Test 1", "email@email.com"
+                "22/02/22", "14:00", "Salle 4", "Test 1", "email@email.com"
 
 
                 );
         addMeeting(
-                "14:45", "Salle 6", "Test 2", "email@email.com"
+                "22/02/22", "14:45", "Salle 6", "Test 2", "email@email.com"
         );
     }
 }

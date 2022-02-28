@@ -1,7 +1,5 @@
 package com.example.mareu.ui.add;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -28,17 +26,18 @@ public class AddMeetingViewModel extends ViewModel {
         return closeActivitySingleLiveEvent;
     }
 
-    public void onNameChanged(String subject) {
+    public void onValueChanged(String subject) {
         isSaveButtonEnabledMutableLiveData.setValue(!subject.isEmpty());
     }
 
     public void onAddButtonClicked(
+            String day,
             String time,
             String meetingRoom,
             String meetingSubject,
             String participants
     ) {
-        meetingRepository.addMeeting(time, meetingRoom, meetingSubject, participants);
+        meetingRepository.addMeeting(day, time, meetingRoom, meetingSubject, participants);
         closeActivitySingleLiveEvent.call();
     }
 }

@@ -6,13 +6,15 @@ import java.util.Objects;
 public class MeetingViewStateItem {
 
     private final long id;
+    private final String day;
     private final CharSequence time;
     private final String meetingRoom;
     private final String meetingSubject;
     private final String participants;
 
-    public MeetingViewStateItem(long id, CharSequence time, String meetingRoom, String meetingSubject, String participants) {
+    public MeetingViewStateItem(long id, String day, CharSequence time, String meetingRoom, String meetingSubject, String participants) {
         this.id = id;
+        this.day =day;
         this.time = time;
         this.meetingRoom = meetingRoom;
         this.meetingSubject = meetingSubject;
@@ -21,6 +23,10 @@ public class MeetingViewStateItem {
 
     public long getId() {
         return id;
+    }
+
+    public String getDay() {
+        return day;
     }
 
     public CharSequence getTime() {
@@ -44,13 +50,13 @@ public class MeetingViewStateItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MeetingViewStateItem that = (MeetingViewStateItem) o;
-        return id == that.id && time.equals(that.time) && meetingRoom.equals(that
+        return id == that.id && day.equals(that.day) && time.equals(that.time) && meetingRoom.equals(that
         .meetingRoom) && meetingSubject.equals(that.meetingSubject) && participants.equals((that.participants));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, time, meetingRoom, meetingSubject, participants);
+        return Objects.hash(id, day, time, meetingRoom, meetingSubject, participants);
     }
 
     @NonNull
@@ -58,6 +64,7 @@ public class MeetingViewStateItem {
     public String toString() {
         return "NeighboursViewStateItem{" +
                 "id=" + id +
+                ", day='" + day + '\'' +
                 ", time='" + time + '\'' +
                 ", meetingRoom='" + meetingRoom + '\'' +
                 ", meetingSubject='" + meetingSubject + '\'' +

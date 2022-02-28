@@ -26,16 +26,16 @@
     </string-array>
 
     <string-array name="room">
-        <item>Salle 1</item>
-        <item>Salle 2</item>
-        <item>Salle 3</item>
-        <item>Salle 4</item>
-        <item>Salle 5</item>
-        <item>Salle 6</item>
-        <item>Salle 7</item>
-        <item>Salle 8</item>
-        <item>Salle 9</item>
-        <item>Salle 10</item>
+        <item>Hendrix</item>
+        <item>Led Zep</item>
+        <item>Rammstein</item>
+        <item>Animals as leaders</item>
+        <item>Mestis</item>
+        <item>Satriani</item>
+        <item>Nuno Bettencourt</item>
+        <item>Andy Timmons</item>
+        <item>Eric Gales</item>
+        <item>Andy McKee</item>
     </string-array>
 
     <string-array name="minutes">

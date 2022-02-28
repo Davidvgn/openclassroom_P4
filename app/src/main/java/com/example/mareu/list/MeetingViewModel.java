@@ -1,11 +1,5 @@
 package com.example.mareu.list;
 
-import static android.graphics.Typeface.*;
-
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.style.StyleSpan;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
@@ -32,6 +26,7 @@ public class MeetingViewModel extends ViewModel {
                 meetingViewStateItem.add(
                         new MeetingViewStateItem(
                                 meeting.getId(),
+                                meeting.getDay(),
                                 meeting.getTime(),
                                 meeting.getMeetingRoom(),
                                 meeting.getMeetingSubject(),

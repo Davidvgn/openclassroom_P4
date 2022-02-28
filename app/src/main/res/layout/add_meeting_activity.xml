@@ -16,8 +16,22 @@
         android:paddingBottom="16dp"
         tools:context=".ui.add.AddMeetingActivity">
 
-        <!--todo Nino pourquoi j'ai besoin de cliquer 2 fois sur le champ pour faire apparaître l'horloge -->
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/add_meeting_tie_day"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/light_grey"
+            android:hint="Jour"
+            android:padding="16dp"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </com.google.android.material.textfield.TextInputEditText>
 
+
+        <!--todo Nino pourquoi j'ai besoin de cliquer 2 fois sur le champ pour faire apparaître l'horloge -->
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/add_meeting_tie_time"
             android:layout_width="match_parent"
@@ -29,7 +43,7 @@
             android:textSize="16dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/add_meeting_tie_day">
 
         </com.google.android.material.textfield.TextInputEditText>
 

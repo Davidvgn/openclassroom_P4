@@ -40,6 +40,7 @@ public class MeetingAdapter extends ListAdapter<MeetingViewStateItem, MeetingAda
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
         private final ImageView meetingRoomView;
+        private final TextView meetingDayView;
         private final TextView meetingTimeView;
         private final TextView meetingSubjectView;
         private final TextView meetingParticipantsView;
@@ -48,6 +49,7 @@ public class MeetingAdapter extends ListAdapter<MeetingViewStateItem, MeetingAda
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             meetingRoomView = itemView.findViewById(R.id.meeting_item_iv_meetingRoom);
+            meetingDayView = itemView.findViewById(R.id.meeting_item_tv_day);
             meetingTimeView = itemView.findViewById(R.id.meeting_item_tv_time);
             meetingSubjectView = itemView.findViewById(R.id.meeting_item_tv_subject);
             meetingParticipantsView = itemView.findViewById(R.id.meeting_item_tv_emails);
@@ -59,6 +61,7 @@ public class MeetingAdapter extends ListAdapter<MeetingViewStateItem, MeetingAda
                     .load(item.getMeetingRoom())
                     .apply(RequestOptions.circleCropTransform())
                     .into(meetingRoomView);
+            meetingDayView.setText(item.getDay());
             meetingTimeView.setText(item.getTime());
             meetingSubjectView.setText(item.getMeetingSubject());
             meetingParticipantsView.setText(item.getParticipants());
