@@ -15,6 +15,8 @@ import android.app.TimePickerDialog;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -79,8 +81,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
             picker.show();
         });
 
-
-        bindTime(viewModel, date, time_editText);//Todo David faire fonctionner le fait que la date ET l'heure sont nécesssaires pour activer le bouton (pas soit l'un soit l'autre)
+        bindTime(viewModel, date, time_editText);
         bindAddButton(viewModel, date, time_editText, subjectEditText, participantEditText, addMeetingButton);
 
         viewModel.getCloseActivitySingleLiveEvent().observe(this, aVoid -> finish());
@@ -95,6 +96,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     }
 
 
+    //todo Nino comment faire en sorte que les 2 champs soient nécessaire pour pouvoir utiliser le bouton 'save'
     private void bindTime(AddMeetingViewModel viewModel, TextInputEditText date, TextInputEditText time_editText) {
         date.addTextChangedListener(new TextWatcher() {
             @Override

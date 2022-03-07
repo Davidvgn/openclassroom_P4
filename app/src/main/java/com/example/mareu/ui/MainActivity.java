@@ -1,12 +1,9 @@
 package com.example.mareu.ui;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Toast;
 import com.example.mareu.R;
 import com.example.mareu.list.MeetingFragment;
 import com.example.mareu.ui.add.AddMeetingActivity;
@@ -39,16 +36,16 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_date:
-                Toast.makeText(MainActivity.this, "Date", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.menu_room:
-                Toast.makeText(MainActivity.this, "Salle", Toast.LENGTH_SHORT).show();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.menu_date:
+//                Toast.makeText(MainActivity.this, "Date", Toast.LENGTH_SHORT).show();
+//                return true;
+//            case R.id.menu_room:
+//                Toast.makeText(MainActivity.this, "Salle", Toast.LENGTH_SHORT).show();
+//                return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 }

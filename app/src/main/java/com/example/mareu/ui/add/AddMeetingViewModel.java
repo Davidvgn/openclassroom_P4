@@ -1,6 +1,8 @@
 package com.example.mareu.ui.add;
 
 
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -43,11 +45,19 @@ public class AddMeetingViewModel extends ViewModel {
             @Nullable String meetingSubject,
             @Nullable String participants
     ) {
-        meetingRepository.addMeeting(day, time, roomSelected, meetingSubject, participants);
-        closeActivitySingleLiveEvent.call();
+        //todo David check pour plusieurs mails séparés d'une virgule (ou autre)
+        String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
+        if (participants.matches(regex)) {
+            meetingRepository.addMeeting(day, time, roomSelected, meetingSubject, participants);
+            closeActivitySingleLiveEvent.call();
+        } else {
+            //todo Nino toast pour prévenir l'utilisateur si adresse non valide non fonctionnelle
+//            Toast.makeText(AddMeetingViewModel.this, "Email non-valide", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onRoomSelected(CharSequence room) {
         roomSelected = room.toString();
     }
+
 }

@@ -1,6 +1,10 @@
 package com.example.mareu.list;
 
 import androidx.annotation.NonNull;
+
+import com.example.mareu.data.Meeting;
+
+import java.util.Comparator;
 import java.util.Objects;
 
 public class MeetingViewStateItem {
@@ -63,6 +67,13 @@ public class MeetingViewStateItem {
     public int hashCode() {
         return Objects.hash(id, day, time, meetingRoom, meetingSubject, participants);
     }
+
+    public static Comparator<Meeting> SortByDate = new Comparator<Meeting>() {
+        @Override
+        public int compare(Meeting o1, Meeting o2) {
+            return o1.getDay().compareTo(o2.getDay());
+        }
+    };
 
     @NonNull
     @Override
