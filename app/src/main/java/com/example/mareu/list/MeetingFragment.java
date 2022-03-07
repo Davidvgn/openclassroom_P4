@@ -4,13 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.mareu.R;
 import com.example.mareu.ui.ViewModelFactory;
 
@@ -34,20 +32,12 @@ public class MeetingFragment extends Fragment {
         }
 
         MeetingViewModel viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
-
         RecyclerView recyclerView = view.findViewById(R.id.meeting_rv);
-        MeetingAdapter adapter = new MeetingAdapter(new OnMeetingClickedListener() {
 
-            @Override
-            public void onDeleteMeetingClicked(long meetingId) {
-                viewModel.onDeleteMeetingClicked(meetingId);
-            }
-        });
-
+        MeetingAdapter adapter = new MeetingAdapter(viewModel::onDeleteMeetingClicked);
         recyclerView.setAdapter(adapter);
 
-        viewModel.getMeetingViewStateItemsLiveData().observe(getViewLifecycleOwner(), meetingViewStateItemList ->
-                adapter.submitList(meetingViewStateItemList)
+        viewModel.getMeetingViewStateItemsLiveData().observe(getViewLifecycleOwner(), adapter::submitList
         );
     }
 }

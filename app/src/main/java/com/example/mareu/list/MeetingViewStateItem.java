@@ -6,15 +6,20 @@ import java.util.Objects;
 public class MeetingViewStateItem {
 
     private final long id;
+    @NonNull
     private final String day;
+    @NonNull
     private final CharSequence time;
+    @NonNull
     private final String meetingRoom;
+    @NonNull
     private final String meetingSubject;
+    @NonNull
     private final String participants;
 
-    public MeetingViewStateItem(long id, String day, CharSequence time, String meetingRoom, String meetingSubject, String participants) {
+    public MeetingViewStateItem(long id, @NonNull String day, @NonNull CharSequence time, @NonNull String meetingRoom, @NonNull String meetingSubject, @NonNull String participants) {
         this.id = id;
-        this.day =day;
+        this.day = day;
         this.time = time;
         this.meetingRoom = meetingRoom;
         this.meetingSubject = meetingSubject;
@@ -24,23 +29,23 @@ public class MeetingViewStateItem {
     public long getId() {
         return id;
     }
-
+    @NonNull
     public String getDay() {
         return day;
     }
-
+    @NonNull
     public CharSequence getTime() {
         return time;
     }
-
+    @NonNull
     public String getMeetingRoom() {
         return meetingRoom;
     }
-
+    @NonNull
     public String getMeetingSubject() {
         return meetingSubject;
     }
-
+    @NonNull
     public String getParticipants() {
         return participants;
     }
@@ -51,7 +56,7 @@ public class MeetingViewStateItem {
         if (o == null || getClass() != o.getClass()) return false;
         MeetingViewStateItem that = (MeetingViewStateItem) o;
         return id == that.id && day.equals(that.day) && time.equals(that.time) && meetingRoom.equals(that
-        .meetingRoom) && meetingSubject.equals(that.meetingSubject) && participants.equals((that.participants));
+                .meetingRoom) && meetingSubject.equals(that.meetingSubject) && participants.equals((that.participants));
     }
 
     @Override

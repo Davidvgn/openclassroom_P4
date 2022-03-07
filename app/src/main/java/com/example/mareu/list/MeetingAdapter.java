@@ -15,7 +15,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.mareu.R;
 import com.bumptech.glide.Glide;
 
-
 public class MeetingAdapter extends ListAdapter<MeetingViewStateItem, MeetingAdapter.ViewHolder> {
 
     private final OnMeetingClickedListener listener;
@@ -24,7 +23,6 @@ public class MeetingAdapter extends ListAdapter<MeetingViewStateItem, MeetingAda
         super(new ViewHolder.ListMeetingItemCallBack());
         this.listener = listener;
     }
-
 
     @NonNull
     @Override

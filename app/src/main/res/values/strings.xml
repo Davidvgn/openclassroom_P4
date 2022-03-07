@@ -11,19 +11,8 @@
     <string name="participants">Participants</string>
     <string name="save">Save</string>
     <string name="new_reunion">New meeting</string>
+    <string name="slash">/</string>
 
-    <string-array name="heures">
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
-        <item>13</item>
-        <item>14</item>
-        <item>15</item>
-        <item>16</item>
-        <item>17</item>
-        <item>18</item>
-    </string-array>
 
     <string-array name="room">
         <item>Hendrix</item>
@@ -38,10 +27,4 @@
         <item>Andy McKee</item>
     </string-array>
 
-    <string-array name="minutes">
-        <item>00</item>
-        <item>15</item>
-        <item>30</item>
-        <item>45</item>
-    </string-array>
 </resources>

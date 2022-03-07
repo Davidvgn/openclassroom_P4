@@ -1,6 +1,8 @@
 package com.example.mareu.ui.add;
 
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -13,6 +15,9 @@ public class AddMeetingViewModel extends ViewModel {
 
     private final MeetingRepository meetingRepository;
     private final MutableLiveData<Boolean> isSaveButtonEnabledMutableLiveData = new MutableLiveData<>(false);
+
+    @NonNull
+    public String roomSelected = "";
 
     public AddMeetingViewModel(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
@@ -33,13 +38,16 @@ public class AddMeetingViewModel extends ViewModel {
     }
 
     public void onAddButtonClicked(
-            String day,
-            String time,
-            String meetingRoom,
-            String meetingSubject,
-            String participants
+            @Nullable String day,
+            @Nullable String time,
+            @Nullable String meetingSubject,
+            @Nullable String participants
     ) {
-        meetingRepository.addMeeting(day, time, meetingRoom, meetingSubject, participants);
+        meetingRepository.addMeeting(day, time, roomSelected, meetingSubject, participants);
         closeActivitySingleLiveEvent.call();
+    }
+
+    public void onRoomSelected(CharSequence room) {
+        roomSelected = room.toString();
     }
 }

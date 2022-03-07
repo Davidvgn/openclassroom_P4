@@ -6,18 +6,23 @@ import java.util.Objects;
 public class Meeting {
 
     private final long id;
+    @NonNull
     private final String day;
+    @NonNull
     private final String time;
+    @NonNull
     private final String meetingRoom;
+    @NonNull
     private final String meetingSubject;
+    @NonNull
     private final String participants;
 
     public Meeting(long id,
-                   String day,
-                   String time,
-                   String meetingRoom,
-                   String meetingSubject,
-                   String participants
+                   @NonNull String day,
+                   @NonNull String time,
+                   @NonNull String meetingRoom,
+                   @NonNull String meetingSubject,
+                   @NonNull String participants
     ) {
         this.id = id;
         this.day = day;
@@ -31,22 +36,23 @@ public class Meeting {
         return id;
     }
 
+    @NonNull
     public String getDay() {
         return day;
     }
-
+    @NonNull
     public String getTime() {
         return time;
     }
-
+    @NonNull
     public String getMeetingRoom() {
         return meetingRoom;
     }
-
+    @NonNull
     public String getMeetingSubject() {
         return meetingSubject;
     }
-
+    @NonNull
     public String getParticipants() {
         return participants;
     }
