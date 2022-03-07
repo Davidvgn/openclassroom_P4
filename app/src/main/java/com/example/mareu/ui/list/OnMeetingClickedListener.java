@@ -1,4 +1,4 @@
-package com.example.mareu.list;
+package com.example.mareu.ui.list;
 
 public interface OnMeetingClickedListener {
 

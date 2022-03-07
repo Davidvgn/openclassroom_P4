@@ -1,4 +1,4 @@
-package com.example.mareu.list;
+package com.example.mareu.ui.list;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,6 +24,8 @@ public class MeetingFragment extends Fragment {
         return fragment;
     }
 
+    private MeetingViewModel viewModel;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,14 +43,13 @@ public class MeetingFragment extends Fragment {
             throw new IllegalStateException("Please use MeetingFragment.newInstance() to build the Fragment");
         }
 
-        MeetingViewModel viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
+        viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
         RecyclerView recyclerView = view.findViewById(R.id.meeting_rv);
 
         MeetingAdapter adapter = new MeetingAdapter(viewModel::onDeleteMeetingClicked);
         recyclerView.setAdapter(adapter);
 
-        viewModel.getMeetingViewStateItemsLiveData().observe(getViewLifecycleOwner(), adapter::submitList
-        );
+        viewModel.getMeetingViewStateItemsLiveData().observe(getViewLifecycleOwner(), adapter::submitList);
 
     }
 
@@ -57,6 +58,9 @@ public class MeetingFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.menu_date:
                 Toast.makeText(getContext(), "Date", Toast.LENGTH_SHORT).show();
+
+                viewModel.onDateSortButtonClicked();
+
                 return true;
             case R.id.menu_room:
                 Toast.makeText(getContext(), "Salle", Toast.LENGTH_SHORT).show();
