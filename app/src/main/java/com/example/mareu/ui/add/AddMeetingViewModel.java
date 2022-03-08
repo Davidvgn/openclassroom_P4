@@ -6,7 +6,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
 import com.example.mareu.data.MeetingRepository;
@@ -25,11 +27,27 @@ public class AddMeetingViewModel extends ViewModel {
         this.meetingRepository = meetingRepository;
     }
 
+    private void combine(Boolean calendar, Boolean hour) {
+
+        Boolean test = calendar;
+
+        isSaveButtonEnabledMutableLiveData.setValue(test);
+
+
+    }
+
+
     private final SingleLiveEvent<Void> closeActivitySingleLiveEvent = new SingleLiveEvent<>();
+
+    //todo david Transformer en mediatorLiveData
+    //faire une liveData qui représente subject et une autre pour l'heure ou autre
+    //puis dire si la valeur de mon mediatorLiveData est = calendrier !empty et hour !empty
+
 
     public LiveData<Boolean> getIsSaveButtonEnabledLiveData() {
         return isSaveButtonEnabledMutableLiveData;
     }
+
 
     public SingleLiveEvent<Void> getCloseActivitySingleLiveEvent() {
         return closeActivitySingleLiveEvent;
