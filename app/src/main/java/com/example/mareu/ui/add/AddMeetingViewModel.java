@@ -1,8 +1,6 @@
 package com.example.mareu.ui.add;
 
 
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -18,34 +16,53 @@ import com.example.mareu.utils.SingleLiveEvent;
 public class AddMeetingViewModel extends ViewModel {
 
     private final MeetingRepository meetingRepository;
-    private final MutableLiveData<Boolean> isSaveButtonEnabledMutableLiveData = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> calendarMutableLiveData = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> hourMutableLiveData = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> roomMutableLiveData = new MutableLiveData<>(false);
+
+    private final MediatorLiveData<Boolean> isSaveButtonEnabledMediatorLiveData = new MediatorLiveData<>();
 
     @NonNull
     public String roomSelected = "";
 
     public AddMeetingViewModel(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
+
+        isSaveButtonEnabledMediatorLiveData.addSource(calendarMutableLiveData, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean calendarOnChanged) {
+                combine(calendarOnChanged, hourMutableLiveData.getValue(), roomMutableLiveData.getValue());
+            }
+        });
+        isSaveButtonEnabledMediatorLiveData.addSource(hourMutableLiveData, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean hourOnchanged) {
+                combine(hourOnchanged, calendarMutableLiveData.getValue(), roomMutableLiveData.getValue());
+            }
+        });
+        isSaveButtonEnabledMediatorLiveData.addSource(roomMutableLiveData, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean roomOnChanged) {
+                combine(roomOnChanged, calendarMutableLiveData.getValue(), hourMutableLiveData.getValue());
+            }
+        });
     }
 
-    private void combine(Boolean calendar, Boolean hour) {
-
-        Boolean test = calendar;
-
-        isSaveButtonEnabledMutableLiveData.setValue(test);
-
-
+    private void combine(Boolean calendar, Boolean hour, Boolean room) {
+        Boolean calendarCombine = calendar;
+        Boolean hourCombine = hour;
+        Boolean roomCombine = hour;
+        if (calendarCombine && hourCombine && roomCombine) {
+            isSaveButtonEnabledMediatorLiveData.setValue(true);
+        }
     }
 
 
     private final SingleLiveEvent<Void> closeActivitySingleLiveEvent = new SingleLiveEvent<>();
 
-    //todo david Transformer en mediatorLiveData
-    //faire une liveData qui représente subject et une autre pour l'heure ou autre
-    //puis dire si la valeur de mon mediatorLiveData est = calendrier !empty et hour !empty
-
 
     public LiveData<Boolean> getIsSaveButtonEnabledLiveData() {
-        return isSaveButtonEnabledMutableLiveData;
+        return isSaveButtonEnabledMediatorLiveData;
     }
 
 
@@ -53,8 +70,20 @@ public class AddMeetingViewModel extends ViewModel {
         return closeActivitySingleLiveEvent;
     }
 
-    public void onValueChanged(String subject) {
-        isSaveButtonEnabledMutableLiveData.setValue(!subject.isEmpty());
+    public void onCalendarValueChanged(String calendar) {
+        if ((!calendar.isEmpty())) {
+            calendarMutableLiveData.setValue(true);
+        }
+    }
+    public void onTimeValueChanged(String calendar) {
+        if ((!calendar.isEmpty())) {
+            hourMutableLiveData.setValue(true);
+        }
+    }
+    public void onRoomValueChanged(String calendar) {
+        if ((!calendar.isEmpty())) {
+            roomMutableLiveData.setValue(true);
+        }
     }
 
     public void onAddButtonClicked(

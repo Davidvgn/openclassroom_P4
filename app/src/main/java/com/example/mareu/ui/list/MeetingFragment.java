@@ -18,8 +18,6 @@ import com.example.mareu.ui.ViewModelFactory;
 
 public class MeetingFragment extends Fragment {
 
-    MeetingViewModel viewModel;
-
     public static MeetingFragment newInstance() {
         MeetingFragment fragment = new MeetingFragment();
         fragment.setArguments(new Bundle());
@@ -59,10 +57,7 @@ public class MeetingFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_date:
-
-                viewModel.onDateSortButtonClicked();
                 Toast.makeText(getContext(), "Date", Toast.LENGTH_SHORT).show();
-
                 viewModel.onDateSortButtonClicked();
 
                 return true;

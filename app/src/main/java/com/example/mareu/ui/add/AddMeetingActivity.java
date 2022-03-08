@@ -81,7 +81,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
             picker.show();
         });
 
-        bindTime(viewModel, date);
+        bindTime(viewModel, date, time_editText, roomAutoCompleteTextView);
         bindAddButton(viewModel, date, time_editText, subjectEditText, participantEditText, addMeetingButton);
 
         viewModel.getCloseActivitySingleLiveEvent().observe(this, aVoid -> finish());
@@ -96,8 +96,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
     }
 
 
-    //todo Nino comment faire en sorte que les 2 champs soient nécessaire pour pouvoir utiliser le bouton 'save'
-    private void bindTime(AddMeetingViewModel viewModel, TextInputEditText date) {
+    private void bindTime(AddMeetingViewModel viewModel, TextInputEditText date, TextInputEditText time, AutoCompleteTextView room) {
         date.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -109,7 +108,42 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 
             @Override
             public void afterTextChanged(Editable s) {
-                viewModel.onValueChanged(s.toString());
+                viewModel.onCalendarValueChanged(s.toString());
+            }
+        });
+
+        time.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                viewModel.onTimeValueChanged(s.toString());
+
+            }
+        });
+        room.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                viewModel.onRoomValueChanged(s.toString());
+
             }
         });
     }

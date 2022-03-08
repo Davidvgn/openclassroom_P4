@@ -70,6 +70,7 @@ public class MeetingViewModel extends ViewModel {
             );
         }
 
+        //todo David pour test sur subject; à faire pour date et salle
         if (isSortingAlphabetically != null) {
             if ( isSortingAlphabetically) {
                 Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
@@ -89,14 +90,6 @@ public class MeetingViewModel extends ViewModel {
         }
 
         mediatorLiveData.setValue(meetingViewStateItems);
-    }
-
-    public LiveData<List<MeetingViewStateItem>> getMeetingSortedByDate() {
-        return Transformations.map(meetingRepository.getMeetingsLiveData(), meetings -> {
-            List<MeetingViewStateItem> meetingViewStateItem = new ArrayList<>();
-
-            return meetingViewStateItem;
-        });
     }
 
     public void onDeleteMeetingClicked(long meetingId) {
