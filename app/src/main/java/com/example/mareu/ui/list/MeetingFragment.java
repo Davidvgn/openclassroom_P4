@@ -1,4 +1,4 @@
-package com.example.mareu.list;
+package com.example.mareu.ui.list;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,6 +26,8 @@ public class MeetingFragment extends Fragment {
         return fragment;
     }
 
+    private MeetingViewModel viewModel;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +51,7 @@ public class MeetingFragment extends Fragment {
         MeetingAdapter adapter = new MeetingAdapter(viewModel::onDeleteMeetingClicked);
         recyclerView.setAdapter(adapter);
 
-        viewModel.getMeetingViewStateItemsLiveData().observe(getViewLifecycleOwner(), adapter::submitList
-        );
+        viewModel.getMeetingViewStateItemsLiveData().observe(getViewLifecycleOwner(), adapter::submitList);
 
     }
 
@@ -61,6 +62,9 @@ public class MeetingFragment extends Fragment {
 
                 viewModel.onDateSortButtonClicked();
                 Toast.makeText(getContext(), "Date", Toast.LENGTH_SHORT).show();
+
+                viewModel.onDateSortButtonClicked();
+
                 return true;
             case R.id.menu_room:
                 Toast.makeText(getContext(), "Salle", Toast.LENGTH_SHORT).show();

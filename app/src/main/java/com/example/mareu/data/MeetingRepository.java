@@ -84,10 +84,10 @@ public class MeetingRepository {
 
     private void generateRandomMeeting() {
         addMeeting(
-                "08/03/22", "14:00", "Hendrix", "Test 1", "email@email.com"
+                "07/03/22", "14:00", "Salle 4", "Test 1", "email@email.com"
         );
         addMeeting(
-                "08/03/22", "14:45", "Led Zep", "Test 2", "email@email.com"
+                "07/03/22", "14:45", "Salle 6", "Test 2", "email@email.com"
         );
     }
 }

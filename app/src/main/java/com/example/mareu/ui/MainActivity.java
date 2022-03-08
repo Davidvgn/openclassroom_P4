@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import com.example.mareu.R;
-import com.example.mareu.list.MeetingFragment;
+import com.example.mareu.ui.list.MeetingFragment;
 import com.example.mareu.ui.add.AddMeetingActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

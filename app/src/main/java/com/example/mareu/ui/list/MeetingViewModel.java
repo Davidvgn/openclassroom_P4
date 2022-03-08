@@ -1,4 +1,4 @@
-package com.example.mareu.list;
+package com.example.mareu.ui.list;
 
 
 import androidx.annotation.Nullable;
@@ -13,6 +13,7 @@ import com.example.mareu.data.Meeting;
 import com.example.mareu.data.MeetingRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -21,26 +22,23 @@ public class MeetingViewModel extends ViewModel {
 
     private final MeetingRepository meetingRepository;
 
-    private final MediatorLiveData<List<MeetingViewStateItem>> mMediatorLiveData = new MediatorLiveData<>();
+    private final MediatorLiveData<List<MeetingViewStateItem>> mediatorLiveData = new MediatorLiveData<>();
 
     private final MutableLiveData<Boolean> isSortingAlphabeticallyMutableLiveData = new MutableLiveData<>();
-
 
     public MeetingViewModel(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
 
         LiveData<List<Meeting>> meetingsLiveData = meetingRepository.getMeetingsLiveData();
 
-        //Looks for changes in meetingsLiveData list
-        mMediatorLiveData.addSource(meetingsLiveData, new Observer<List<Meeting>>() {
+        mediatorLiveData.addSource(meetingsLiveData, new Observer<List<Meeting>>() {
             @Override
             public void onChanged(List<Meeting> meetings) {
                 combine(meetings, isSortingAlphabeticallyMutableLiveData.getValue());
             }
         });
 
-        //Looks for changes in isSortingAlphabeticallyMutableLiveData boolean value
-        mMediatorLiveData.addSource(isSortingAlphabeticallyMutableLiveData, new Observer<Boolean>() {
+        mediatorLiveData.addSource(isSortingAlphabeticallyMutableLiveData, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isSortingAlphabetically) {
                 combine(meetingsLiveData.getValue(), isSortingAlphabetically);
@@ -49,10 +47,10 @@ public class MeetingViewModel extends ViewModel {
     }
 
     public LiveData<List<MeetingViewStateItem>> getMeetingViewStateItemsLiveData() {
-        return mMediatorLiveData;
+        return mediatorLiveData;
     }
 
-    private void combine(@Nullable List<Meeting> meetings,@Nullable Boolean isSortingAlphabetically) {
+    private void combine(@Nullable List<Meeting> meetings, @Nullable Boolean isSortingAlphabetically) {
         if (meetings == null) {
             return;
         }
@@ -61,20 +59,19 @@ public class MeetingViewModel extends ViewModel {
 
         for (Meeting meeting : meetings) {
             meetingViewStateItems.add(
-                    new MeetingViewStateItem(
-                            meeting.getId(),
-                            meeting.getDay(),
-                            meeting.getTime(),
-                            meeting.getMeetingRoom(),
-                            meeting.getMeetingSubject(),
-                            meeting.getParticipants()
-                    )
+                new MeetingViewStateItem(
+                    meeting.getId(),
+                    meeting.getDay(),
+                    meeting.getTime(),
+                    meeting.getMeetingRoom(),
+                    meeting.getMeetingSubject(),
+                    meeting.getParticipants()
+                )
             );
         }
 
-        //todo david to show an exemple : it sorts subject alphabetically
         if (isSortingAlphabetically != null) {
-            if (isSortingAlphabetically) {
+            if ( isSortingAlphabetically) {
                 Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
                     @Override
                     public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
@@ -90,8 +87,16 @@ public class MeetingViewModel extends ViewModel {
                 });
             }
         }
-        //---------------------------
-        mMediatorLiveData.setValue(meetingViewStateItems);
+
+        mediatorLiveData.setValue(meetingViewStateItems);
+    }
+
+    public LiveData<List<MeetingViewStateItem>> getMeetingSortedByDate() {
+        return Transformations.map(meetingRepository.getMeetingsLiveData(), meetings -> {
+            List<MeetingViewStateItem> meetingViewStateItem = new ArrayList<>();
+
+            return meetingViewStateItem;
+        });
     }
 
     public void onDeleteMeetingClicked(long meetingId) {
@@ -106,7 +111,6 @@ public class MeetingViewModel extends ViewModel {
         }
 
         isSortingAlphabeticallyMutableLiveData.setValue(!previous);
-
     }
 }
 
