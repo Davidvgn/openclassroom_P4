@@ -14,10 +14,24 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:importantForAccessibility="no"
+        android:src="@drawable/room_drawable"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/meeting_item_tv_meetingRoom"
+        android:layout_width="61dp"
+        android:layout_height="59dp"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/meeting_item_iv_meetingRoom"
+        app:layout_constraintEnd_toEndOf="@+id/meeting_item_iv_meetingRoom"
+        app:layout_constraintStart_toStartOf="@id/meeting_item_iv_meetingRoom"
+        app:layout_constraintTop_toTopOf="@id/meeting_item_iv_meetingRoom"
+        tools:text="Android" />
 
     <TextView
         android:id="@+id/meeting_item_tv_day"

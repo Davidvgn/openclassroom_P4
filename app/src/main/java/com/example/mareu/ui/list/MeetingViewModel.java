@@ -95,32 +95,27 @@ public class MeetingViewModel extends ViewModel {
             }
         }
 
-        //Sort by Date
         if (isSortingByDate != null) {
             if (isSortingByDate) {
                 Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
                     @Override
                     public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
-                        return o2.getDay().compareTo(o1.getDay());
-                    }
-                });
-                Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
-                    @Override
-                    public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
-                        return o2.getTime().compareTo(o1.getTime());
+                        int firstComparison = o2.getDay().compareTo(o1.getDay());
+                        if (firstComparison == 0) {
+                            firstComparison = o2.getTime().compareTo(o1.getTime());
+                        }
+                        return firstComparison;
                     }
                 });
             } else {
                 Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
                     @Override
                     public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
-                        return o1.getDay().compareTo(o2.getDay());
-                    }
-                });
-                Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
-                    @Override
-                    public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
-                        return o1.getTime().compareTo(o2.getTime());
+                        int firstComparison = o1.getDay().compareTo(o2.getDay());
+                        if (firstComparison == 0) {
+                            o1.getTime().compareTo(o2.getTime());
+                        }
+                        return firstComparison;
                     }
                 });
             }

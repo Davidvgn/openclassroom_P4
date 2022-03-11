@@ -15,16 +15,16 @@
 
 
     <string-array name="room">
-        <item>Hendrix</item>
-        <item>Led Zep</item>
-        <item>Rammstein</item>
-        <item>Animals as leaders</item>
-        <item>Mestis</item>
-        <item>Satriani</item>
-        <item>Nuno Bettencourt</item>
-        <item>Andy Timmons</item>
-        <item>Eric Gales</item>
-        <item>Andy McKee</item>
+        <item>Java</item>
+        <item>Kotlin</item>
+        <item>Dart</item>
+        <item>Python</item>
+        <item>Android</item>
+        <item>Swift</item>
+        <item>Teams</item>
+        <item>OS</item>
+        <item>Itunes</item>
+        <item>Studio</item>
     </string-array>
 
 </resources>
