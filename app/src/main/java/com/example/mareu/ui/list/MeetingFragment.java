@@ -1,6 +1,7 @@
 package com.example.mareu.ui.list;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,11 +59,11 @@ public class MeetingFragment extends Fragment {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_date:
-                Toast.makeText(getContext(), "Date", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Tri par Date", Toast.LENGTH_SHORT).show();
                 viewModel.onDateSortButtonClicked();
                 return true;
             case R.id.menu_room:
-                Toast.makeText(getContext(), "Salle", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Tri par Salle", Toast.LENGTH_SHORT).show();
                 viewModel.onRoomSortButtonClicked();
                 return true;
         }

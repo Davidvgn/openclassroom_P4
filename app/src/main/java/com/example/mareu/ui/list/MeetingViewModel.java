@@ -1,6 +1,9 @@
 package com.example.mareu.ui.list;
 
 
+import android.util.Log;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -76,7 +79,6 @@ public class MeetingViewModel extends ViewModel {
             );
         }
 
-        //Sort by Room //todo david ne fonctionne pas si j'ai cliqué sur date
         if (isSortingByRoom != null) {
             if (isSortingByRoom) {
                 Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
@@ -119,6 +121,7 @@ public class MeetingViewModel extends ViewModel {
                     }
                 });
             }
+
         }
         mediatorLiveData.setValue(meetingViewStateItems);
     }
@@ -129,7 +132,6 @@ public class MeetingViewModel extends ViewModel {
 
     public void onDateSortButtonClicked() {
         Boolean previous = isSortingByDateMutableLiveData.getValue();
-
         if (previous == null) {
             previous = false;
         }
@@ -138,10 +140,11 @@ public class MeetingViewModel extends ViewModel {
 
     public void onRoomSortButtonClicked() {
         Boolean previousRoom = isSortingByRoomMutableLiveData.getValue();
-
         if (previousRoom == null) {
             previousRoom = false;
         }
+
+        isSortingByDateMutableLiveData.setValue(null);
         isSortingByRoomMutableLiveData.setValue(!previousRoom);
     }
 }
