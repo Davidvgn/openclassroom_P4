@@ -6,14 +6,12 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.Transformations;
 import androidx.lifecycle.ViewModel;
 
 import com.example.mareu.data.Meeting;
 import com.example.mareu.data.MeetingRepository;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -24,7 +22,8 @@ public class MeetingViewModel extends ViewModel {
 
     private final MediatorLiveData<List<MeetingViewStateItem>> mediatorLiveData = new MediatorLiveData<>();
 
-    private final MutableLiveData<Boolean> isSortingAlphabeticallyMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isSortingByRoomMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isSortingByDateMutableLiveData = new MutableLiveData<>();
 
     public MeetingViewModel(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
@@ -34,14 +33,21 @@ public class MeetingViewModel extends ViewModel {
         mediatorLiveData.addSource(meetingsLiveData, new Observer<List<Meeting>>() {
             @Override
             public void onChanged(List<Meeting> meetings) {
-                combine(meetings, isSortingAlphabeticallyMutableLiveData.getValue());
+                combine(meetings, isSortingByRoomMutableLiveData.getValue(), isSortingByDateMutableLiveData.getValue());
             }
         });
 
-        mediatorLiveData.addSource(isSortingAlphabeticallyMutableLiveData, new Observer<Boolean>() {
+        mediatorLiveData.addSource(isSortingByRoomMutableLiveData, new Observer<Boolean>() {
             @Override
-            public void onChanged(Boolean isSortingAlphabetically) {
-                combine(meetingsLiveData.getValue(), isSortingAlphabetically);
+            public void onChanged(Boolean isSortingByRoom) {
+                combine(meetingsLiveData.getValue(), isSortingByRoom, isSortingByDateMutableLiveData.getValue());
+            }
+        });
+
+        mediatorLiveData.addSource(isSortingByDateMutableLiveData, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isSortingByDate) {
+                combine(meetingsLiveData.getValue(), isSortingByRoomMutableLiveData.getValue(), isSortingByDate);
             }
         });
     }
@@ -50,7 +56,7 @@ public class MeetingViewModel extends ViewModel {
         return mediatorLiveData;
     }
 
-    private void combine(@Nullable List<Meeting> meetings, @Nullable Boolean isSortingAlphabetically) {
+    private void combine(@Nullable List<Meeting> meetings, @Nullable Boolean isSortingByRoom, @Nullable Boolean isSortingByDate) {
         if (meetings == null) {
             return;
         }
@@ -59,36 +65,66 @@ public class MeetingViewModel extends ViewModel {
 
         for (Meeting meeting : meetings) {
             meetingViewStateItems.add(
-                new MeetingViewStateItem(
-                    meeting.getId(),
-                    meeting.getDay(),
-                    meeting.getTime(),
-                    meeting.getMeetingRoom(),
-                    meeting.getMeetingSubject(),
-                    meeting.getParticipants()
-                )
+                    new MeetingViewStateItem(
+                            meeting.getId(),
+                            meeting.getDay(),
+                            meeting.getTime(),
+                            meeting.getMeetingRoom(),
+                            meeting.getMeetingSubject(),
+                            meeting.getParticipants()
+                    )
             );
         }
 
-        //todo David pour test sur subject; à faire pour date et salle
-        if (isSortingAlphabetically != null) {
-            if ( isSortingAlphabetically) {
+        //Sort by Room //todo david ne fonctionne pas si j'ai cliqué sur date
+        if (isSortingByRoom != null) {
+            if (isSortingByRoom) {
                 Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
                     @Override
                     public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
-                        return o2.getMeetingSubject().compareTo(o1.getMeetingSubject());
+                        return o2.getMeetingRoom().compareTo(o1.getMeetingRoom());
                     }
                 });
             } else {
                 Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
                     @Override
                     public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
-                        return o1.getMeetingSubject().compareTo(o2.getMeetingSubject());
+                        return o1.getMeetingRoom().compareTo(o2.getMeetingRoom());
                     }
                 });
             }
         }
 
+        //Sort by Date
+        if (isSortingByDate != null) {
+            if (isSortingByDate) {
+                Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
+                    @Override
+                    public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
+                        return o2.getDay().compareTo(o1.getDay());
+                    }
+                });
+                Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
+                    @Override
+                    public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
+                        return o2.getTime().compareTo(o1.getTime());
+                    }
+                });
+            } else {
+                Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
+                    @Override
+                    public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
+                        return o1.getDay().compareTo(o2.getDay());
+                    }
+                });
+                Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
+                    @Override
+                    public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
+                        return o1.getTime().compareTo(o2.getTime());
+                    }
+                });
+            }
+        }
         mediatorLiveData.setValue(meetingViewStateItems);
     }
 
@@ -97,13 +133,21 @@ public class MeetingViewModel extends ViewModel {
     }
 
     public void onDateSortButtonClicked() {
-        Boolean previous = isSortingAlphabeticallyMutableLiveData.getValue();
+        Boolean previous = isSortingByDateMutableLiveData.getValue();
 
         if (previous == null) {
             previous = false;
         }
+        isSortingByDateMutableLiveData.setValue(!previous);
+    }
 
-        isSortingAlphabeticallyMutableLiveData.setValue(!previous);
+    public void onRoomSortButtonClicked() {
+        Boolean previousRoom = isSortingByRoomMutableLiveData.getValue();
+
+        if (previousRoom == null) {
+            previousRoom = false;
+        }
+        isSortingByRoomMutableLiveData.setValue(!previousRoom);
     }
 }
 

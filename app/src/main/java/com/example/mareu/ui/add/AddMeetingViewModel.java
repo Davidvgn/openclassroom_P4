@@ -37,13 +37,13 @@ public class AddMeetingViewModel extends ViewModel {
         isSaveButtonEnabledMediatorLiveData.addSource(hourMutableLiveData, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hourOnchanged) {
-                combine(hourOnchanged, calendarMutableLiveData.getValue(), roomMutableLiveData.getValue());
+                combine(calendarMutableLiveData.getValue(), hourOnchanged, roomMutableLiveData.getValue());
             }
         });
         isSaveButtonEnabledMediatorLiveData.addSource(roomMutableLiveData, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean roomOnChanged) {
-                combine(roomOnChanged, calendarMutableLiveData.getValue(), hourMutableLiveData.getValue());
+                combine(calendarMutableLiveData.getValue(), hourMutableLiveData.getValue(), roomOnChanged);
             }
         });
     }
@@ -51,7 +51,7 @@ public class AddMeetingViewModel extends ViewModel {
     private void combine(Boolean calendar, Boolean hour, Boolean room) {
         Boolean calendarCombine = calendar;
         Boolean hourCombine = hour;
-        Boolean roomCombine = hour;
+        Boolean roomCombine = room;
         if (calendarCombine && hourCombine && roomCombine) {
             isSaveButtonEnabledMediatorLiveData.setValue(true);
         }

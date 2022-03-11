@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -59,10 +60,10 @@ public class MeetingFragment extends Fragment {
             case R.id.menu_date:
                 Toast.makeText(getContext(), "Date", Toast.LENGTH_SHORT).show();
                 viewModel.onDateSortButtonClicked();
-
                 return true;
             case R.id.menu_room:
                 Toast.makeText(getContext(), "Salle", Toast.LENGTH_SHORT).show();
+                viewModel.onRoomSortButtonClicked();
                 return true;
         }
         return super.onOptionsItemSelected(item);

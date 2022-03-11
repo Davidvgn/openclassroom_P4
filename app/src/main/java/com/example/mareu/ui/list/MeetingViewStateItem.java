@@ -13,7 +13,7 @@ public class MeetingViewStateItem {
     @NonNull
     private final String day;
     @NonNull
-    private final CharSequence time;
+    private final String time;
     @NonNull
     private final String meetingRoom;
     @NonNull
@@ -21,7 +21,7 @@ public class MeetingViewStateItem {
     @NonNull
     private final String participants;
 
-    public MeetingViewStateItem(long id, @NonNull String day, @NonNull CharSequence time, @NonNull String meetingRoom, @NonNull String meetingSubject, @NonNull String participants) {
+    public MeetingViewStateItem(long id, @NonNull String day, @NonNull String time, @NonNull String meetingRoom, @NonNull String meetingSubject, @NonNull String participants) {
         this.id = id;
         this.day = day;
         this.time = time;
@@ -38,7 +38,7 @@ public class MeetingViewStateItem {
         return day;
     }
     @NonNull
-    public CharSequence getTime() {
+    public String getTime() {
         return time;
     }
     @NonNull
@@ -67,13 +67,6 @@ public class MeetingViewStateItem {
     public int hashCode() {
         return Objects.hash(id, day, time, meetingRoom, meetingSubject, participants);
     }
-
-    public static Comparator<Meeting> SortByDate = new Comparator<Meeting>() {
-        @Override
-        public int compare(Meeting o1, Meeting o2) {
-            return o1.getDay().compareTo(o2.getDay());
-        }
-    };
 
     @NonNull
     @Override
