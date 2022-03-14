@@ -18,11 +18,16 @@ import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
+
 import com.example.mareu.R;
 import com.example.mareu.ui.ViewModelFactory;
+import com.example.mareu.ui.list.MeetingViewModel;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+
 import java.util.Calendar;
 
 public class AddMeetingActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -48,7 +53,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         TextInputEditText participantEditText = findViewById(R.id.add_meeting_tie_participants);
         Button addMeetingButton = findViewById(R.id.add_meeting_button);
 
-        TextInputLayout roomSpinner = findViewById(R.id.add_meeting_til_room);
+//        TextInputLayout roomSpinner = findViewById(R.id.add_meeting_til_room);
         AutoCompleteTextView roomAutoCompleteTextView = findViewById(R.id.add_meeting_act_room);
         roomArrayAdapter = ArrayAdapter.createFromResource(this, R.array.room, R.layout.support_simple_spinner_dropdown_item);
         roomAutoCompleteTextView.setAdapter(roomArrayAdapter);

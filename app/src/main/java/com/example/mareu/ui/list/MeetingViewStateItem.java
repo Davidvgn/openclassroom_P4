@@ -71,7 +71,7 @@ public class MeetingViewStateItem {
     @NonNull
     @Override
     public String toString() {
-        return "NeighboursViewStateItem{" +
+        return "MeetingViewStateItem{" +
                 "id=" + id +
                 ", day='" + day + '\'' +
                 ", time='" + time + '\'' +

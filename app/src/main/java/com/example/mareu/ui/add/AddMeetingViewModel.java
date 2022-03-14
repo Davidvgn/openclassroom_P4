@@ -1,8 +1,5 @@
 package com.example.mareu.ui.add;
 
-
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -17,7 +14,6 @@ import com.example.mareu.utils.SingleLiveEvent;
 
 import java.util.List;
 
-
 public class AddMeetingViewModel extends ViewModel {
 
     boolean emailValidation = true;
@@ -26,8 +22,13 @@ public class AddMeetingViewModel extends ViewModel {
     private final MutableLiveData<Boolean> calendarMutableLiveData = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> hourMutableLiveData = new MutableLiveData<>(false);
     private final MutableLiveData<Boolean> roomMutableLiveData = new MutableLiveData<>(false);
+    private final MutableLiveData<Boolean> isRoomAlreadyUsed = new MutableLiveData<>(false);
 
     private final MediatorLiveData<Boolean> isSaveButtonEnabledMediatorLiveData = new MediatorLiveData<>();
+
+    private final LiveData<List<Meeting>> meetingsList = new LiveData<List<Meeting>>() {};
+
+
 
     @NonNull
     public String roomSelected = "";
@@ -38,29 +39,32 @@ public class AddMeetingViewModel extends ViewModel {
         isSaveButtonEnabledMediatorLiveData.addSource(calendarMutableLiveData, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean calendarOnChanged) {
-                combine(calendarOnChanged, hourMutableLiveData.getValue(), roomMutableLiveData.getValue());
+                combine(calendarOnChanged, hourMutableLiveData.getValue(), roomMutableLiveData.getValue(), isRoomAlreadyUsed.getValue());
             }
         });
         isSaveButtonEnabledMediatorLiveData.addSource(hourMutableLiveData, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean hourOnchanged) {
-                combine(calendarMutableLiveData.getValue(), hourOnchanged, roomMutableLiveData.getValue());
+                combine(calendarMutableLiveData.getValue(), hourOnchanged, roomMutableLiveData.getValue(), isRoomAlreadyUsed.getValue());
             }
         });
         isSaveButtonEnabledMediatorLiveData.addSource(roomMutableLiveData, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean roomOnChanged) {
-                combine(calendarMutableLiveData.getValue(), hourMutableLiveData.getValue(), roomOnChanged);
+                combine(calendarMutableLiveData.getValue(), hourMutableLiveData.getValue(), roomOnChanged, isRoomAlreadyUsed.getValue());
+            }
+        });
+        isSaveButtonEnabledMediatorLiveData.addSource(isRoomAlreadyUsed, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean roomAlreadyUsed) {
+                combine(calendarMutableLiveData.getValue(), hourMutableLiveData.getValue(), roomMutableLiveData.getValue(), roomAlreadyUsed);
             }
         });
     }
 
 
-    private void combine(Boolean calendar, Boolean hour, Boolean room) {
-        Boolean calendarCombine = calendar;
-        Boolean hourCombine = hour;
-        Boolean roomCombine = room;
-        if (calendarCombine && hourCombine && roomCombine) {
+    private void combine(Boolean calendar, Boolean hour, Boolean room, Boolean roomAlreadyUsed) {
+        if (calendar && hour && room && !roomAlreadyUsed) {
             isSaveButtonEnabledMediatorLiveData.setValue(true);
         }
     }
@@ -107,7 +111,7 @@ public class AddMeetingViewModel extends ViewModel {
         for (String addresses : participantsSplitted) {
             if (!addresses.matches(regex)) {
                 emailValidation = false;
-                //todo Nino toast pour prévenir l'utilisateur si adresse non valide non fonctionnelle
+                //todo Nino toast pour prévenir l'utilisateur si adresse non valide -> non fonctionnelle
 //                Toast.makeText(AddMeetingViewModel.this, "Email non-valide", Toast.LENGTH_SHORT).show();
             } else {
                 emailValidation = true;
@@ -122,5 +126,4 @@ public class AddMeetingViewModel extends ViewModel {
     public void onRoomSelected(CharSequence room) {
         roomSelected = room.toString();
     }
-
 }
