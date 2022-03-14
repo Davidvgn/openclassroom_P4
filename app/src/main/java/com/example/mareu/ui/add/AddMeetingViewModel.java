@@ -1,6 +1,8 @@
 package com.example.mareu.ui.add;
 
 
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -9,11 +11,16 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.example.mareu.data.Meeting;
 import com.example.mareu.data.MeetingRepository;
 import com.example.mareu.utils.SingleLiveEvent;
 
+import java.util.List;
+
 
 public class AddMeetingViewModel extends ViewModel {
+
+    boolean emailValidation = true;
 
     private final MeetingRepository meetingRepository;
     private final MutableLiveData<Boolean> calendarMutableLiveData = new MutableLiveData<>(false);
@@ -48,6 +55,7 @@ public class AddMeetingViewModel extends ViewModel {
         });
     }
 
+
     private void combine(Boolean calendar, Boolean hour, Boolean room) {
         Boolean calendarCombine = calendar;
         Boolean hourCombine = hour;
@@ -75,11 +83,13 @@ public class AddMeetingViewModel extends ViewModel {
             calendarMutableLiveData.setValue(true);
         }
     }
+
     public void onTimeValueChanged(String calendar) {
         if ((!calendar.isEmpty())) {
             hourMutableLiveData.setValue(true);
         }
     }
+
     public void onRoomValueChanged(String calendar) {
         if ((!calendar.isEmpty())) {
             roomMutableLiveData.setValue(true);
@@ -92,14 +102,20 @@ public class AddMeetingViewModel extends ViewModel {
             @Nullable String meetingSubject,
             @Nullable String participants
     ) {
-        //todo David check pour plusieurs mails séparés d'une virgule (ou autre)
-        String regex = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$";
-        if (participants.matches(regex)) {
+        String[] participantsSplitted = participants.split(",");
+        String regex = "^[\\s]?+[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z{2,5}]+$";
+        for (String addresses : participantsSplitted) {
+            if (!addresses.matches(regex)) {
+                emailValidation = false;
+                //todo Nino toast pour prévenir l'utilisateur si adresse non valide non fonctionnelle
+//                Toast.makeText(AddMeetingViewModel.this, "Email non-valide", Toast.LENGTH_SHORT).show();
+            } else {
+                emailValidation = true;
+            }
+        }
+        if (emailValidation) {
             meetingRepository.addMeeting(day, time, roomSelected, meetingSubject, participants);
             closeActivitySingleLiveEvent.call();
-        } else {
-            //todo Nino toast pour prévenir l'utilisateur si adresse non valide non fonctionnelle
-//            Toast.makeText(AddMeetingViewModel.this, "Email non-valide", Toast.LENGTH_SHORT).show();
         }
     }
 

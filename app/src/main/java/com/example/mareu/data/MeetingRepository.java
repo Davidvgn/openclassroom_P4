@@ -70,24 +70,13 @@ public class MeetingRepository {
         return meetingLiveData;
     }
 
-    public LiveData<Meeting> getMeetingLiveData(long meetingId) {
-        return Transformations.map(meetingLiveData, meetings -> {
-            for (Meeting meeting : meetings) {
-                if (meeting.getId() == meetingId) {
-                    return meeting;
-                }
-            }
-
-            return null;
-        });
-    }
 
     private void generateRandomMeeting() {
         addMeeting(
-                "07/03/22", "14:00", "Android", "Test 1", "email@email.com"
+                "07/03/22", "14:00", "Android", "Sujet 1", "email@email.com"
         );
         addMeeting(
-                "17/03/22", "14:45", "Kotlin", "Test 2", "email@email.com"
+                "17/03/22", "14:45", "Kotlin", "Sujet 2", "email@email.com"
         );
     }
 }
