@@ -1,22 +1,20 @@
 package com.example.mareu.ui.add;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
-import com.example.mareu.data.Meeting;
 import com.example.mareu.data.MeetingRepository;
 import com.example.mareu.utils.SingleLiveEvent;
 
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class AddMeetingViewModel extends ViewModel {
-
-    boolean emailValidation = true;
 
     private final MeetingRepository meetingRepository;
     private final MutableLiveData<Boolean> calendarMutableLiveData = new MutableLiveData<>(false);
@@ -26,9 +24,8 @@ public class AddMeetingViewModel extends ViewModel {
 
     private final MediatorLiveData<Boolean> isSaveButtonEnabledMediatorLiveData = new MediatorLiveData<>();
 
-    private final LiveData<List<Meeting>> meetingsList = new LiveData<List<Meeting>>() {};
-
-
+    private final SingleLiveEvent<Void> closeActivitySingleLiveEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<String> showToastSingleLiveEvent = new SingleLiveEvent<>();
 
     @NonNull
     public String roomSelected = "";
@@ -62,24 +59,22 @@ public class AddMeetingViewModel extends ViewModel {
         });
     }
 
-
     private void combine(Boolean calendar, Boolean hour, Boolean room, Boolean roomAlreadyUsed) {
         if (calendar && hour && room && !roomAlreadyUsed) {
             isSaveButtonEnabledMediatorLiveData.setValue(true);
         }
     }
 
-
-    private final SingleLiveEvent<Void> closeActivitySingleLiveEvent = new SingleLiveEvent<>();
-
-
     public LiveData<Boolean> getIsSaveButtonEnabledLiveData() {
         return isSaveButtonEnabledMediatorLiveData;
     }
 
-
     public SingleLiveEvent<Void> getCloseActivitySingleLiveEvent() {
         return closeActivitySingleLiveEvent;
+    }
+
+    public SingleLiveEvent<String> getShowToastSingleLiveEvent() {
+        return showToastSingleLiveEvent;
     }
 
     public void onCalendarValueChanged(String calendar) {
@@ -101,25 +96,54 @@ public class AddMeetingViewModel extends ViewModel {
     }
 
     public void onAddButtonClicked(
-            @Nullable String day,
-            @Nullable String time,
-            @Nullable String meetingSubject,
-            @Nullable String participants
+        @NonNull String date,
+        @NonNull String time,
+        @NonNull String meetingSubject,
+        @NonNull String participants
     ) {
+        boolean emailValidation = false;
         String[] participantsSplitted = participants.split(",");
         String regex = "^[\\s]?+[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z{2,5}]+$";
         for (String addresses : participantsSplitted) {
             if (!addresses.matches(regex)) {
                 emailValidation = false;
-                //todo Nino toast pour prévenir l'utilisateur si adresse non valide -> non fonctionnelle
-//                Toast.makeText(AddMeetingViewModel.this, "Email non-valide", Toast.LENGTH_SHORT).show();
+                showToastSingleLiveEvent.setValue("Email non-valide");
             } else {
                 emailValidation = true;
             }
         }
-        if (emailValidation) {
-            meetingRepository.addMeeting(day, time, roomSelected, meetingSubject, participants);
-            closeActivitySingleLiveEvent.call();
+
+        LocalDate localDate = null;
+        LocalTime localTime = null;
+
+        String[] splitDayMonthYear = date.split("/");
+        if (splitDayMonthYear.length != 3) {
+            showToastSingleLiveEvent.setValue("Impossible de comprendre la date (format : DD/MM/YYYY)");
+        } else {
+            String day = splitDayMonthYear[0];
+            String month = splitDayMonthYear[1];
+
+            localDate = LocalDate.of(LocalDate.now().getYear(), Integer.parseInt(month), Integer.parseInt(day));
+        }
+
+        String[] splitHourMinute = time.split(":");
+        if (splitHourMinute.length != 2) {
+            showToastSingleLiveEvent.setValue("Impossible de comprendre l'heure (format : HH/MM)");
+        } else {
+            String hour = splitHourMinute[0];
+            String minute = splitHourMinute[1];
+
+            localTime = LocalTime.of(Integer.parseInt(hour), Integer.parseInt(minute));
+        }
+
+        if (emailValidation && localDate != null && localTime != null) {
+            boolean success = meetingRepository.addMeeting(LocalDateTime.of(localDate, localTime), roomSelected, meetingSubject, participants);
+
+            if (success) {
+                closeActivitySingleLiveEvent.call();
+            } else {
+                showToastSingleLiveEvent.setValue("La salle est déjà occupée à cet horaire");
+            }
         }
     }
 
@@ -127,3 +151,4 @@ public class AddMeetingViewModel extends ViewModel {
         roomSelected = room.toString();
     }
 }
+//todo david problème : aucune salle n'est sélectionnable si un rdv est présent, meme jour et comprise entre h et h+1

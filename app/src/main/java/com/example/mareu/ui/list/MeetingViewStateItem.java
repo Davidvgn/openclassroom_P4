@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.example.mareu.data.Meeting;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.Objects;
 
@@ -33,10 +34,12 @@ public class MeetingViewStateItem {
     public long getId() {
         return id;
     }
+
     @NonNull
     public String getDay() {
         return day;
     }
+
     @NonNull
     public String getTime() {
         return time;
@@ -59,7 +62,7 @@ public class MeetingViewStateItem {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MeetingViewStateItem that = (MeetingViewStateItem) o;
-        return id == that.id && day.equals(that.day) && time.equals(that.time) && meetingRoom.equals(that
+        return id == that.id && day.equals((that.getDay())) && time.equals((that.getTime())) && meetingRoom.equals(that
                 .meetingRoom) && meetingSubject.equals(that.meetingSubject) && participants.equals((that.participants));
     }
 

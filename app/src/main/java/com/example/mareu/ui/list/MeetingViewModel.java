@@ -1,9 +1,6 @@
 package com.example.mareu.ui.list;
 
 
-import android.util.Log;
-import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -14,6 +11,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.mareu.data.Meeting;
 import com.example.mareu.data.MeetingRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -70,8 +68,8 @@ public class MeetingViewModel extends ViewModel {
             meetingViewStateItems.add(
                     new MeetingViewStateItem(
                             meeting.getId(),
-                            meeting.getDay(),
-                            meeting.getTime(),
+                            meeting.getDate().toLocalDate().toString(),
+                            meeting.getDate().toLocalTime().toString(),
                             meeting.getMeetingRoom(),
                             meeting.getMeetingSubject(),
                             meeting.getParticipants()
@@ -104,7 +102,7 @@ public class MeetingViewModel extends ViewModel {
                     public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
                         int firstComparison = o2.getDay().compareTo(o1.getDay());
                         if (firstComparison == 0) {
-                            firstComparison = o2.getTime().compareTo(o1.getTime());
+                            firstComparison = o2.getDay().compareTo(o1.getDay());
                         }
                         return firstComparison;
                     }
@@ -113,7 +111,7 @@ public class MeetingViewModel extends ViewModel {
                 Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
                     @Override
                     public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
-                        int firstComparison = o1.getDay().compareTo(o2.getDay());
+                        int firstComparison = o1.getTime().compareTo(o2.getTime());
                         if (firstComparison == 0) {
                             o1.getTime().compareTo(o2.getTime());
                         }
