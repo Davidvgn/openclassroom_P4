@@ -104,9 +104,9 @@ public class AddMeetingViewModel extends ViewModel {
     ) {
         boolean emailValidation = false;
         String[] participantsSplitted = participants.split(",");
-        String regex = "^[\\s]?+[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z{2,5}]+$";
+        String emailRegex = "^[\\s]?+[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z{2,5}]+$";
         for (String addresses : participantsSplitted) {
-            if (!addresses.matches(regex)) {
+            if (!addresses.matches(emailRegex)) {
                 emailValidation = false;
                 showToastSingleLiveEvent.setValue("Email non-valide");
             } else {
@@ -119,7 +119,7 @@ public class AddMeetingViewModel extends ViewModel {
 
         String[] splitDayMonthYear = date.split("/");
         if (splitDayMonthYear.length != 3) {
-            showToastSingleLiveEvent.setValue("Impossible de comprendre la date (format : DD/MM/YYYY)");
+            showToastSingleLiveEvent.setValue("Format de date non-valide (format : DD/MM/YYYY)");
         } else {
             String day = splitDayMonthYear[0];
             String month = splitDayMonthYear[1];
@@ -129,13 +129,20 @@ public class AddMeetingViewModel extends ViewModel {
 
         String[] splitHourMinute = time.split(":");
         if (splitHourMinute.length != 2) {
-            showToastSingleLiveEvent.setValue("Impossible de comprendre l'heure (format : HH/MM)");
+            showToastSingleLiveEvent.setValue("Format heure non-valide (format : HH:MM)");
         } else {
             String hour = splitHourMinute[0];
             String minute = splitHourMinute[1];
+            String timeRegex = "[0-9]+";
 
-            localTime = LocalTime.of(Integer.parseInt(hour), Integer.parseInt(minute));
+            if (hour.matches(timeRegex) && minute.matches(timeRegex)) {
+                localTime = LocalTime.of(Integer.parseInt(hour), Integer.parseInt(minute));
+            } else {
+                showToastSingleLiveEvent.setValue("Heure : caractère(s) non-valide(s)");
+
+            }
         }
+
 
         if (emailValidation && localDate != null && localTime != null) {
             boolean success = meetingRepository.addMeeting(LocalDateTime.of(localDate, localTime), roomSelected, meetingSubject, participants);
