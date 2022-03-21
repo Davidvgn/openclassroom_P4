@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.example.mareu.data.Meeting;
 import com.example.mareu.data.MeetingRepository;
 import com.example.mareu.utils.SingleLiveEvent;
 
@@ -143,6 +144,7 @@ public class AddMeetingViewModel extends ViewModel {
                 closeActivitySingleLiveEvent.call();
             } else {
                 showToastSingleLiveEvent.setValue("La salle est déjà occupée à cet horaire");
+
             }
         }
     }
@@ -151,4 +153,3 @@ public class AddMeetingViewModel extends ViewModel {
         roomSelected = room.toString();
     }
 }
-//todo david problème : aucune salle n'est sélectionnable si un rdv est présent, meme jour et comprise entre h et h+1

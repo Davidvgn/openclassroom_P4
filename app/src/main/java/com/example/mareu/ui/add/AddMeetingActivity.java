@@ -15,6 +15,7 @@ import android.app.TimePickerDialog;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -54,7 +55,6 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         TextInputEditText participantEditText = findViewById(R.id.add_meeting_tie_participants);
         Button addMeetingButton = findViewById(R.id.add_meeting_button);
 
-//        TextInputLayout roomSpinner = findViewById(R.id.add_meeting_til_room);
         AutoCompleteTextView roomAutoCompleteTextView = findViewById(R.id.add_meeting_act_room);
         roomArrayAdapter = ArrayAdapter.createFromResource(this, R.array.room, R.layout.support_simple_spinner_dropdown_item);
         roomAutoCompleteTextView.setAdapter(roomArrayAdapter);

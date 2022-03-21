@@ -24,10 +24,10 @@ public class MeetingRepository {
     }
 
     public boolean addMeeting(
-        LocalDateTime date,
-        String meetingRoom,
-        String meetingSubject,
-        String participants
+            LocalDateTime date,
+            String meetingRoom,
+            String meetingSubject,
+            String participants
     ) {
         List<Meeting> meetings = meetingLiveData.getValue();
 
@@ -35,21 +35,22 @@ public class MeetingRepository {
 
         for (Meeting meeting : meetings) {
             if (meeting.getMeetingRoom().equals(meetingRoom) &&
-                (meeting.getDate().isAfter(date) && meeting.getDate().isBefore(date.plusHours(1)))
-                || (date.isAfter(meeting.getDate()) && date.isBefore(meeting.getDate().plusHours(1)))
+                    (meeting.getDate().equals(date) ||
+                            (meeting.getDate().isAfter(date) && meeting.getDate().isBefore(date.plusHours(1)))
+                            || (date.isAfter(meeting.getDate()) && date.isBefore(meeting.getDate().plusHours(1))))
             ) {
                 return false;
             }
         }
 
         meetings.add(
-            new Meeting(
-                maxId++,
-                date,
-                meetingRoom,
-                meetingSubject,
-                participants
-            )
+                new Meeting(
+                        maxId++,
+                        date,
+                        meetingRoom,
+                        meetingSubject,
+                        participants
+                )
         );
 
         meetingLiveData.setValue(meetings);
@@ -80,16 +81,16 @@ public class MeetingRepository {
 
     private void generateRandomMeeting() {
         addMeeting(
-            LocalDateTime.of(2022, 3, 7, 14, 0),
-            "Android",
-            "Sujet 1",
-            "email@email.com"
+                LocalDateTime.of(2022, 3, 7, 14, 0),
+                "Android",
+                "Sujet 1",
+                "email@email.com"
         );
         addMeeting(
-            LocalDateTime.of(2022, 3, 7, 14, 45),
-            "Kotlin",
-            "Sujet 2",
-            "email@email.com"
+                LocalDateTime.of(2022, 3, 7, 14, 45),
+                "Kotlin",
+                "Sujet 2",
+                "email@email.com"
         );
     }
 }
