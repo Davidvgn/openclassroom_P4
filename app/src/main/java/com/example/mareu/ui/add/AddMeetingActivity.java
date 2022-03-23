@@ -68,7 +68,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
             int mMonth = c.get(Calendar.MONTH); // current month
             int mDay = c.get(Calendar.DAY_OF_MONTH); // current day
             datePickerDialog = new DatePickerDialog(AddMeetingActivity.this,
-                    (view, year, monthOfYear, dayOfMonth) -> date.setText(dayOfMonth + "/" + checkDigit(monthOfYear + 1) + "/" + year), mYear, mMonth, mDay);
+                (view, year, monthOfYear, dayOfMonth) -> date.setText(dayOfMonth + "/" + checkDigit(monthOfYear + 1) + "/" + year), mYear, mMonth, mDay);
             datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
 
             datePickerDialog.show();
@@ -81,7 +81,7 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
             int hour = cldr.get(Calendar.HOUR_OF_DAY);
             int minutes = cldr.get(Calendar.MINUTE);
             picker = new TimePickerDialog(AddMeetingActivity.this,
-                    (tp, sHour, sMinute) -> time_editText.setText("" + checkDigit(sHour) + ":" + checkDigit(sMinute)), hour, minutes, true);
+                (tp, sHour, sMinute) -> time_editText.setText("" + checkDigit(sHour) + ":" + checkDigit(sMinute)), hour, minutes, true);
 
             picker.show();
         });
@@ -105,7 +105,6 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     private void bindTime(AddMeetingViewModel viewModel, TextInputEditText date, TextInputEditText time, AutoCompleteTextView room) {
         date.addTextChangedListener(new TextWatcher() {
@@ -162,10 +161,10 @@ public class AddMeetingActivity extends AppCompatActivity implements AdapterView
 
     private void bindAddButton(AddMeetingViewModel viewModel, TextInputEditText date, TextInputEditText time_editText, TextInputEditText subjectEditText, TextInputEditText participantsEditText, Button addMeetingButton) {
         addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(
-                date.getText().toString(),
-                time_editText.getText().toString(),
-                subjectEditText.getText().toString(),
-                participantsEditText.getText().toString()
+            date.getText().toString(),
+            time_editText.getText().toString(),
+            subjectEditText.getText().toString(),
+            participantsEditText.getText().toString()
         ));
         viewModel.getIsSaveButtonEnabledLiveData().observe(this, addMeetingButton::setEnabled);
     }
