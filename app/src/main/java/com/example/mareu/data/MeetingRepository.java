@@ -1,5 +1,6 @@
 package com.example.mareu.data;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public class MeetingRepository {
 
 
-    private final MutableLiveData<List<Meeting>> meetingLiveData = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<Meeting>> meetingsLiveData = new MutableLiveData<>(new ArrayList<>());
 
     private long maxId = 0;
 
@@ -29,7 +30,7 @@ public class MeetingRepository {
             String meetingSubject,
             String participants
     ) {
-        List<Meeting> meetings = meetingLiveData.getValue();
+        List<Meeting> meetings = meetingsLiveData.getValue();
 
         if (meetings == null) return false;
 
@@ -53,13 +54,13 @@ public class MeetingRepository {
                 )
         );
 
-        meetingLiveData.setValue(meetings);
+        meetingsLiveData.setValue(meetings);
 
         return true;
     }
 
     public void deleteMeeting(long meetingId) {
-        List<Meeting> meetings = meetingLiveData.getValue();
+        List<Meeting> meetings = meetingsLiveData.getValue();
 
         if (meetings == null) return;
 
@@ -72,11 +73,12 @@ public class MeetingRepository {
             }
         }
 
-        meetingLiveData.setValue(meetings);
+        meetingsLiveData.setValue(meetings);
     }
 
+    @NonNull
     public LiveData<List<Meeting>> getMeetingsLiveData() {
-        return meetingLiveData;
+        return meetingsLiveData;
     }
 
     private void generateRandomMeeting() {
