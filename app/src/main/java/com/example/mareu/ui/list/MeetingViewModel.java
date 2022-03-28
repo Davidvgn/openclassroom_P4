@@ -102,7 +102,7 @@ public class MeetingViewModel extends ViewModel {
                     public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
                         int firstComparison = o2.getDay().compareTo(o1.getDay());
                         if (firstComparison == 0) {
-                            firstComparison = o2.getDay().compareTo(o1.getDay());
+                            firstComparison = o2.getTime().compareTo(o1.getTime());
                         }
                         return firstComparison;
                     }
@@ -111,7 +111,7 @@ public class MeetingViewModel extends ViewModel {
                 Collections.sort(meetingViewStateItems, new Comparator<MeetingViewStateItem>() {
                     @Override
                     public int compare(MeetingViewStateItem o1, MeetingViewStateItem o2) {
-                        int firstComparison = o1.getTime().compareTo(o2.getTime());
+                        int firstComparison = o1.getDay().compareTo(o2.getDay());
                         if (firstComparison == 0) {
                             o1.getTime().compareTo(o2.getTime());
                         }
