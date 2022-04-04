@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -24,7 +26,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import java.util.Calendar;
 
 public class AddMeetingActivity extends AppCompatActivity {
-
+    //todo Nino Comment faire apparaître un toast lorsque le champ email est selectionné (avec onClickListener je dois selectionné le champ puis cliquer dedans pour que le toast apparaisse)
+    //todo Nino j'arrive plus à faire fonctionner JaCoCo
     ArrayAdapter<CharSequence> roomArrayAdapter;
     TimePickerDialog picker;
     DatePickerDialog datePickerDialog;

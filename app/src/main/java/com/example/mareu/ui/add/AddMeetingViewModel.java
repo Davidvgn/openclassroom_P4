@@ -11,10 +11,12 @@ import androidx.lifecycle.ViewModel;
 import com.example.mareu.data.MeetingRepository;
 import com.example.mareu.utils.SingleLiveEvent;
 
+import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 public class AddMeetingViewModel extends ViewModel {
 
@@ -108,17 +110,20 @@ public class AddMeetingViewModel extends ViewModel {
         if (participants.isEmpty()) {
             emailValidation = true;
         } else {
-            String[] participantsSplit = participants.split(",");
+            String[] participantsSplit = participants.replaceAll(" ", ",").split(",");
             String emailRegex = "^[\\s]?+[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z{2,5}]+$";
-            for (String addresses : participantsSplit) {
-                if (!addresses.matches(emailRegex)) {
+            for (int i = 0; i < participantsSplit.length; i++) {
+                if (!participantsSplit[i].matches(emailRegex)) {
                     emailValidation = false;
                     showToastSingleLiveEvent.setValue("Email non-valide");
+                    break;
                 } else {
                     emailValidation = true;
+                    participants = Arrays.toString(participantsSplit);
                 }
             }
         }
+
 
         LocalDate localDate = null;
         LocalTime localTime = null;
@@ -129,8 +134,9 @@ public class AddMeetingViewModel extends ViewModel {
         } else {
             String day = splitDayMonthYear[0];
             String month = splitDayMonthYear[1];
+            String year = splitDayMonthYear[2];
 
-            localDate = LocalDate.of(LocalDate.now().getYear(), Integer.parseInt(month), Integer.parseInt(day));
+            localDate = LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
         }
 
         String[] splitHourMinute = time.split(":");

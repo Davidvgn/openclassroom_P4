@@ -185,12 +185,6 @@ public class MeetingViewModelTest {
     }
 
     @Test
-    public void setIsSortingByDateMutableLiveData() {
-
-    }
-
-
-    @Test
     public void onDeleteMeetingTest() {
         // When
         viewModel.onDeleteMeetingClicked(89);
@@ -198,8 +192,6 @@ public class MeetingViewModelTest {
         // Then
         Mockito.verify(meetingRepository).deleteMeeting(89);
         Mockito.verifyNoMoreInteractions(meetingRepository);
-        //todo Nino : utilité de verifyNoInteractions/ verifyNoMoreInteractions ?
-
     }
 
 
