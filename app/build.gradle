@@ -57,6 +57,7 @@ dependencies {
 
 // open JaCoCo report after generation
 def openReport(htmlOutDir) {
+
     final reportPath = "$htmlOutDir\\index.html"
 
     println "HTML Report: $reportPath"
@@ -65,7 +66,7 @@ def openReport(htmlOutDir) {
     if (os.isWindows()) {
         exec { commandLine 'cmd', '/c', "start $reportPath" }
     } else if (os.isMacOsX()) {
-        exec { commandLine 'open', "$reportPath" }
+        exec { commandLine 'open', "$htmlOutDir/index.html" }
     } else if (os.isLinux()) {
         try {
             exec { commandLine 'xdg-open', "$reportPath" }
