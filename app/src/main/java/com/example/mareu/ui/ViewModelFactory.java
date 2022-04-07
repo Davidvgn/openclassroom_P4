@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.mareu.MainApplication;
 import com.example.mareu.config.BuildConfigResolver;
 import com.example.mareu.data.MeetingRepository;
 import com.example.mareu.ui.list.MeetingViewModel;
@@ -47,6 +48,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             );
         } else if (modelClass.isAssignableFrom(AddMeetingViewModel.class)) {
             return (T) new AddMeetingViewModel(
+                MainApplication.getInstance(),
                     meetingRepository
             );
         }

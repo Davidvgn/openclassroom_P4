@@ -1,5 +1,7 @@
 package com.example.mareu.ui.add;
 
+import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -8,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import com.example.mareu.R;
 import com.example.mareu.data.MeetingRepository;
 import com.example.mareu.utils.SingleLiveEvent;
 
@@ -20,6 +23,8 @@ import java.util.Arrays;
 
 public class AddMeetingViewModel extends ViewModel {
 
+    private Application application;
+
     private final MeetingRepository meetingRepository;
 
     private final MutableLiveData<LocalDate> dateMutableLiveData = new MutableLiveData<>();
@@ -31,7 +36,10 @@ public class AddMeetingViewModel extends ViewModel {
     private final SingleLiveEvent<Void> closeActivitySingleLiveEvent = new SingleLiveEvent<>();
     private final SingleLiveEvent<String> showToastSingleLiveEvent = new SingleLiveEvent<>();
 
-    public AddMeetingViewModel(MeetingRepository meetingRepository) {
+    public AddMeetingViewModel(Application application, MeetingRepository meetingRepository
+    ) {
+
+        this.application = application;
         this.meetingRepository = meetingRepository;
 
         addMeetingViewStateMediatorLiveData.addSource(dateMutableLiveData, new Observer<LocalDate>() {
@@ -115,7 +123,7 @@ public class AddMeetingViewModel extends ViewModel {
             for (int i = 0; i < participantsSplit.length; i++) {
                 if (!participantsSplit[i].matches(emailRegex)) {
                     emailValidation = false;
-                    showToastSingleLiveEvent.setValue("Email non-valide");
+                    showToastSingleLiveEvent.setValue(application.getString(R.string.incorrect_email_format));
                     break;
                 } else {
                     emailValidation = true;
@@ -130,7 +138,7 @@ public class AddMeetingViewModel extends ViewModel {
 
         String[] splitDayMonthYear = date.split("/");
         if (splitDayMonthYear.length != 3) {
-            showToastSingleLiveEvent.setValue("Format de date non-valide (format : DD/MM/YYYY)");
+            showToastSingleLiveEvent.setValue(application.getString(R.string.incorrect_date_format));
         } else {
             String day = splitDayMonthYear[0];
             String month = splitDayMonthYear[1];
@@ -141,7 +149,7 @@ public class AddMeetingViewModel extends ViewModel {
 
         String[] splitHourMinute = time.split(":");
         if (splitHourMinute.length != 2) {
-            showToastSingleLiveEvent.setValue("Format heure non-valide (format : HH:MM)");
+            showToastSingleLiveEvent.setValue(application.getString(R.string.incorrect_hour_format));
         } else {
             String hour = splitHourMinute[0];
             String minute = splitHourMinute[1];
@@ -150,7 +158,7 @@ public class AddMeetingViewModel extends ViewModel {
             if (hour.matches(timeRegex) && minute.matches(timeRegex)) {
                 localTime = LocalTime.of(Integer.parseInt(hour), Integer.parseInt(minute));
             } else {
-                showToastSingleLiveEvent.setValue("Heure : caractère(s) non-valide(s)");
+                showToastSingleLiveEvent.setValue(application.getString(R.string.hour_characters));
 
             }
         }
@@ -163,7 +171,7 @@ public class AddMeetingViewModel extends ViewModel {
             if (success) {
                 closeActivitySingleLiveEvent.call();
             } else {
-                showToastSingleLiveEvent.setValue("La salle est déjà occupée à cet horaire");
+                showToastSingleLiveEvent.setValue(application.getString(R.string.room_availability));
 
             }
         }

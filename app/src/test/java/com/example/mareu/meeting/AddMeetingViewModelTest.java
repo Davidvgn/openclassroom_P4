@@ -1,10 +1,13 @@
 package com.example.mareu.meeting;
 
 
+import android.app.Application;
+
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.mareu.LiveDataTestUtils;
+import com.example.mareu.R;
 import com.example.mareu.data.MeetingRepository;
 import com.example.mareu.ui.add.AddMeetingViewModel;
 import com.example.mareu.utils.SingleLiveEvent;
@@ -18,10 +21,15 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,6 +38,9 @@ public class AddMeetingViewModelTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
+    @Mock
+    private Application application;
+    
     @Mock
     private MeetingRepository meetingRepository;
 
@@ -41,7 +52,16 @@ public class AddMeetingViewModelTest {
 
     @Before
     public void setUp() {
-        viewModel = new AddMeetingViewModel(meetingRepository);
+
+        given(application.getString(R.string.incorrect_email_format)).willReturn("incorrect_email_format");
+        given(application.getString(R.string.incorrect_date_format)).willReturn("incorrect_date_format");
+        given(application.getString(R.string.incorrect_hour_format)).willReturn("incorrect_hour_format");
+        given(application.getString(R.string.hour_characters)).willReturn("hour_characters");
+//        given(application.getString(R.string.room_availability)).willReturn("room_availability");
+
+        given(meetingRepository.addMeeting(any(), any(), any(), any())).willReturn(true);
+
+        viewModel = new AddMeetingViewModel(application, meetingRepository);
         roomMutableLiveData = new MutableLiveData<>();
         showToastSingleLiveEvent = new SingleLiveEvent<>();
         roomMutableLiveData.setValue("Swift");
@@ -49,24 +69,25 @@ public class AddMeetingViewModelTest {
 
     //todo Nino bloqué -> ça n'appelle pas le liveData
     @Test
-    public void firstTest() {
-//        String date = "14/04/2022";
-//        String time = "15:00";
-//        String Room = "Java";
-//        String meetingSubject = "Sujet";
-//        String participants = "participant@email.com";
-//
-//        //When
-//        viewModel.onAddButtonClicked(date, time, meetingSubject, participants);
-//        LiveDataTestUtils.observeForTesting(viewModel.getCloseActivitySingleLiveEvent(), value -> {
-//            //Then
-//            verify(meetingRepository).addMeeting(
-//                eq(date),
-//                eq(),
-//                eq(meetingSubject),
-//                eq(participants)
-//            );
-//        });
+    public void nominalCase() {
+        String date = "14/04/2022";
+        String time = "15:00";
+        String room = "Java";
+        String meetingSubject = "Sujet";
+        String participants = "participant@email.com";
+
+        //When
+        viewModel.onRoomSelected(room);
+        viewModel.onAddButtonClicked(date, time, meetingSubject, participants);
+        LiveDataTestUtils.observeForTesting(viewModel.getCloseActivitySingleLiveEvent(), value -> {
+            //Then
+            verify(meetingRepository).addMeeting(
+                eq(LocalDateTime.of(2022, 04, 14, 15, 00)),
+                eq(room),
+                eq(meetingSubject),
+                eq("[participant@email.com]")
+            );
+        });
     }
 
     @Test
@@ -81,7 +102,7 @@ public class AddMeetingViewModelTest {
         viewModel.onAddButtonClicked(date, time, meetingSubject, participants);
         LiveDataTestUtils.observeForTesting(viewModel.getShowToastSingleLiveEvent(), value -> {
             //Then
-            assertEquals(value, "Format de date non-valide (format : DD/MM/YYYY)" );
+            assertEquals( "incorrect_date_format", value );
         });
     }
 
@@ -97,7 +118,7 @@ public class AddMeetingViewModelTest {
         viewModel.onAddButtonClicked(date, time, meetingSubject, participants);
         LiveDataTestUtils.observeForTesting(viewModel.getShowToastSingleLiveEvent(), value -> {
             //Then
-            assertEquals(value, "Email non-valide");
+            assertEquals("incorrect_email_format", value);
         });
     }
 
@@ -113,7 +134,7 @@ public class AddMeetingViewModelTest {
         viewModel.onAddButtonClicked(date, time, meetingSubject, participants);
         LiveDataTestUtils.observeForTesting(viewModel.getShowToastSingleLiveEvent(), value -> {
             //Then
-            assertEquals(value, "Format heure non-valide (format : HH:MM)");
+            assertEquals("incorrect_hour_format", value);
         });
     }
 
@@ -129,26 +150,9 @@ public class AddMeetingViewModelTest {
         viewModel.onAddButtonClicked(date, time, meetingSubject, participants);
         LiveDataTestUtils.observeForTesting(viewModel.getShowToastSingleLiveEvent(), value -> {
             //Then
-            assertEquals(value, "Heure : caractère(s) non-valide(s)");
+            assertEquals("hour_characters",value);
         });
     }
-
-    @Test
-    public void test() {
-
-        String date = "14/04/2022";
-        String time = "douze:vingt";
-        String meetingSubject = "Sujet";
-        String participants = "participant@email.com";
-
-        //When
-        viewModel.onAddButtonClicked(date, time, meetingSubject, participants);
-        LiveDataTestUtils.observeForTesting(viewModel.getShowToastSingleLiveEvent(), value -> {
-            //Then
-            assertEquals(value, "Heure : caractère(s) non-valide(s)");
-        });
-    }
-
 
 
     @Test
@@ -162,7 +166,7 @@ public class AddMeetingViewModelTest {
         viewModel.onDateChanged(14,3,2022);
         LiveDataTestUtils.observeForTesting(viewModel.getAddMeetingViewStateLiveData(), value -> {
             //Then
-            assertEquals(value.getDate(), expectedFormat );
+            assertEquals(expectedFormat, value.getDate());
         });
     }
 
@@ -172,7 +176,7 @@ public class AddMeetingViewModelTest {
 
         viewModel.onTimeChanged(14, 45);
         LiveDataTestUtils.observeForTesting(viewModel.getAddMeetingViewStateLiveData(), value -> {
-            assertEquals(value.getTime(), time );
+            assertEquals(time, value.getTime());
         });
     }
 

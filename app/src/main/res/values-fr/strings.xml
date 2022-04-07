@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <string name="app_name">Maréu</string>
+        <string name="add_meeting">Ajout d\'une nouvelle réunion</string>
+        <string name="delete_meeting">Supprimer la réunion</string>
+
+        <string name="hour">Heure</string>
+        <string name="min">minutes</string>
+        <string name="room">Salle</string>
+        <string name="subject">Sujet</string>
+        <string name="day">Jour</string>
+        <string name="time">Heure</string>
+        <string name="participants">Participants</string>
+        <string name="save">Sauver</string>
+        <string name="new_reunion">Nouvelle réunion</string>
+        <string name="slash">/</string>
+
+        <string name="incorrect_email_format">Incorrect email format</string>
+        <string name="incorrect_date_format">Incorrect date format (dd/mm/yyyy)</string>
+        <string name="incorrect_hour_format">Incorrect hour format (hh:mm)</string>
+        <string name="hour_characters">Hour : use only numbers</string>
+        <string name="room_availability">This room is not available</string>
+
+
+</resources>
