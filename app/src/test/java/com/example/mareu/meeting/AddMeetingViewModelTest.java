@@ -34,7 +34,7 @@ import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AddMeetingViewModelTest {
-//todo Nino comment récupérer la room ? Il n'y a pas de getter dans le viewState
+
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule = new InstantTaskExecutorRule();
 
@@ -67,7 +67,6 @@ public class AddMeetingViewModelTest {
         roomMutableLiveData.setValue("Swift");
     }
 
-    //todo Nino bloqué -> ça n'appelle pas le liveData
     @Test
     public void nominalCase() {
         String date = "14/04/2022";
@@ -180,7 +179,6 @@ public class AddMeetingViewModelTest {
         });
     }
 
-    //todo Nino bloqué -> ça n'appelle pas le liveData
     @Test
     public void verify_if_room_is_free() {
 //        meetingRepository.addMeeting(

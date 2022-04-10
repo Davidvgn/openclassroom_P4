@@ -35,17 +35,4 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.sort_menu, menu);
         return true;
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.menu_date:
-//                Toast.makeText(MainActivity.this, "Date", Toast.LENGTH_SHORT).show();
-//                return true;
-//            case R.id.menu_room:
-//                Toast.makeText(MainActivity.this, "Salle", Toast.LENGTH_SHORT).show();
-//                return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 }
