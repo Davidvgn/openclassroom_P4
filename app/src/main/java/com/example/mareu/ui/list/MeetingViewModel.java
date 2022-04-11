@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.mareu.data.Meeting;
 import com.example.mareu.data.MeetingRepository;
+import com.example.mareu.utils.SingleLiveEvent;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -26,6 +27,10 @@ public class MeetingViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isSortingByRoomMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isSortingByDateMutableLiveData = new MutableLiveData<>();
 
+    private final MutableLiveData<Boolean> isFilteredByDateMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> isFilteredByRoomMutableLiveData = new MutableLiveData<>();
+
+
     public MeetingViewModel(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
 
@@ -34,22 +39,67 @@ public class MeetingViewModel extends ViewModel {
         mediatorLiveData.addSource(meetingsLiveData, new Observer<List<Meeting>>() {
             @Override
             public void onChanged(List<Meeting> meetings) {
-                combine(meetings, isSortingByRoomMutableLiveData.getValue(), isSortingByDateMutableLiveData.getValue());
+                combine(
+                    meetings,
+                    isSortingByRoomMutableLiveData.getValue(),
+                    isSortingByDateMutableLiveData.getValue(),
+                    isFilteredByRoomMutableLiveData.getValue(),
+                    isFilteredByDateMutableLiveData.getValue()
+                );
             }
         });
 
         mediatorLiveData.addSource(isSortingByRoomMutableLiveData, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isSortingByRoom) {
-                combine(meetingsLiveData.getValue(), isSortingByRoom, isSortingByDateMutableLiveData.getValue());
+                combine(meetingsLiveData.getValue(),
+                    isSortingByRoom,
+                    isSortingByDateMutableLiveData.getValue(),
+                    isFilteredByRoomMutableLiveData.getValue(),
+                    isFilteredByDateMutableLiveData.getValue()
+                );
             }
         });
 
         mediatorLiveData.addSource(isSortingByDateMutableLiveData, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isSortingByDate) {
-                combine(meetingsLiveData.getValue(), isSortingByRoomMutableLiveData.getValue(), isSortingByDate);
+                combine(
+                    meetingsLiveData.getValue(),
+                    isSortingByRoomMutableLiveData.getValue(),
+                    isSortingByDate,
+                    isFilteredByRoomMutableLiveData.getValue(),
+                    isFilteredByDateMutableLiveData.getValue()
+                );
             }
+        });
+
+
+        mediatorLiveData.addSource(isFilteredByDateMutableLiveData, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isFilteredByDate) {
+                combine(
+                    meetingsLiveData.getValue(),
+                    isSortingByRoomMutableLiveData.getValue(),
+                    isSortingByDateMutableLiveData.getValue(),
+                    isFilteredByRoomMutableLiveData.getValue(),
+                    isFilteredByDate
+                );
+            }
+
+        });
+        mediatorLiveData.addSource(isFilteredByRoomMutableLiveData, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean isFilteredByRoom) {
+                combine(
+                    meetingsLiveData.getValue(),
+                    isSortingByRoomMutableLiveData.getValue(),
+                    isSortingByDateMutableLiveData.getValue(),
+                    isFilteredByRoom,
+                    isFilteredByDateMutableLiveData.getValue()
+                );
+            }
+
         });
     }
 
@@ -57,7 +107,11 @@ public class MeetingViewModel extends ViewModel {
         return mediatorLiveData;
     }
 
-    private void combine(@Nullable List<Meeting> meetings, @Nullable Boolean isSortingByRoom, @Nullable Boolean isSortingByDate) {
+    private void combine(@Nullable List<Meeting> meetings,
+        @Nullable Boolean isSortingByRoom,
+        @Nullable Boolean isSortingByDate,
+        @Nullable Boolean isFilteredByRoom,
+        @Nullable Boolean isFilteredByDate) {
         if (meetings == null) {
             return;
         }
@@ -66,14 +120,14 @@ public class MeetingViewModel extends ViewModel {
 
         for (Meeting meeting : meetings) {
             meetingViewStateItems.add(
-                    new MeetingViewStateItem(
-                            meeting.getId(),
-                            meeting.getDate().toLocalDate().toString(),
-                            meeting.getDate().toLocalTime().toString(),
-                            meeting.getMeetingRoom(),
-                            meeting.getMeetingSubject(),
-                            meeting.getParticipants()
-                    )
+                new MeetingViewStateItem(
+                    meeting.getId(),
+                    meeting.getDate().toLocalDate().toString(),
+                    meeting.getDate().toLocalTime().toString(),
+                    meeting.getMeetingRoom(),
+                    meeting.getMeetingSubject(),
+                    meeting.getParticipants()
+                )
             );
         }
 

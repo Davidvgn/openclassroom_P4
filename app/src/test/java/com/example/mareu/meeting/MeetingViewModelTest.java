@@ -81,7 +81,44 @@ public class MeetingViewModelTest {
     }
 
     @Test
-    public void given_sorting_by_date_when_getting_state_then_list_should_be_in_alphabetical_order() {
+    public void given_sorting_by_room_asc_when_getting_state_then_list_should_be_in_alphabetical_order() {
+        // Given
+        viewModel.onRoomSortButtonClicked();
+        viewModel.onRoomSortButtonClicked();
+
+        // When
+        LiveDataTestUtils.observeForTesting(viewModel.getMeetingViewStateItemsLiveData(), value -> {
+            // Then
+            List<MeetingViewStateItem> expected = new ArrayList<>();
+            expected.add(new MeetingViewStateItem(2, "2022-03-22", "14:00", "Dart", "SUJET 3", "particpant1@email.com, participant2@email.com"));
+            expected.add(new MeetingViewStateItem(0, "2022-03-15", "14:00", "Java", "SUJET 1", "particpant1@email.com, participant2@email.com"));
+            expected.add(new MeetingViewStateItem(3, "2022-03-28", "14:00", "Kotlin", "SUJET 4", "particpant1@email.com, participant2@email.com"));
+            expected.add(new MeetingViewStateItem(1, "2022-03-23", "14:00", "Swift", "SUJET 2", "particpant1@email.com, participant2@email.com"));
+
+            assertEquals(expected, value);
+        });
+    }
+
+    @Test
+    public void given_sorting_by_room_desc_when_getting_state_then_list_should_be_in_alphabetical_order() {
+        // Given
+        viewModel.onRoomSortButtonClicked();
+
+        // When
+        LiveDataTestUtils.observeForTesting(viewModel.getMeetingViewStateItemsLiveData(), value -> {
+            // Then
+            List<MeetingViewStateItem> expected = new ArrayList<>();
+            expected.add(new MeetingViewStateItem(1, "2022-03-23", "14:00", "Swift", "SUJET 2", "particpant1@email.com, participant2@email.com"));
+            expected.add(new MeetingViewStateItem(3, "2022-03-28", "14:00", "Kotlin", "SUJET 4", "particpant1@email.com, participant2@email.com"));
+            expected.add(new MeetingViewStateItem(0, "2022-03-15", "14:00", "Java", "SUJET 1", "particpant1@email.com, participant2@email.com"));
+            expected.add(new MeetingViewStateItem(2, "2022-03-22", "14:00", "Dart", "SUJET 3", "particpant1@email.com, participant2@email.com"));
+
+            assertEquals(expected, value);
+        });
+    }
+
+    @Test
+    public void given_sorting_by_date_when_getting_state_then_list_should_be_in_chronological_by_day_order() {
         // Given
         viewModel.onDateSortButtonClicked();
 
@@ -99,7 +136,26 @@ public class MeetingViewModelTest {
     }
 
     @Test
-    public void given_sorting_by_date_with_2_meetings_with_same_day_when_getting_state_then_list_should_be_in_alphabetical_order() {
+    public void given_sorting_by_date_desc_when_getting_state_then_list_should_be_in_chronological_by_day_order() {
+        // Given
+        viewModel.onDateSortButtonClicked();
+        viewModel.onDateSortButtonClicked();
+
+        // When
+        LiveDataTestUtils.observeForTesting(viewModel.getMeetingViewStateItemsLiveData(), value -> {
+            // Then
+            List<MeetingViewStateItem> expected = new ArrayList<>();
+            expected.add(new MeetingViewStateItem(3, "2022-03-28", "14:00", "Kotlin", "SUJET 4", "particpant1@email.com, participant2@email.com"));
+            expected.add(new MeetingViewStateItem(1, "2022-03-23", "14:00", "Swift", "SUJET 2", "particpant1@email.com, participant2@email.com"));
+            expected.add(new MeetingViewStateItem(2, "2022-03-22", "14:00", "Dart", "SUJET 3", "particpant1@email.com, participant2@email.com"));
+            expected.add(new MeetingViewStateItem(0, "2022-03-15", "14:00", "Java", "SUJET 1", "particpant1@email.com, participant2@email.com"));
+
+            assertEquals(expected, value);
+        });
+    }
+
+    @Test
+    public void given_sorting_by_date_with_2_meetings_with_same_day_when_getting_state_then_list_should_be_in_chronological_by_hour_order() {
         List<Meeting> meetings = Arrays.asList(
             new Meeting(
                 0, LocalDateTime.of(2022, 3, 15, 14, 0),
@@ -142,7 +198,7 @@ public class MeetingViewModelTest {
 
 
     @Test
-    public void given_sorting_by_date_desc_with_2_meetings_with_same_day_when_getting_state_then_list_should_be_in_alphabetical_order() {
+    public void given_sorting_by_date_desc_with_2_meetings_with_same_day_when_getting_state_then_list_should_be_in_chronological_by_hour_order() {
         List<Meeting> meetings = Arrays.asList(
             new Meeting(
                 0, LocalDateTime.of(2022, 3, 15, 14, 0),

@@ -21,6 +21,17 @@
     <string name="room_availability">La salle est déjà occupée à cet horaire</string>
 
 
+    <string name="sort_by_date">Sort by date</string>
+    <string name="sort_by_room">Sort by room</string>
+
+
+    <string name="date_sorting">Date</string>
+    <string name="room_sorting">Room</string>
+
+    <string name="date_filter">Date filter</string>
+    <string name="room_filter">Room filter</string>
+
+
     <string-array name="room">
         <item>Java</item>
         <item>Kotlin</item>

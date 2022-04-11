@@ -1,12 +1,10 @@
 package com.example.mareu.ui.list;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +25,7 @@ public class MeetingFragment extends Fragment {
     }
 
     private MeetingViewModel viewModel;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,18 +52,26 @@ public class MeetingFragment extends Fragment {
 
         viewModel.getMeetingViewStateItemsLiveData().observe(getViewLifecycleOwner(), adapter::submitList);
 
+
     }
+        
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_date:
-                Toast.makeText(getContext(), "Tri par Date", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), this.getString(R.string.sort_by_date), Toast.LENGTH_SHORT).show();
                 viewModel.onDateSortButtonClicked();
                 return true;
             case R.id.menu_room:
-                Toast.makeText(getContext(), "Tri par Salle", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), this.getString(R.string.sort_by_room), Toast.LENGTH_SHORT).show();
                 viewModel.onRoomSortButtonClicked();
+                return true;
+            case R.id.date_filter:
+                Toast.makeText(getContext(), "pour date_filter test", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.room_filter:
+                Toast.makeText(getContext(), "pour room_filter test", Toast.LENGTH_SHORT).show();
                 return true;
         }
         return super.onOptionsItemSelected(item);

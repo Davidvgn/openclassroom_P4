@@ -4,12 +4,14 @@ package com.example.mareu.meeting;
 import android.app.Application;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.mareu.LiveDataTestUtils;
 import com.example.mareu.R;
 import com.example.mareu.data.MeetingRepository;
 import com.example.mareu.ui.add.AddMeetingViewModel;
+import com.example.mareu.ui.add.AddMeetingViewState;
 import com.example.mareu.utils.SingleLiveEvent;
 
 
@@ -26,6 +28,8 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -45,9 +49,6 @@ public class AddMeetingViewModelTest {
     private MeetingRepository meetingRepository;
 
     private AddMeetingViewModel viewModel;
-    private SingleLiveEvent<String> showToastSingleLiveEvent;
-
-    private MutableLiveData<String> roomMutableLiveData;
 
 
     @Before
@@ -57,14 +58,10 @@ public class AddMeetingViewModelTest {
         given(application.getString(R.string.incorrect_date_format)).willReturn("incorrect_date_format");
         given(application.getString(R.string.incorrect_hour_format)).willReturn("incorrect_hour_format");
         given(application.getString(R.string.hour_characters)).willReturn("hour_characters");
-//        given(application.getString(R.string.room_availability)).willReturn("room_availability");
 
         given(meetingRepository.addMeeting(any(), any(), any(), any())).willReturn(true);
 
         viewModel = new AddMeetingViewModel(application, meetingRepository);
-        roomMutableLiveData = new MutableLiveData<>();
-        showToastSingleLiveEvent = new SingleLiveEvent<>();
-        roomMutableLiveData.setValue("Swift");
     }
 
     @Test
@@ -180,25 +177,46 @@ public class AddMeetingViewModelTest {
     }
 
     @Test
-    public void verify_if_room_is_free() {
-//        meetingRepository.addMeeting(
-//                LocalDateTime.of(2022, 4, 14, 16, 0),
-//                "Swift",
-//                "Sujet 1",
-//                "email@email.com"
-//            );
-//
-//        String date = "14/04/2022";
-//        String time = "15:25";
-//        String meetingSubject = "Sujet";
-//        String participants = "participant@email.com";
-//
-//       viewModel.onAddButtonClicked(date, time, meetingSubject, participants);
-//        LiveDataTestUtils.observeForTesting(viewModel.getShowToastSingleLiveEvent(), value -> {
-//            assertEquals(value, "La salle est déjà occupée à cet horaire");
-//        });
-    }
-    //todo david test multiples mails
-//Todo david pense à faire un toast pour l'utilisateur pour dire de séparer les mails par une virgule
+    public void emailValidationTest () {
+        String date = "14/04/2022";
+        String time = "15:00";
+        String room = "Java";
+        String meetingSubject = "Sujet";
+        String participants = "";
 
+        //When
+        viewModel.onRoomSelected(room);
+        viewModel.onAddButtonClicked(date, time, meetingSubject, participants);
+        LiveDataTestUtils.observeForTesting(viewModel.getCloseActivitySingleLiveEvent(), value -> {
+            //Then
+            verify(meetingRepository).addMeeting(
+                eq(LocalDateTime.of(2022, 04, 14, 15, 00)),
+                eq(room),
+                eq(meetingSubject),
+                eq("")
+            );
+        });
+    }
+    @Test
+    public void severalEmailsValidationTest () {
+        String date = "14/04/2022";
+        String time = "15:00";
+        String room = "Java";
+        String meetingSubject = "Sujet";
+        String participants = "email@email.com,email2@email.com";
+
+        //When
+        viewModel.onRoomSelected(room);
+        viewModel.onAddButtonClicked(date, time, meetingSubject, participants);
+        LiveDataTestUtils.observeForTesting(viewModel.getCloseActivitySingleLiveEvent(), value -> {
+            //Then
+            verify(meetingRepository).addMeeting(
+                eq(LocalDateTime.of(2022, 04, 14, 15, 00)),
+                eq(room),
+                eq(meetingSubject),
+                eq("[email@email.com, email2@email.com]")
+            );
+        });
+    }
 }
+

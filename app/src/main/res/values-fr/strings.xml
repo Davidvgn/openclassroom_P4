@@ -21,5 +21,14 @@
         <string name="hour_characters">Hour : use only numbers</string>
         <string name="room_availability">This room is not available</string>
 
+        <string name="sort_by_date">Tri par date</string>
+        <string name="sort_by_room">Tri par salle</string>
+
+        <string name="date_sorting">Date</string>
+        <string name="room_sorting">Salle</string>
+
+        <string name="date_filter">Filtrer par Date</string>
+        <string name="room_filter">Filtrer par Salle</string>
+
 
 </resources>

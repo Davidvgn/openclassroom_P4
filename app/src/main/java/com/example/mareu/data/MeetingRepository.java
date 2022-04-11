@@ -85,13 +85,13 @@ public class MeetingRepository {
         addMeeting(
                 LocalDateTime.of(2022, 3, 7, 14, 0),
                 "Android",
-                "Sujet 1",
+                "Subject 1",
                 "email@email.com"
         );
         addMeeting(
                 LocalDateTime.of(2022, 3, 7, 14, 45),
                 "Kotlin",
-                "Sujet 2",
+                "Subject 2",
                 "email@email.com"
         );
     }
