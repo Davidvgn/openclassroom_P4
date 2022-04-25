@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.Spinner;
 
 
 import com.example.mareu.R;
@@ -59,13 +60,17 @@ public class MainActivity extends AppCompatActivity {
         AutoCompleteTextView roomAutoCompleteTextView = findViewById(R.id.main_act_room);
         roomArrayAdapter = ArrayAdapter.createFromResource(this, R.array.room, R.layout.support_simple_spinner_dropdown_item);
         roomAutoCompleteTextView.setAdapter(roomArrayAdapter);
-//        roomAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                removeFilter.setVisibility(View.VISIBLE);
-//            }
-//        });
-        roomAutoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> viewModel.onRoomSelected(roomArrayAdapter.getItem(position)));
+
+//        roomAutoCompleteTextView.setOnItemClickListener((parent, view, position, id)
+//        -> viewModel.onRoomSelected(roomArrayAdapter.getItem(position)));
+
+        roomAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                viewModel.onRoomSelected(roomArrayAdapter.getItem(position));
+                removeFilter.setVisibility(View.VISIBLE);
+            }
+        });
 
         Button filterByDateButton = findViewById(R.id.main_filter_by_date_button);
         filterByDateButton.setOnClickListener(v -> {
@@ -94,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 viewModel.removeFilterButton();
                 removeFilter.setVisibility(View.GONE);
+                roomAutoCompleteTextView.setText("");
+
             }
         });
     }
