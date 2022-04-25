@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.R;
+
 import com.example.mareu.ui.ViewModelFactory;
 
 public class MeetingFragment extends Fragment {
@@ -51,10 +52,7 @@ public class MeetingFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         viewModel.getMeetingViewStateItemsLiveData().observe(getViewLifecycleOwner(), adapter::submitList);
-
-
     }
-        
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -67,14 +65,10 @@ public class MeetingFragment extends Fragment {
                 Toast.makeText(getContext(), this.getString(R.string.sort_by_room), Toast.LENGTH_SHORT).show();
                 viewModel.onRoomSortButtonClicked();
                 return true;
-            case R.id.date_filter:
-                Toast.makeText(getContext(), "pour date_filter test", Toast.LENGTH_SHORT).show();
-                return true;
-            case R.id.room_filter:
-                Toast.makeText(getContext(), "pour room_filter test", Toast.LENGTH_SHORT).show();
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }
 

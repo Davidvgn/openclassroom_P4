@@ -1,5 +1,7 @@
 package com.example.mareu.ui.list;
 
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -10,9 +12,9 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.mareu.data.Meeting;
 import com.example.mareu.data.MeetingRepository;
-import com.example.mareu.utils.SingleLiveEvent;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -27,9 +29,8 @@ public class MeetingViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isSortingByRoomMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isSortingByDateMutableLiveData = new MutableLiveData<>();
 
-    private final MutableLiveData<Boolean> isFilteredByDateMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<LocalDate> dateFilterMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isFilteredByRoomMutableLiveData = new MutableLiveData<>();
-
 
     public MeetingViewModel(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
@@ -44,7 +45,7 @@ public class MeetingViewModel extends ViewModel {
                     isSortingByRoomMutableLiveData.getValue(),
                     isSortingByDateMutableLiveData.getValue(),
                     isFilteredByRoomMutableLiveData.getValue(),
-                    isFilteredByDateMutableLiveData.getValue()
+                    dateFilterMutableLiveData.getValue()
                 );
             }
         });
@@ -52,11 +53,12 @@ public class MeetingViewModel extends ViewModel {
         mediatorLiveData.addSource(isSortingByRoomMutableLiveData, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isSortingByRoom) {
-                combine(meetingsLiveData.getValue(),
+                combine(
+                    meetingsLiveData.getValue(),
                     isSortingByRoom,
                     isSortingByDateMutableLiveData.getValue(),
                     isFilteredByRoomMutableLiveData.getValue(),
-                    isFilteredByDateMutableLiveData.getValue()
+                    dateFilterMutableLiveData.getValue()
                 );
             }
         });
@@ -69,15 +71,15 @@ public class MeetingViewModel extends ViewModel {
                     isSortingByRoomMutableLiveData.getValue(),
                     isSortingByDate,
                     isFilteredByRoomMutableLiveData.getValue(),
-                    isFilteredByDateMutableLiveData.getValue()
+                    dateFilterMutableLiveData.getValue()
                 );
             }
         });
 
 
-        mediatorLiveData.addSource(isFilteredByDateMutableLiveData, new Observer<Boolean>() {
+        mediatorLiveData.addSource(dateFilterMutableLiveData, new Observer<LocalDate>() {
             @Override
-            public void onChanged(Boolean isFilteredByDate) {
+            public void onChanged(LocalDate isFilteredByDate) {
                 combine(
                     meetingsLiveData.getValue(),
                     isSortingByRoomMutableLiveData.getValue(),
@@ -96,7 +98,7 @@ public class MeetingViewModel extends ViewModel {
                     isSortingByRoomMutableLiveData.getValue(),
                     isSortingByDateMutableLiveData.getValue(),
                     isFilteredByRoom,
-                    isFilteredByDateMutableLiveData.getValue()
+                    dateFilterMutableLiveData.getValue()
                 );
             }
 
@@ -111,7 +113,7 @@ public class MeetingViewModel extends ViewModel {
         @Nullable Boolean isSortingByRoom,
         @Nullable Boolean isSortingByDate,
         @Nullable Boolean isFilteredByRoom,
-        @Nullable Boolean isFilteredByDate) {
+        @Nullable LocalDate isFilteredByDate) {
         if (meetings == null) {
             return;
         }
@@ -119,17 +121,20 @@ public class MeetingViewModel extends ViewModel {
         List<MeetingViewStateItem> meetingViewStateItems = new ArrayList<>();
 
         for (Meeting meeting : meetings) {
-            meetingViewStateItems.add(
-                new MeetingViewStateItem(
-                    meeting.getId(),
-                    meeting.getDate().toLocalDate().toString(),
-                    meeting.getDate().toLocalTime().toString(),
-                    meeting.getMeetingRoom(),
-                    meeting.getMeetingSubject(),
-                    meeting.getParticipants()
-                )
-            );
+            if (isFilteredByDate == null || isFilteredByDate.isEqual(meeting.getDate().toLocalDate())) {
+                meetingViewStateItems.add(
+                    new MeetingViewStateItem(
+                        meeting.getId(),
+                        meeting.getDate().toLocalDate().toString(),
+                        meeting.getDate().toLocalTime().toString(),
+                        meeting.getMeetingRoom(),
+                        meeting.getMeetingSubject(),
+                        meeting.getParticipants()
+                    )
+                );
+            }
         }
+
 
         if (isSortingByRoom != null) {
             if (isSortingByRoom) {
@@ -198,6 +203,11 @@ public class MeetingViewModel extends ViewModel {
 
         isSortingByDateMutableLiveData.setValue(null);
         isSortingByRoomMutableLiveData.setValue(!previousRoom);
+    }
+
+    public void onDateChanged(int selectedDayOfMonth, int selectedMonthOfYear,
+        int selectedYear) {
+        dateFilterMutableLiveData.setValue(LocalDate.of(selectedYear, selectedMonthOfYear, selectedDayOfMonth));
     }
 }
 

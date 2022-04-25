@@ -14,14 +14,4 @@
         android:title="@string/room_sorting"
         app:showAsAction="always"
         />
-    <item
-        android:id="@+id/date_filter"
-        android:title="@string/date_filter"
-        app:showAsAction="ifRoom"
-        />
-    <item
-        android:id="@+id/room_filter"
-        android:title="@string/room_filter"
-        app:showAsAction="ifRoom"
-        />
 </menu>

@@ -78,7 +78,7 @@ public class AddMeetingViewModelTest {
         LiveDataTestUtils.observeForTesting(viewModel.getCloseActivitySingleLiveEvent(), value -> {
             //Then
             verify(meetingRepository).addMeeting(
-                eq(LocalDateTime.of(2022, 04, 14, 15, 00)),
+                eq(LocalDateTime.of(2022, 4, 14, 15, 0)),
                 eq(room),
                 eq(meetingSubject),
                 eq("[participant@email.com]")

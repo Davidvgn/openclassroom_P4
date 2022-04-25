@@ -30,5 +30,10 @@
         <string name="date_filter">Filtrer par Date</string>
         <string name="room_filter">Filtrer par Salle</string>
 
+        <string name="filter_by_date">Filtrer par date</string>
+        <string name="remove_filter">Retirer filtre</string>
+
+
+
 
 </resources>
