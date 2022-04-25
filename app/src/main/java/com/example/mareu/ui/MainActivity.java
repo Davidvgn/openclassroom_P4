@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     DatePickerDialog datePickerDialog;
     MeetingViewModel viewModel;
     ArrayAdapter<CharSequence> roomArrayAdapter;
-//    String  my_var; //keep track!
-
 
 
     @Override
@@ -42,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setSupportActionBar(findViewById(R.id.main_toolbar));
 
-//        viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
         viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
 
         if (savedInstanceState == null) {
@@ -54,33 +52,25 @@ public class MainActivity extends AppCompatActivity {
         FloatingActionButton fab = findViewById(R.id.main_fab_add);
         fab.setOnClickListener(v -> startActivity(AddMeetingActivity.navigate(this)));
 
-
+        Button removeFilter = findViewById(R.id.main_button_filter);
+        removeFilter.setVisibility(View.GONE);
 
 
         AutoCompleteTextView roomAutoCompleteTextView = findViewById(R.id.main_act_room);
         roomArrayAdapter = ArrayAdapter.createFromResource(this, R.array.room, R.layout.support_simple_spinner_dropdown_item);
         roomAutoCompleteTextView.setAdapter(roomArrayAdapter);
-        roomAutoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> viewModel.onRoomSelected(roomArrayAdapter.getItem(position)));
-
 //        roomAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //            @Override
 //            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                my_var = roomArrayAdapter.getItem(position).toString();
+//                removeFilter.setVisibility(View.VISIBLE);
 //            }
 //        });
-//        roomAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                my_var = null;
-//            }
-//            @Override
-//            public void afterTextChanged(Editable s) {}
-//        });
+        roomAutoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> viewModel.onRoomSelected(roomArrayAdapter.getItem(position)));
 
         Button filterByDateButton = findViewById(R.id.main_filter_by_date_button);
         filterByDateButton.setOnClickListener(v -> {
+            removeFilter.setVisibility(View.VISIBLE);
+
             final Calendar c = Calendar.getInstance();
             int year = c.get(Calendar.YEAR); // current year
             int month = c.get(Calendar.MONTH); // current month
@@ -96,6 +86,15 @@ public class MainActivity extends AppCompatActivity {
             );
             datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
             datePickerDialog.show();
+
+        });
+
+        removeFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                viewModel.removeFilterButton();
+                removeFilter.setVisibility(View.GONE);
+            }
         });
     }
 

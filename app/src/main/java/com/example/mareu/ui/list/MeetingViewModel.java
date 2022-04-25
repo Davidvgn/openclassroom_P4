@@ -1,7 +1,5 @@
 package com.example.mareu.ui.list;
 
-import android.util.Log;
-
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
@@ -27,8 +25,10 @@ public class MeetingViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isSortingByRoomMutableLiveData = new MutableLiveData<>();
     private final MutableLiveData<Boolean> isSortingByDateMutableLiveData = new MutableLiveData<>();
 
+    private final MutableLiveData<Boolean> isRemovedButtonClicked = new MutableLiveData<>();
+
     private final MutableLiveData<LocalDate> dateFilterMutableLiveData = new MutableLiveData<>();
-    private final MutableLiveData<String> roomMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<String> roomFilterMutableLiveData = new MutableLiveData<>();
 
     public MeetingViewModel(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
@@ -42,8 +42,9 @@ public class MeetingViewModel extends ViewModel {
                     meetings,
                     isSortingByRoomMutableLiveData.getValue(),
                     isSortingByDateMutableLiveData.getValue(),
-                    roomMutableLiveData.getValue(),
-                    dateFilterMutableLiveData.getValue()
+                    roomFilterMutableLiveData.getValue(),
+                    dateFilterMutableLiveData.getValue(),
+                    isRemovedButtonClicked.getValue()
                 );
             }
         });
@@ -55,8 +56,10 @@ public class MeetingViewModel extends ViewModel {
                     meetingsLiveData.getValue(),
                     isSortingByRoom,
                     isSortingByDateMutableLiveData.getValue(),
-                    roomMutableLiveData.getValue(),
-                    dateFilterMutableLiveData.getValue()
+                    roomFilterMutableLiveData.getValue(),
+                    dateFilterMutableLiveData.getValue(),
+                    isRemovedButtonClicked.getValue()
+
                 );
             }
         });
@@ -68,8 +71,10 @@ public class MeetingViewModel extends ViewModel {
                     meetingsLiveData.getValue(),
                     isSortingByRoomMutableLiveData.getValue(),
                     isSortingByDate,
-                    roomMutableLiveData.getValue(),
-                    dateFilterMutableLiveData.getValue()
+                    roomFilterMutableLiveData.getValue(),
+                    dateFilterMutableLiveData.getValue(),
+                    isRemovedButtonClicked.getValue()
+
                 );
             }
         });
@@ -77,26 +82,44 @@ public class MeetingViewModel extends ViewModel {
 
         mediatorLiveData.addSource(dateFilterMutableLiveData, new Observer<LocalDate>() {
             @Override
-            public void onChanged(LocalDate isFilteredByDate) {
+            public void onChanged(LocalDate dateFilter) {
                 combine(
                     meetingsLiveData.getValue(),
                     isSortingByRoomMutableLiveData.getValue(),
                     isSortingByDateMutableLiveData.getValue(),
-                    roomMutableLiveData.getValue(),
-                    isFilteredByDate
+                    roomFilterMutableLiveData.getValue(),
+                    dateFilter,
+                    isRemovedButtonClicked.getValue()
+
+                );
+            }
+
+
+        });
+        mediatorLiveData.addSource(roomFilterMutableLiveData, new Observer<String>() {
+            @Override
+            public void onChanged(String roomFilter) {
+                combine(
+                    meetingsLiveData.getValue(),
+                    isSortingByRoomMutableLiveData.getValue(),
+                    isSortingByDateMutableLiveData.getValue(),
+                    roomFilter,
+                    dateFilterMutableLiveData.getValue(),
+                    isRemovedButtonClicked.getValue()
                 );
             }
 
         });
-        mediatorLiveData.addSource(roomMutableLiveData, new Observer<String>() {
+        mediatorLiveData.addSource(isRemovedButtonClicked, new Observer<Boolean>() {
             @Override
-            public void onChanged(String isFilteredByRoom) {
+            public void onChanged(Boolean isClicked) {
                 combine(
                     meetingsLiveData.getValue(),
                     isSortingByRoomMutableLiveData.getValue(),
                     isSortingByDateMutableLiveData.getValue(),
-                    isFilteredByRoom,
-                    dateFilterMutableLiveData.getValue()
+                    roomFilterMutableLiveData.getValue(),
+                    dateFilterMutableLiveData.getValue(),
+                    isClicked
                 );
             }
 
@@ -110,8 +133,11 @@ public class MeetingViewModel extends ViewModel {
     private void combine(@Nullable List<Meeting> meetings,
         @Nullable Boolean isSortingByRoom,
         @Nullable Boolean isSortingByDate,
-        @Nullable String isFilteredByRoom,
-        @Nullable LocalDate isFilteredByDate) {
+        @Nullable String roomFilter,
+        @Nullable LocalDate dateFilter,
+        @Nullable Boolean isRemovedClicked
+
+    ) {
         if (meetings == null) {
             return;
         }
@@ -119,8 +145,8 @@ public class MeetingViewModel extends ViewModel {
         List<MeetingViewStateItem> meetingViewStateItems = new ArrayList<>();
 
         for (Meeting meeting : meetings) {
-            if ((isFilteredByDate == null || isFilteredByDate.isEqual(meeting.getDate().toLocalDate()))
-                && (isFilteredByRoom == null || isFilteredByRoom.equals(meeting.getMeetingRoom()))) {
+            if ((dateFilter == null || dateFilter.isEqual(meeting.getDate().toLocalDate()))
+                && (roomFilter == null || roomFilter.equals(meeting.getMeetingRoom()))) {
                 meetingViewStateItems.add(
                     new MeetingViewStateItem(
                         meeting.getId(),
@@ -133,6 +159,7 @@ public class MeetingViewModel extends ViewModel {
                 );
             }
         }
+
 
         if (isSortingByRoom != null) {
             if (isSortingByRoom) {
@@ -207,8 +234,15 @@ public class MeetingViewModel extends ViewModel {
         int selectedYear) {
         dateFilterMutableLiveData.setValue(LocalDate.of(selectedYear, selectedMonthOfYear, selectedDayOfMonth));
     }
+
     public void onRoomSelected(CharSequence room) {
-        roomMutableLiveData.setValue(room.toString());
+        roomFilterMutableLiveData.setValue(room.toString());
+    }
+
+    public void removeFilterButton() {
+        isRemovedButtonClicked.setValue(true);
+        dateFilterMutableLiveData.setValue(null);
+        roomFilterMutableLiveData.setValue(null);
     }
 }
 

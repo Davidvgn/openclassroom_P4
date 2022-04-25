@@ -28,23 +28,24 @@
     <string name="date_sorting">Date</string>
     <string name="room_sorting">Room</string>
 
-    <string name="room_filter">Filter by Room</string>
 
     <string name="filter_by_date">Filter by date</string>
+    <string name="room_filter">Filter by Room</string>
+
     <string name="remove_filter">Remove filter</string>
 
 
     <string-array name="room">
+        <item>Android</item>
+        <item>Dart</item>
+        <item>Itunes</item>
         <item>Java</item>
         <item>Kotlin</item>
-        <item>Dart</item>
+        <item>OS</item>
         <item>Python</item>
-        <item>Android</item>
+        <item>Studio</item>
         <item>Swift</item>
         <item>Teams</item>
-        <item>OS</item>
-        <item>Itunes</item>
-        <item>Studio</item>
     </string-array>
 
 </resources>

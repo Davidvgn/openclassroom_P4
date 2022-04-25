@@ -27,10 +27,10 @@
         <string name="date_sorting">Date</string>
         <string name="room_sorting">Salle</string>
 
-        <string name="date_filter">Filtrer par Date</string>
-        <string name="room_filter">Filtrer par Salle</string>
 
         <string name="filter_by_date">Filtrer par date</string>
+        <string name="room_filter">Filtrer par Salle</string>
+
         <string name="remove_filter">Retirer filtre</string>
 
 
