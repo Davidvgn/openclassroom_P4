@@ -28,8 +28,7 @@
     <string name="date_sorting">Date</string>
     <string name="room_sorting">Room</string>
 
-    <string name="date_filter">Date filter</string>
-    <string name="room_filter">Room filter</string>
+    <string name="room_filter">Filter by Room</string>
 
     <string name="filter_by_date">Filter by date</string>
     <string name="remove_filter">Remove filter</string>

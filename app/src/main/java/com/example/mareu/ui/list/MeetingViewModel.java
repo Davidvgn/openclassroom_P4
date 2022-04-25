@@ -1,7 +1,6 @@
 package com.example.mareu.ui.list;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
@@ -14,7 +13,6 @@ import com.example.mareu.data.Meeting;
 import com.example.mareu.data.MeetingRepository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -30,7 +28,7 @@ public class MeetingViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isSortingByDateMutableLiveData = new MutableLiveData<>();
 
     private final MutableLiveData<LocalDate> dateFilterMutableLiveData = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> isFilteredByRoomMutableLiveData = new MutableLiveData<>();
+    private final MutableLiveData<String> roomMutableLiveData = new MutableLiveData<>();
 
     public MeetingViewModel(MeetingRepository meetingRepository) {
         this.meetingRepository = meetingRepository;
@@ -44,7 +42,7 @@ public class MeetingViewModel extends ViewModel {
                     meetings,
                     isSortingByRoomMutableLiveData.getValue(),
                     isSortingByDateMutableLiveData.getValue(),
-                    isFilteredByRoomMutableLiveData.getValue(),
+                    roomMutableLiveData.getValue(),
                     dateFilterMutableLiveData.getValue()
                 );
             }
@@ -57,7 +55,7 @@ public class MeetingViewModel extends ViewModel {
                     meetingsLiveData.getValue(),
                     isSortingByRoom,
                     isSortingByDateMutableLiveData.getValue(),
-                    isFilteredByRoomMutableLiveData.getValue(),
+                    roomMutableLiveData.getValue(),
                     dateFilterMutableLiveData.getValue()
                 );
             }
@@ -70,7 +68,7 @@ public class MeetingViewModel extends ViewModel {
                     meetingsLiveData.getValue(),
                     isSortingByRoomMutableLiveData.getValue(),
                     isSortingByDate,
-                    isFilteredByRoomMutableLiveData.getValue(),
+                    roomMutableLiveData.getValue(),
                     dateFilterMutableLiveData.getValue()
                 );
             }
@@ -84,15 +82,15 @@ public class MeetingViewModel extends ViewModel {
                     meetingsLiveData.getValue(),
                     isSortingByRoomMutableLiveData.getValue(),
                     isSortingByDateMutableLiveData.getValue(),
-                    isFilteredByRoomMutableLiveData.getValue(),
+                    roomMutableLiveData.getValue(),
                     isFilteredByDate
                 );
             }
 
         });
-        mediatorLiveData.addSource(isFilteredByRoomMutableLiveData, new Observer<Boolean>() {
+        mediatorLiveData.addSource(roomMutableLiveData, new Observer<String>() {
             @Override
-            public void onChanged(Boolean isFilteredByRoom) {
+            public void onChanged(String isFilteredByRoom) {
                 combine(
                     meetingsLiveData.getValue(),
                     isSortingByRoomMutableLiveData.getValue(),
@@ -112,7 +110,7 @@ public class MeetingViewModel extends ViewModel {
     private void combine(@Nullable List<Meeting> meetings,
         @Nullable Boolean isSortingByRoom,
         @Nullable Boolean isSortingByDate,
-        @Nullable Boolean isFilteredByRoom,
+        @Nullable String isFilteredByRoom,
         @Nullable LocalDate isFilteredByDate) {
         if (meetings == null) {
             return;
@@ -121,7 +119,8 @@ public class MeetingViewModel extends ViewModel {
         List<MeetingViewStateItem> meetingViewStateItems = new ArrayList<>();
 
         for (Meeting meeting : meetings) {
-            if (isFilteredByDate == null || isFilteredByDate.isEqual(meeting.getDate().toLocalDate())) {
+            if ((isFilteredByDate == null || isFilteredByDate.isEqual(meeting.getDate().toLocalDate()))
+                && (isFilteredByRoom == null || isFilteredByRoom.equals(meeting.getMeetingRoom()))) {
                 meetingViewStateItems.add(
                     new MeetingViewStateItem(
                         meeting.getId(),
@@ -134,7 +133,6 @@ public class MeetingViewModel extends ViewModel {
                 );
             }
         }
-
 
         if (isSortingByRoom != null) {
             if (isSortingByRoom) {
@@ -208,6 +206,9 @@ public class MeetingViewModel extends ViewModel {
     public void onDateChanged(int selectedDayOfMonth, int selectedMonthOfYear,
         int selectedYear) {
         dateFilterMutableLiveData.setValue(LocalDate.of(selectedYear, selectedMonthOfYear, selectedDayOfMonth));
+    }
+    public void onRoomSelected(CharSequence room) {
+        roomMutableLiveData.setValue(room.toString());
     }
 }
 

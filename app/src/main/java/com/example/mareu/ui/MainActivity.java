@@ -5,9 +5,15 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 
 
@@ -24,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
 
     DatePickerDialog datePickerDialog;
     MeetingViewModel viewModel;
+    ArrayAdapter<CharSequence> roomArrayAdapter;
+//    String  my_var; //keep track!
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setSupportActionBar(findViewById(R.id.main_toolbar));
 
+//        viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
         viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
 
         if (savedInstanceState == null) {
@@ -42,6 +53,31 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton fab = findViewById(R.id.main_fab_add);
         fab.setOnClickListener(v -> startActivity(AddMeetingActivity.navigate(this)));
+
+
+
+
+        AutoCompleteTextView roomAutoCompleteTextView = findViewById(R.id.main_act_room);
+        roomArrayAdapter = ArrayAdapter.createFromResource(this, R.array.room, R.layout.support_simple_spinner_dropdown_item);
+        roomAutoCompleteTextView.setAdapter(roomArrayAdapter);
+        roomAutoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> viewModel.onRoomSelected(roomArrayAdapter.getItem(position)));
+
+//        roomAutoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                my_var = roomArrayAdapter.getItem(position).toString();
+//            }
+//        });
+//        roomAutoCompleteTextView.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                my_var = null;
+//            }
+//            @Override
+//            public void afterTextChanged(Editable s) {}
+//        });
 
         Button filterByDateButton = findViewById(R.id.main_filter_by_date_button);
         filterByDateButton.setOnClickListener(v -> {

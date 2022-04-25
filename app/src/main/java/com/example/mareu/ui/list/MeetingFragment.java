@@ -45,7 +45,8 @@ public class MeetingFragment extends Fragment {
             throw new IllegalStateException("Please use MeetingFragment.newInstance() to build the Fragment");
         }
 
-        viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
+//        viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
+        viewModel = new ViewModelProvider(getActivity(), ViewModelFactory.getInstance()).get(MeetingViewModel.class);
         RecyclerView recyclerView = view.findViewById(R.id.meeting_rv);
 
         MeetingAdapter adapter = new MeetingAdapter(viewModel::onDeleteMeetingClicked);
