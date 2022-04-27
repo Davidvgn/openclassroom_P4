@@ -81,7 +81,7 @@ public class AddMeetingViewModelTest {
                 eq(LocalDateTime.of(2022, 4, 14, 15, 0)),
                 eq(room),
                 eq(meetingSubject),
-                eq("[participant@email.com]")
+                eq("participant@email.com")
             );
         });
     }
@@ -214,7 +214,7 @@ public class AddMeetingViewModelTest {
                 eq(LocalDateTime.of(2022, 04, 14, 15, 00)),
                 eq(room),
                 eq(meetingSubject),
-                eq("[email@email.com, email2@email.com]")
+                eq("email@email.com, email2@email.com")
             );
         });
     }
