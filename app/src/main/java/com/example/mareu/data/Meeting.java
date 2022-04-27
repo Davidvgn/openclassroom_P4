@@ -2,6 +2,8 @@ package com.example.mareu.data;
 
 import androidx.annotation.NonNull;
 
+import com.example.mareu.ui.MainActivity;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -28,6 +30,8 @@ public class Meeting {
         this.meetingRoom = meetingRoom;
         this.meetingSubject = meetingSubject;
         this.participants = participants;
+
+        MainActivity.count = 2;
     }
 
     public long getId() {

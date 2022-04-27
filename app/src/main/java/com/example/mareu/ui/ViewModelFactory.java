@@ -6,9 +6,10 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mareu.MainApplication;
 import com.example.mareu.config.BuildConfigResolver;
+import com.example.mareu.data.FilterParametersRepository;
 import com.example.mareu.data.MeetingRepository;
-import com.example.mareu.ui.list.MeetingViewModel;
 import com.example.mareu.ui.add.AddMeetingViewModel;
+import com.example.mareu.ui.list.MeetingViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
 
@@ -19,10 +20,10 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             synchronized (ViewModelFactory.class) {
                 if (factory == null) {
                     factory = new ViewModelFactory(
-                            new MeetingRepository
-                                    (
-                                    new BuildConfigResolver()
-                            )
+                        new MeetingRepository(
+                            new BuildConfigResolver()
+                        ),
+                        new FilterParametersRepository()
                     );
                 }
             }
@@ -34,22 +35,34 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     private final MeetingRepository meetingRepository;
 
-    private ViewModelFactory(@NonNull MeetingRepository meetingRepository) {
+    @NonNull
+    private final FilterParametersRepository filterParametersRepository;
+
+    private ViewModelFactory(
+        @NonNull MeetingRepository meetingRepository,
+        @NonNull FilterParametersRepository filterParametersRepository
+    ) {
         this.meetingRepository = meetingRepository;
+        this.filterParametersRepository = filterParametersRepository;
     }
 
     @SuppressWarnings("unchecked")
     @NonNull
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(MeetingViewModel.class)) {
+        if (modelClass.isAssignableFrom(MainViewModel.class)) {
+            return (T) new MainViewModel(
+                filterParametersRepository
+            );
+        } else if (modelClass.isAssignableFrom(MeetingViewModel.class)) {
             return (T) new MeetingViewModel(
-                    meetingRepository
+                meetingRepository,
+                filterParametersRepository
             );
         } else if (modelClass.isAssignableFrom(AddMeetingViewModel.class)) {
             return (T) new AddMeetingViewModel(
                 MainApplication.getInstance(),
-                    meetingRepository
+                meetingRepository
             );
         }
         throw new IllegalArgumentException("Unknown ViewModel class");

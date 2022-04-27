@@ -1,5 +1,6 @@
 package com.example.mareu.ui.list;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.R;
 
+import com.example.mareu.databinding.MeetingsFragmentBinding;
 import com.example.mareu.ui.ViewModelFactory;
 
 public class MeetingFragment extends Fragment {
@@ -27,6 +29,7 @@ public class MeetingFragment extends Fragment {
 
     private MeetingViewModel viewModel;
 
+    private MeetingsFragmentBinding binding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,8 @@ public class MeetingFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.meetings_fragment, container, false);
+        binding = MeetingsFragmentBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
@@ -45,16 +49,14 @@ public class MeetingFragment extends Fragment {
             throw new IllegalStateException("Please use MeetingFragment.newInstance() to build the Fragment");
         }
 
-//        viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
-        viewModel = new ViewModelProvider(getActivity(), ViewModelFactory.getInstance()).get(MeetingViewModel.class);
-        RecyclerView recyclerView = view.findViewById(R.id.meeting_rv);
-
+        viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
         MeetingAdapter adapter = new MeetingAdapter(viewModel::onDeleteMeetingClicked);
-        recyclerView.setAdapter(adapter);
+        binding.meetingRv.setAdapter(adapter);
 
         viewModel.getMeetingViewStateItemsLiveData().observe(getViewLifecycleOwner(), adapter::submitList);
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -70,6 +72,11 @@ public class MeetingFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
 
+        binding = null;
+    }
 }
 

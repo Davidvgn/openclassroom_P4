@@ -5,7 +5,6 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.mareu.LiveDataTestUtils;
@@ -57,7 +56,7 @@ public class MeetingViewModelTest {
         isSortingByDateMutableLiveData.setValue(false);
         isSortingByRoomMutableLiveData.setValue(false);
 
-        viewModel = new MeetingViewModel(meetingRepository);
+        viewModel = new MeetingViewModel(meetingRepository, filterParametersRepository);
 
         verify(meetingRepository).getMeetingsLiveData();
     }
