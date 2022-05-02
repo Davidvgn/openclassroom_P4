@@ -20,9 +20,6 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    @SuppressWarnings("unused")
-    public static int count = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         binding.mainFabAdd.setOnClickListener(v -> startActivity(AddMeetingActivity.navigate(this)));
-
         binding.mainButtonFilter.setVisibility(View.GONE);
-
 
         ArrayAdapter<CharSequence> roomArrayAdapter = ArrayAdapter.createFromResource(this, R.array.room, R.layout.support_simple_spinner_dropdown_item);
         binding.mainActRoom.setAdapter(roomArrayAdapter);

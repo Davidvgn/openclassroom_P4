@@ -18,7 +18,6 @@ import com.example.mareu.R;
 import com.example.mareu.databinding.MeetingsFragmentBinding;
 import com.example.mareu.ui.ViewModelFactory;
 
-@SuppressWarnings("unused")
 public class MeetingFragment extends Fragment {
 
     public static MeetingFragment newInstance() {
@@ -28,8 +27,6 @@ public class MeetingFragment extends Fragment {
     }
 
     private MeetingViewModel viewModel;
-
-    @SuppressWarnings("unused")
     private MeetingsFragmentBinding binding;
 
     @Override

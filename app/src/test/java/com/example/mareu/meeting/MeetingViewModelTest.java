@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@SuppressWarnings("CodeBlock2Expr")
 @RunWith(MockitoJUnitRunner.class)
 public class MeetingViewModelTest {
 
@@ -82,9 +81,7 @@ public class MeetingViewModelTest {
     public void initialCase() {
         meetingsMutableLiveData.setValue(new ArrayList<>());
 
-        LiveDataTestUtils.observeForTesting(viewModel.getMeetingViewStateItemsLiveData(), value -> {
-            assertEquals(0, value.size());
-        });
+        LiveDataTestUtils.observeForTesting(viewModel.getMeetingViewStateItemsLiveData(), value -> assertEquals(0, value.size()));
     }
 
     @Test

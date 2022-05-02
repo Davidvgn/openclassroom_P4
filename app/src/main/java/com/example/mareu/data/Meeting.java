@@ -2,10 +2,6 @@ package com.example.mareu.data;
 
 import androidx.annotation.NonNull;
 
-import com.example.mareu.ui.MainActivity;
-
-import org.jetbrains.annotations.NotNull;
-
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -21,19 +17,18 @@ public class Meeting {
     @NonNull
     private final String participants;
 
-    public Meeting(long id,
-                   @NonNull LocalDateTime date,
-                   @NonNull String meetingRoom,
-                   @NonNull String meetingSubject,
-                   @NonNull String participants
+    public Meeting(
+        long id,
+        @NonNull LocalDateTime date,
+        @NonNull String meetingRoom,
+        @NonNull String meetingSubject,
+        @NonNull String participants
     ) {
         this.id = id;
         this.date = date;
         this.meetingRoom = meetingRoom;
         this.meetingSubject = meetingSubject;
         this.participants = participants;
-
-        MainActivity.count = 2;
     }
 
     public long getId() {
@@ -44,14 +39,17 @@ public class Meeting {
     public LocalDateTime getDate() {
         return date;
     }
+
     @NonNull
     public String getMeetingRoom() {
         return meetingRoom;
     }
+
     @NonNull
     public String getMeetingSubject() {
         return meetingSubject;
     }
+
     @NonNull
     public String getParticipants() {
         return participants;
@@ -70,7 +68,7 @@ public class Meeting {
         return Objects.hash(id, date, meetingRoom, meetingSubject, participants);
     }
 
-    @NotNull
+    @NonNull
     @Override
     public String toString() {
         return "Meeting{" +

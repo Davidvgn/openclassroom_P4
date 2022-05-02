@@ -1,8 +1,24 @@
 package com.example.mareu;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static com.example.mareu.utils.RecyclerViewItemCountAssertion.withItemCount;
+import static com.example.mareu.utils.Waiter.waitFor;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+
 import android.widget.DatePicker;
 
-import androidx.annotation.NonNull;
 import androidx.test.core.app.ActivityScenario;
 import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
@@ -23,32 +39,11 @@ import org.junit.runner.RunWith;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
-import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
-import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
-import static androidx.test.espresso.matcher.ViewMatchers.withId;
-
-import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static com.example.mareu.utils.RecyclerViewItemCountAssertion.withItemCount;
-import static com.example.mareu.utils.Waiter.waitFor;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-
-
-@SuppressWarnings("ALL")
 @RunWith(AndroidJUnit4.class)
 public class MeetingActivityTest {
 
+    public static final LocalDate BASE_TEST_DAY = LocalDate.of(2022, 4, 24);
     public MainActivity mainActivity;
-    private static final int noMeetings = 0;
-
 
     @Before
     public void setUp() {
@@ -79,7 +74,7 @@ public class MeetingActivityTest {
 
         onView(allOf(withId(R.id.meeting_rv),
             isDisplayed()))
-            .check(withItemCount(noMeetings));
+            .check(withItemCount(0));
     }
 
     /**
@@ -90,52 +85,62 @@ public class MeetingActivityTest {
     @Test
     public void create_multiple_meetings() {
 
-        createMeeting(LocalDate.of(2022, 4, 24),
+        MeetingTestUtils.createMeeting(
+            BASE_TEST_DAY,
             LocalTime.of(14, 0),
             "Java",
             "Subject 1",
-            "email1@email.com");
+            "email1@email.com"
+        );
         pressBack();
         onView(allOf(withId(R.id.meeting_rv),
             isDisplayed()))
-            .check(withItemCount(noMeetings));
+            .check(withItemCount(0));
 
-
-        createMeeting(
-            LocalDate.of(2022, 4, 24),
+        MeetingTestUtils.createMeeting(
+            BASE_TEST_DAY,
             LocalTime.of(14, 0),
             "Java",
             "Subject 1",
-            "email1@email.com");
+            "email1@email.com"
+        );
         onView(withId(R.id.add_meeting_button)).perform(click());
 
-        createMeeting(LocalDate.of(2022, 4, 26),
+        MeetingTestUtils.createMeeting(
+            BASE_TEST_DAY.plusDays(2),
             LocalTime.of(13, 45),
             "Swift",
             "Subject 2",
-            "email1@email.com");
+            "email1@email.com"
+        );
         onView(withId(R.id.add_meeting_button)).perform(click());
 
-        createMeeting(LocalDate.of(2022, 4, 22),
+        MeetingTestUtils.createMeeting(
+            BASE_TEST_DAY.minusDays(2),
             LocalTime.of(11, 15),
             "Kotlin",
             "Subject 3",
-            "email1@email.com");
+            "email1@email.com"
+        );
         onView(withId(R.id.add_meeting_button)).perform(click());
 
 
-        createMeeting(LocalDate.of(2022, 4, 20),
+        MeetingTestUtils.createMeeting(
+            LocalDate.of(2022, 4, 20),
             LocalTime.of(16, 20),
             "Itunes",
             "Subject 4",
-            "email1@email.com");
+            "email1@email.com"
+        );
         onView(withId(R.id.add_meeting_button)).perform(click());
 
-        createMeeting(LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth()),
+        MeetingTestUtils.createMeeting(
+            LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth()),
             LocalTime.of(16, 30),
             "Python",
             "Subject 5",
-            "email1@email.com");
+            "email1@email.com"
+        );
         onView(withId(R.id.add_meeting_button)).perform(click());
 
     }
@@ -232,16 +237,6 @@ public class MeetingActivityTest {
         checkSortByRoom(3, "Python");
         checkSortByRoom(4, "Swift");
 
-    }
-
-    private void createMeeting(
-        @NonNull final LocalDate date,
-        @NonNull final LocalTime time,
-        @NonNull final String room,
-        @NonNull final String meetingSubject,
-        @NonNull final String participants
-    ) {
-        MeetingTestUtils.createMeeting(date, time, room, meetingSubject, participants);
     }
 
     private void checkSortByDate(int position, String subject) {

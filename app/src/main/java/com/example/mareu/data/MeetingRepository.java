@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.mareu.config.BuildConfigResolver;
+import com.example.mareu.BuildConfig;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,8 +18,8 @@ public class MeetingRepository {
 
     private long maxId = 0;
 
-    public MeetingRepository(BuildConfigResolver buildConfigResolver) {
-        if (buildConfigResolver.isDebug()) {
+    public MeetingRepository() {
+        if (BuildConfig.DEBUG) {
             generateRandomMeeting();
         }
     }

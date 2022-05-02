@@ -36,8 +36,7 @@ public class AddMeetingViewModel extends ViewModel {
     private final SingleLiveEvent<Void> closeActivitySingleLiveEvent = new SingleLiveEvent<>();
     private final SingleLiveEvent<String> showToastSingleLiveEvent = new SingleLiveEvent<>();
 
-    public AddMeetingViewModel(Application application, MeetingRepository meetingRepository
-    ) {
+    public AddMeetingViewModel(Application application, MeetingRepository meetingRepository) {
 
         this.application = application;
         this.meetingRepository = meetingRepository;
@@ -117,8 +116,6 @@ public class AddMeetingViewModel extends ViewModel {
 
         StringBuilder participantsResults = new StringBuilder();
 
-
-
         if (!participants.isEmpty()) {
             String[] participantsSplit = participants.split("[, ;/\n]");
 
@@ -180,13 +177,17 @@ public class AddMeetingViewModel extends ViewModel {
             String selectedRoom = roomMutableLiveData.getValue();
 
             if (emailValidation && localDate != null && localTime != null && selectedRoom != null) {
-                boolean success = meetingRepository.addMeeting(LocalDateTime.of(localDate, localTime), selectedRoom, meetingSubject, participantsResults.toString());
+                boolean success = meetingRepository.addMeeting(
+                    LocalDateTime.of(localDate, localTime),
+                    selectedRoom,
+                    meetingSubject,
+                    participantsResults.toString()
+                );
 
                 if (success) {
                     closeActivitySingleLiveEvent.call();
                 } else {
                     showToastSingleLiveEvent.setValue(application.getString(R.string.room_availability));
-
                 }
             }
         }

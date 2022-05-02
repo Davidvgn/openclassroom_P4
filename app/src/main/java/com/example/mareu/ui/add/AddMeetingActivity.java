@@ -22,16 +22,9 @@ import com.example.mareu.ui.ViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
-import java.util.Objects;
 
 public class AddMeetingActivity extends AppCompatActivity {
 
-    ArrayAdapter<CharSequence> roomArrayAdapter;
-    TimePickerDialog picker;
-    DatePickerDialog datePickerDialog;
-
-
-    @SuppressWarnings("unused")
     public static Intent navigate(Context context) {
         return new Intent(context, AddMeetingActivity.class);
     }
@@ -40,7 +33,8 @@ public class AddMeetingActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_meeting_activity);
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        //noinspection ConstantConditions Inheritance : DarkActionTheme
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AddMeetingViewModel viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(AddMeetingViewModel.class);
 
@@ -49,7 +43,7 @@ public class AddMeetingActivity extends AppCompatActivity {
         Button addMeetingButton = findViewById(R.id.add_meeting_button);
 
         AutoCompleteTextView roomAutoCompleteTextView = findViewById(R.id.add_meeting_act_room);
-        roomArrayAdapter = ArrayAdapter.createFromResource(this, R.array.room, R.layout.support_simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> roomArrayAdapter = ArrayAdapter.createFromResource(this, R.array.room, R.layout.support_simple_spinner_dropdown_item);
         roomAutoCompleteTextView.setAdapter(roomArrayAdapter);
         roomAutoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> viewModel.onRoomSelected(roomArrayAdapter.getItem(position)));
 
@@ -60,7 +54,7 @@ public class AddMeetingActivity extends AppCompatActivity {
             int year = c.get(Calendar.YEAR); // current year
             int month = c.get(Calendar.MONTH); // current month
             int day = c.get(Calendar.DAY_OF_MONTH); // current day
-            datePickerDialog = new DatePickerDialog(
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
                 AddMeetingActivity.this,
                 (view, selectedYear, selectedMonthOfYear, selectedDayOfMonth) -> viewModel.onDateChanged(selectedDayOfMonth, selectedMonthOfYear, selectedYear),
                 year,
@@ -78,22 +72,22 @@ public class AddMeetingActivity extends AppCompatActivity {
             final Calendar c = Calendar.getInstance();
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minutes = c.get(Calendar.MINUTE);
-            picker = new TimePickerDialog(
+
+            new TimePickerDialog(
                 AddMeetingActivity.this,
                 (tp, selectedHour, selectedMinutes) -> viewModel.onTimeChanged(selectedHour, selectedMinutes),
                 hour,
                 minutes,
                 true
-            );
-
-            picker.show();
+            ).show();
         });
 
+        //noinspection ConstantConditions No null for Editable
         addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(
-            Objects.requireNonNull(dateEditText.getText()).toString(),
-            Objects.requireNonNull(timeEditText.getText()).toString(),
-            Objects.requireNonNull(subjectEditText.getText()).toString(),
-            Objects.requireNonNull(participantEditText.getText()).toString()
+            dateEditText.getText().toString(),
+            timeEditText.getText().toString(),
+            subjectEditText.getText().toString(),
+            participantEditText.getText().toString()
         ));
         viewModel.getAddMeetingViewStateLiveData().observe(this, new Observer<AddMeetingViewState>() {
             @Override

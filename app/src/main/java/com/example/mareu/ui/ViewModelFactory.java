@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mareu.MainApplication;
-import com.example.mareu.config.BuildConfigResolver;
 import com.example.mareu.data.FilterParametersRepository;
 import com.example.mareu.data.MeetingRepository;
 import com.example.mareu.ui.add.AddMeetingViewModel;
@@ -20,9 +19,7 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
             synchronized (ViewModelFactory.class) {
                 if (factory == null) {
                     factory = new ViewModelFactory(
-                        new MeetingRepository(
-                            new BuildConfigResolver()
-                        ),
+                        new MeetingRepository(),
                         new FilterParametersRepository()
                     );
                 }

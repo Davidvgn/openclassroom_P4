@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mareu.R;
 
-@SuppressWarnings("unused")
 public class MeetingAdapter extends ListAdapter<MeetingViewStateItem, MeetingAdapter.ViewHolder> {
 
     private final OnMeetingClickedListener listener;

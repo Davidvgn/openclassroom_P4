@@ -160,15 +160,12 @@ public class AddMeetingViewModelTest {
         });
     }
 
-    @SuppressWarnings("CodeBlock2Expr")
     @Test
     public void onTimeChangedTest() {
         String time = LocalTime.of(14, 45).toString();
 
         viewModel.onTimeChanged(14, 45);
-        LiveDataTestUtils.observeForTesting(viewModel.getAddMeetingViewStateLiveData(), value -> {
-            assertEquals(time, value.getTime());
-        });
+        LiveDataTestUtils.observeForTesting(viewModel.getAddMeetingViewStateLiveData(), value -> assertEquals(time, value.getTime()));
     }
 
     @Test

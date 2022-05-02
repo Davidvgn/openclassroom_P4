@@ -7,8 +7,6 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
-import java.util.Objects;
-
 public class RecyclerViewMatcher {
     private final int recyclerViewId;
 
@@ -28,8 +26,7 @@ public class RecyclerViewMatcher {
                     try {
                         idDescription = this.resources.getResourceName(recyclerViewId);
                     } catch (Resources.NotFoundException var4) {
-                        idDescription = String.format("%s (resource name not found)",
-                            recyclerViewId);
+                        idDescription = String.format("%s (resource name not found)", recyclerViewId);
                     }
                 }
 
@@ -41,12 +38,16 @@ public class RecyclerViewMatcher {
                 this.resources = view.getResources();
 
                 if (childView == null) {
-                    RecyclerView recyclerView =
-                        view.getRootView().findViewById(recyclerViewId);
+                    RecyclerView recyclerView = view.getRootView().findViewById(recyclerViewId);
                     if (recyclerView != null && recyclerView.getId() == recyclerViewId) {
-                        childView = Objects.requireNonNull(recyclerView.findViewHolderForAdapterPosition(position)).itemView;
-                    }
-                    else {
+                        RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(position);
+
+                        if (viewHolder == null) {
+                            return false;
+                        }
+
+                        childView = viewHolder.itemView;
+                    } else {
                         return false;
                     }
                 }
