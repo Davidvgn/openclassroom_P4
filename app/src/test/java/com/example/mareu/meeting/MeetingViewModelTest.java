@@ -8,6 +8,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.mareu.LiveDataTestUtils;
+import com.example.mareu.data.FilterParametersRepository;
 import com.example.mareu.data.Meeting;
 import com.example.mareu.data.MeetingRepository;
 import com.example.mareu.ui.list.MeetingViewModel;
@@ -21,6 +22,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +37,14 @@ public class MeetingViewModelTest {
     @Mock
     private MeetingRepository meetingRepository;
 
+    @Mock
+    private FilterParametersRepository filterParametersRepository;
+
     private MutableLiveData<List<Meeting>> meetingsMutableLiveData;
+    private MutableLiveData<LocalDate> dateFilterMutableLiveData;
+    private MutableLiveData<String> roomFilterMutableLiveData;
+
+
     private MeetingViewModel viewModel;
 
     private MutableLiveData<Boolean> isSortingByRoomMutableLiveData;
@@ -44,8 +53,12 @@ public class MeetingViewModelTest {
     @Before
     public void setUp() {
         meetingsMutableLiveData = new MutableLiveData<>();
+        dateFilterMutableLiveData = new MutableLiveData<>();
+        roomFilterMutableLiveData = new MutableLiveData<>();
 
         given(meetingRepository.getMeetingsLiveData()).willReturn(meetingsMutableLiveData);
+        given(filterParametersRepository.getDateFilterMutableLiveData()).willReturn(dateFilterMutableLiveData);
+        given(filterParametersRepository.getRoomFilterMutableLiveData()).willReturn(roomFilterMutableLiveData);
 
         List<Meeting> meetings = getMeetings();
         meetingsMutableLiveData.setValue(meetings);
@@ -59,6 +72,8 @@ public class MeetingViewModelTest {
         viewModel = new MeetingViewModel(meetingRepository, filterParametersRepository);
 
         verify(meetingRepository).getMeetingsLiveData();
+        verify(filterParametersRepository).getDateFilterMutableLiveData();
+        verify(filterParametersRepository).getRoomFilterMutableLiveData();
     }
 
     @Test
