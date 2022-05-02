@@ -9,8 +9,5 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="colorPrimary">#03A9F4</color>
-    <color name="colorPrimaryVariant">#0287c3</color>
-    <color name="colorSecondary">#FF80AB</color>
-    <color name="star">#EAD200</color>
     <color name="light_grey">#EEEEEE</color>
 </resources>

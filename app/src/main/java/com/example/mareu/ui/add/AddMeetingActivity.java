@@ -7,8 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -24,6 +22,7 @@ import com.example.mareu.ui.ViewModelFactory;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class AddMeetingActivity extends AppCompatActivity {
 
@@ -32,6 +31,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     DatePickerDialog datePickerDialog;
 
 
+    @SuppressWarnings("unused")
     public static Intent navigate(Context context) {
         return new Intent(context, AddMeetingActivity.class);
     }
@@ -40,7 +40,7 @@ public class AddMeetingActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_meeting_activity);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         AddMeetingViewModel viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(AddMeetingViewModel.class);
 
@@ -90,10 +90,10 @@ public class AddMeetingActivity extends AppCompatActivity {
         });
 
         addMeetingButton.setOnClickListener(v -> viewModel.onAddButtonClicked(
-            dateEditText.getText().toString(),
-            timeEditText.getText().toString(),
-            subjectEditText.getText().toString(),
-            participantEditText.getText().toString()
+            Objects.requireNonNull(dateEditText.getText()).toString(),
+            Objects.requireNonNull(timeEditText.getText()).toString(),
+            Objects.requireNonNull(subjectEditText.getText()).toString(),
+            Objects.requireNonNull(participantEditText.getText()).toString()
         ));
         viewModel.getAddMeetingViewStateLiveData().observe(this, new Observer<AddMeetingViewState>() {
             @Override

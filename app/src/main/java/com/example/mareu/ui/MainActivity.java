@@ -7,8 +7,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,12 +15,12 @@ import com.example.mareu.R;
 import com.example.mareu.databinding.ActivityMainBinding;
 import com.example.mareu.ui.add.AddMeetingActivity;
 import com.example.mareu.ui.list.MeetingFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
+    @SuppressWarnings("unused")
     public static int count = 0;
 
     @Override
@@ -50,9 +48,6 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<CharSequence> roomArrayAdapter = ArrayAdapter.createFromResource(this, R.array.room, R.layout.support_simple_spinner_dropdown_item);
         binding.mainActRoom.setAdapter(roomArrayAdapter);
 
-//        roomAutoCompleteTextView.setOnItemClickListener((parent, view, position, id)
-//        -> viewModel.onRoomSelected(roomArrayAdapter.getItem(position)));
-
         binding.mainActRoom.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -70,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
             int day = c.get(Calendar.DAY_OF_MONTH); // current day
             DatePickerDialog datePickerDialog = new DatePickerDialog(
                 MainActivity.this,
-                (view, selectedYear, selectedMonthOfYear, selectedDayOfMonth) -> 
+                (view, selectedYear, selectedMonthOfYear, selectedDayOfMonth) ->
                     viewModel.onDateChanged(selectedDayOfMonth, selectedMonthOfYear + 1, selectedYear),
                 year,
                 month,

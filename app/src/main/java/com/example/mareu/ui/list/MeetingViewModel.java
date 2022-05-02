@@ -20,6 +20,7 @@ import java.util.List;
 public class MeetingViewModel extends ViewModel {
 
     private final MeetingRepository meetingRepository;
+    @SuppressWarnings("FieldCanBeLocal")
     private final FilterParametersRepository filterParametersRepository;
 
     private final MediatorLiveData<List<MeetingViewStateItem>> mediatorLiveData = new MediatorLiveData<>();

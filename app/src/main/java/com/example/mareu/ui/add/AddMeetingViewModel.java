@@ -14,18 +14,16 @@ import com.example.mareu.R;
 import com.example.mareu.data.MeetingRepository;
 import com.example.mareu.utils.SingleLiveEvent;
 
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class AddMeetingViewModel extends ViewModel {
 
-    private Application application;
+    private final Application application;
 
     private final MeetingRepository meetingRepository;
 
@@ -117,7 +115,7 @@ public class AddMeetingViewModel extends ViewModel {
     ) {
         boolean emailValidation = true;
 
-        String participantsResults = "";
+        StringBuilder participantsResults = new StringBuilder();
 
 
 
@@ -140,9 +138,9 @@ public class AddMeetingViewModel extends ViewModel {
                     break;
                 } else {
                     if (i + 1 < participantsSplit.length) {
-                        participantsResults += trimmedParticipantsList.get(i) + ", ";
+                        participantsResults.append(trimmedParticipantsList.get(i)).append(", ");
                     } else {
-                        participantsResults += trimmedParticipantsList.get(i);
+                        participantsResults.append(trimmedParticipantsList.get(i));
                     }
                 }
             }
@@ -182,7 +180,7 @@ public class AddMeetingViewModel extends ViewModel {
             String selectedRoom = roomMutableLiveData.getValue();
 
             if (emailValidation && localDate != null && localTime != null && selectedRoom != null) {
-                boolean success = meetingRepository.addMeeting(LocalDateTime.of(localDate, localTime), selectedRoom, meetingSubject, participantsResults);
+                boolean success = meetingRepository.addMeeting(LocalDateTime.of(localDate, localTime), selectedRoom, meetingSubject, participantsResults.toString());
 
                 if (success) {
                     closeActivitySingleLiveEvent.call();

@@ -11,10 +11,9 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.request.RequestOptions;
 import com.example.mareu.R;
-import com.bumptech.glide.Glide;
 
+@SuppressWarnings("unused")
 public class MeetingAdapter extends ListAdapter<MeetingViewStateItem, MeetingAdapter.ViewHolder> {
 
     private final OnMeetingClickedListener listener;

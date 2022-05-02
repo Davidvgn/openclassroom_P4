@@ -4,15 +4,11 @@ package com.example.mareu.meeting;
 import android.app.Application;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.example.mareu.LiveDataTestUtils;
 import com.example.mareu.R;
 import com.example.mareu.data.MeetingRepository;
 import com.example.mareu.ui.add.AddMeetingViewModel;
-import com.example.mareu.ui.add.AddMeetingViewState;
-import com.example.mareu.utils.SingleLiveEvent;
 
 
 import org.junit.Before;
@@ -28,8 +24,6 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
@@ -166,6 +160,7 @@ public class AddMeetingViewModelTest {
         });
     }
 
+    @SuppressWarnings("CodeBlock2Expr")
     @Test
     public void onTimeChangedTest() {
         String time = LocalTime.of(14, 45).toString();
@@ -190,7 +185,7 @@ public class AddMeetingViewModelTest {
         LiveDataTestUtils.observeForTesting(viewModel.getCloseActivitySingleLiveEvent(), value -> {
             //Then
             verify(meetingRepository).addMeeting(
-                eq(LocalDateTime.of(2022, 04, 14, 15, 00)),
+                eq(LocalDateTime.of(2022, 4, 14, 15, 0)),
                 eq(room),
                 eq(meetingSubject),
                 eq("")
@@ -211,7 +206,7 @@ public class AddMeetingViewModelTest {
         LiveDataTestUtils.observeForTesting(viewModel.getCloseActivitySingleLiveEvent(), value -> {
             //Then
             verify(meetingRepository).addMeeting(
-                eq(LocalDateTime.of(2022, 04, 14, 15, 00)),
+                eq(LocalDateTime.of(2022, 4, 14, 15, 0)),
                 eq(room),
                 eq(meetingSubject),
                 eq("email@email.com, email2@email.com")

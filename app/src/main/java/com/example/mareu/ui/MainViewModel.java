@@ -12,6 +12,7 @@ public class MainViewModel extends ViewModel {
         this.filterParametersRepository = filterParametersRepository;
     }
 
+    @SuppressWarnings("unused")
     public void onDateChanged(int selectedDayOfMonth, int selectedMonthOfYear, int selectedYear) {
         filterParametersRepository.onDateChanged(selectedDayOfMonth, selectedMonthOfYear, selectedYear);
     }

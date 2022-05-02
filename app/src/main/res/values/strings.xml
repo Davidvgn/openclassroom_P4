@@ -3,8 +3,6 @@
     <string name="add_meeting">Add new meeting</string>
     <string name="delete_meeting">Delete meeting</string>
 
-    <string name="hour">Hour</string>
-    <string name="min">Min</string>
     <string name="room">Room</string>
     <string name="subject">Subject</string>
     <string name="day">Day</string>
@@ -12,7 +10,6 @@
     <string name="participants">Participants</string>
     <string name="save">Save</string>
     <string name="new_reunion">New meeting</string>
-    <string name="slash">/</string>
 
     <string name="incorrect_email_format">Format email non-valide</string>
     <string name="incorrect_date_format">Format de date non-valide (format : DD/MM/YYYY)</string>

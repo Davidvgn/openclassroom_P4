@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 
 import com.example.mareu.ui.MainActivity;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -68,6 +70,7 @@ public class Meeting {
         return Objects.hash(id, date, meetingRoom, meetingSubject, participants);
     }
 
+    @NotNull
     @Override
     public String toString() {
         return "Meeting{" +

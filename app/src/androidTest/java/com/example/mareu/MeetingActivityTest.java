@@ -21,14 +21,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.RootMatchers.withDecorView;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -44,12 +42,12 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 
+@SuppressWarnings("ALL")
 @RunWith(AndroidJUnit4.class)
 public class MeetingActivityTest {
 
     public MainActivity mainActivity;
-    private static int meetingsFromRepo = 2;
-    private static int noMeetings = 0;
+    private static final int noMeetings = 0;
 
 
     @Before
@@ -70,6 +68,8 @@ public class MeetingActivityTest {
      */
     @Test
     public void fake_meetings_are_uploaded_and_delete() {
+        int meetingsFromRepo = 2;
+
         onView(allOf(withId(R.id.meeting_rv),
             isDisplayed()))
             .check(withItemCount(meetingsFromRepo));
@@ -90,7 +90,7 @@ public class MeetingActivityTest {
     @Test
     public void create_multiple_meetings() {
 
-        createMeeting(LocalDate.of(2022, 04, 24),
+        createMeeting(LocalDate.of(2022, 4, 24),
             LocalTime.of(14, 0),
             "Java",
             "Subject 1",
@@ -102,21 +102,21 @@ public class MeetingActivityTest {
 
 
         createMeeting(
-            LocalDate.of(2022, 04, 24),
+            LocalDate.of(2022, 4, 24),
             LocalTime.of(14, 0),
             "Java",
             "Subject 1",
             "email1@email.com");
         onView(withId(R.id.add_meeting_button)).perform(click());
 
-        createMeeting(LocalDate.of(2022, 04, 26),
+        createMeeting(LocalDate.of(2022, 4, 26),
             LocalTime.of(13, 45),
             "Swift",
             "Subject 2",
             "email1@email.com");
         onView(withId(R.id.add_meeting_button)).perform(click());
 
-        createMeeting(LocalDate.of(2022, 04, 22),
+        createMeeting(LocalDate.of(2022, 4, 22),
             LocalTime.of(11, 15),
             "Kotlin",
             "Subject 3",
@@ -124,7 +124,7 @@ public class MeetingActivityTest {
         onView(withId(R.id.add_meeting_button)).perform(click());
 
 
-        createMeeting(LocalDate.of(2022, 04, 20),
+        createMeeting(LocalDate.of(2022, 4, 20),
             LocalTime.of(16, 20),
             "Itunes",
             "Subject 4",

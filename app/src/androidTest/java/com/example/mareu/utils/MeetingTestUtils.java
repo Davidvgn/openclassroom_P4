@@ -35,21 +35,11 @@ public class MeetingTestUtils {
         @NonNull String participants
     ) {
         onView(withId(R.id.main_fab_add)).perform((click()));
-        if (date != null) {
-            setMeetingDate(date);
-        }
-        if (time != null) {
-            setMeetingTime(time);
-        }
-        if (room != null) {
-            setMeetingRoom(room);
-        }
-        if (meetingSubject != null) {
-            setMeetingSubject(meetingSubject);
-        }
-        if (participants != null) {
-            setMeetingParticipants(participants);
-        }
+        setMeetingDate(date);
+        setMeetingTime(time);
+        setMeetingRoom(room);
+        setMeetingSubject(meetingSubject);
+        setMeetingParticipants(participants);
     }
 
     public static void setMeetingDate(@NonNull LocalDate date) {

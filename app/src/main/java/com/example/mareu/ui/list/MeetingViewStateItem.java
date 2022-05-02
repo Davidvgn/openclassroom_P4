@@ -2,10 +2,6 @@ package com.example.mareu.ui.list;
 
 import androidx.annotation.NonNull;
 
-import com.example.mareu.data.Meeting;
-
-import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.Objects;
 
 public class MeetingViewStateItem {

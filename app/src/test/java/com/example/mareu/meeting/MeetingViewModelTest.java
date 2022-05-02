@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("CodeBlock2Expr")
 @RunWith(MockitoJUnitRunner.class)
 public class MeetingViewModelTest {
 
@@ -41,17 +42,18 @@ public class MeetingViewModelTest {
     private FilterParametersRepository filterParametersRepository;
 
     private MutableLiveData<List<Meeting>> meetingsMutableLiveData;
-    private MutableLiveData<LocalDate> dateFilterMutableLiveData;
-    private MutableLiveData<String> roomFilterMutableLiveData;
 
 
     private MeetingViewModel viewModel;
 
-    private MutableLiveData<Boolean> isSortingByRoomMutableLiveData;
-    private MutableLiveData<Boolean> isSortingByDateMutableLiveData;
 
     @Before
     public void setUp() {
+        MutableLiveData<LocalDate> dateFilterMutableLiveData;
+        MutableLiveData<String> roomFilterMutableLiveData;
+        MutableLiveData<Boolean> isSortingByRoomMutableLiveData;
+        MutableLiveData<Boolean> isSortingByDateMutableLiveData;
+
         meetingsMutableLiveData = new MutableLiveData<>();
         dateFilterMutableLiveData = new MutableLiveData<>();
         roomFilterMutableLiveData = new MutableLiveData<>();
