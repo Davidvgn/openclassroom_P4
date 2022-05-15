@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-        <string name="app_name">Maréu</string>
+        <string name="app_name">Ma réu</string>
         <string name="add_meeting">Ajout d\'une nouvelle réunion</string>
         <string name="delete_meeting">Supprimer la réunion</string>
 

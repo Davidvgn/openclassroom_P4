@@ -10,4 +10,5 @@
 
     <color name="colorPrimary">#03A9F4</color>
     <color name="light_grey">#EEEEEE</color>
+    <color name="buttonColor">#DC1204</color>
 </resources>
