@@ -79,117 +79,72 @@ public class MeetingActivityTest {
 
     /**
      * Checks if pressing on back button doesn't save the meeting created
-     * then creates 4 meetings
+     * then creates 2 meetings
      */
 
     @Test
-    public void create_multiple_meetings() {
+    public void creating_multiple_meetings() {
 
         MeetingTestUtils.createMeeting(
             BASE_TEST_DAY,
             LocalTime.of(14, 0),
             "Java",
-            "Subject 1",
+            "Subject TEST",
             "email1@email.com"
         );
         pressBack();
         onView(allOf(withId(R.id.meeting_rv),
             isDisplayed()))
-            .check(withItemCount(0));
+            .check(withItemCount(2));
 
-        MeetingTestUtils.createMeeting(
-            BASE_TEST_DAY,
-            LocalTime.of(14, 0),
-            "Java",
-            "Subject 1",
-            "email1@email.com"
-        );
-        onView(withId(R.id.add_meeting_button)).perform(click());
-
-        MeetingTestUtils.createMeeting(
-            BASE_TEST_DAY.plusDays(2),
-            LocalTime.of(13, 45),
-            "Swift",
-            "Subject 2",
-            "email1@email.com"
-        );
-        onView(withId(R.id.add_meeting_button)).perform(click());
-
-        MeetingTestUtils.createMeeting(
-            BASE_TEST_DAY.minusDays(2),
-            LocalTime.of(11, 15),
-            "Kotlin",
-            "Subject 3",
-            "email1@email.com"
-        );
-        onView(withId(R.id.add_meeting_button)).perform(click());
-
-
-        MeetingTestUtils.createMeeting(
-            LocalDate.of(2022, 4, 20),
-            LocalTime.of(16, 20),
-            "Itunes",
-            "Subject 4",
-            "email1@email.com"
-        );
-        onView(withId(R.id.add_meeting_button)).perform(click());
-
-        MeetingTestUtils.createMeeting(
-            LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonth(), LocalDate.now().getDayOfMonth()),
-            LocalTime.of(16, 30),
-            "Python",
-            "Subject 5",
-            "email1@email.com"
-        );
-        onView(withId(R.id.add_meeting_button)).perform(click());
+        create_2_meetings();
 
     }
 
     @Test
-    public void sorting_by_date() {
+    public void sorting_and_filtering_by_date() {
+
+        create_2_meetings();
 
         onView(withId(R.id.menu_date)).perform(click());
         onView(withText(R.string.sort_by_date))
             .inRoot(withDecorView(not(is(mainActivity.getWindow().getDecorView()))))
             .check(matches(isDisplayed()));
-        checkSortByDate(0, "Subject 4");
-        checkSortByDate(1, "Subject 3");
-        checkSortByDate(2, "Subject 1");
-        checkSortByDate(3, "Subject 2");
-        checkSortByDate(4, "Subject 5");
-
-        onView(withId(R.id.menu_date)).perform(click());
-        onView(withText(R.string.sort_by_date))
-            .inRoot(withDecorView(not(is(mainActivity.getWindow().getDecorView()))))
-            .check(matches(isDisplayed()));
-        checkSortByDate(4, "Subject 4");
-        checkSortByDate(3, "Subject 3");
-        checkSortByDate(2, "Subject 1");
+        checkSortByDate(0, "Subject 1");
         checkSortByDate(1, "Subject 2");
-        checkSortByDate(0, "Subject 5");
+        checkSortByDate(2, "Subject 3");
+        checkSortByDate(3, "Subject 4");
+
+        onView(withId(R.id.menu_date)).perform(click());
+        onView(withText(R.string.sort_by_date))
+            .inRoot(withDecorView(not(is(mainActivity.getWindow().getDecorView()))))
+            .check(matches(isDisplayed()));
+        checkSortByDate(3, "Subject 1");
+        checkSortByDate(2, "Subject 2");
+        checkSortByDate(1, "Subject 3");
+        checkSortByDate(0, "Subject 4");
 
         //Checks if date filter works
         onView(withId(R.id.main_filter_by_date_button)).perform(click());
         onView(withClassName(Matchers.equalTo(DatePicker.class.getName())))
-            .perform(PickerActions.setDate(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), LocalDate.now().getDayOfMonth()));
+            .perform(PickerActions.setDate(2022, 4, 26));
         onView(withText("OK")).perform(click());
         onView(new RecyclerViewMatcher(R.id.meeting_rv)
             .atPositionOnView(0, R.id.meeting_item_tv_subject))
-            .check(matches(withText("Subject 5")));
+            .check(matches(withText("Subject 4")));
 
         //Checks if remove filter works
         onView(withId(R.id.main_button_filter)).perform(click());
-        checkSortByDate(4, "Subject 4");
-        checkSortByDate(3, "Subject 3");
-        checkSortByDate(2, "Subject 1");
-        checkSortByDate(1, "Subject 2");
-        checkSortByDate(0, "Subject 5");
-
-
+        checkSortByDate(3, "Subject 1");
+        checkSortByDate(2, "Subject 2");
+        checkSortByDate(1, "Subject 3");
+        checkSortByDate(0, "Subject 4");
     }
 
     @Test
-    public void sorting_by_room() {
+    public void sorting_and_filtering_by_room() {//todo david à corriger
+
+        create_2_meetings();
 
         onView(withId(R.id.menu_room)).perform(click());
         onView(isRoot())
@@ -201,10 +156,9 @@ public class MeetingActivityTest {
         onView(isRoot())
             .perform(waitFor(1000));
 
-        checkSortByRoom(4, "Itunes");
-        checkSortByRoom(3, "Java");
-        checkSortByRoom(2, "Kotlin");
-        checkSortByRoom(1, "Python");
+        checkSortByRoom(3, "Android");
+        checkSortByRoom(2, "Java");
+        checkSortByRoom(1, "Kotlin");
         checkSortByRoom(0, "Swift");
 
         onView(withId(R.id.menu_room)).perform(click());
@@ -212,30 +166,28 @@ public class MeetingActivityTest {
             .inRoot(withDecorView(not(is(mainActivity.getWindow().getDecorView()))))
             .check(matches(isDisplayed()));
 
-        checkSortByRoom(0, "Itunes");
+        checkSortByRoom(0, "Android");
         checkSortByRoom(1, "Java");
         checkSortByRoom(2, "Kotlin");
-        checkSortByRoom(3, "Python");
-        checkSortByRoom(4, "Swift");
+        checkSortByRoom(3, "Swift");
 
         //Checks if room filter works
         onView(withId(R.id.main_act_room))
             .perform(
-                replaceText("Python"));
-        onView(withText("Python"))
+                replaceText("Android"));
+        onView(withText("Android"))
             .inRoot(RootMatchers.isPlatformPopup())
             .check(matches(isDisplayed())).perform(click());
         onView(new RecyclerViewMatcher(R.id.meeting_rv)
             .atPositionOnView(0, R.id.meeting_item_tv_subject))
-            .check(matches(withText("Subject 5")));
+            .check(matches(withText("Subject 1")));
 
         //Checks if remove filter works
         onView(withId(R.id.main_button_filter)).perform(click());
-        checkSortByRoom(0, "Itunes");
+        checkSortByRoom(0, "Android");
         checkSortByRoom(1, "Java");
         checkSortByRoom(2, "Kotlin");
-        checkSortByRoom(3, "Python");
-        checkSortByRoom(4, "Swift");
+        checkSortByRoom(3, "Swift");
 
     }
 
@@ -258,5 +210,26 @@ public class MeetingActivityTest {
                 .actionOnItemAtPosition(position, new DeleteViewAction()));
         onView(isRoot())
             .perform(waitFor(1000));
+    }
+
+    private void create_2_meetings(){
+        MeetingTestUtils.createMeeting(
+            BASE_TEST_DAY,
+            LocalTime.of(14, 0),
+            "Java",
+            "Subject 3",
+            "email1@email.com"
+        );
+        onView(withId(R.id.add_meeting_button)).perform(click());
+
+        MeetingTestUtils.createMeeting(
+            BASE_TEST_DAY.plusDays(2),
+            LocalTime.of(13, 45),
+            "Swift",
+            "Subject 4",
+            "email1@email.com"
+        );
+        onView(withId(R.id.add_meeting_button)).perform(click());
+
     }
 }

@@ -98,7 +98,12 @@ public class AddMeetingActivity extends AppCompatActivity {
             }
         });
 
-        viewModel.getCloseActivitySingleLiveEvent().observe(this, aVoid -> finish());
+        viewModel.getCloseActivitySingleLiveEvent().observe(this, new Observer<Void>() {
+            @Override
+            public void onChanged(Void aVoid) {
+                AddMeetingActivity.this.finish();
+            }
+        });
         viewModel.getShowToastSingleLiveEvent().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String message) {

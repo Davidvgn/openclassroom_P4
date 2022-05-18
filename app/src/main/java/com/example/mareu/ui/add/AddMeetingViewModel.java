@@ -122,73 +122,71 @@ public class AddMeetingViewModel extends ViewModel {
             List<String> trimmedParticipantsList = new ArrayList<>(participantsSplit.length);
 
             for (String participantSplit : participantsSplit) {
-                if(!participantSplit.trim().isEmpty()) {
+                if (!participantSplit.trim().isEmpty()) {
                     trimmedParticipantsList.add(participantSplit);
                 }
             }
 
-            String emailRegex = "^[\\s]?+[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z{2,5}]+$";
+            String emailRegex = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,5}$";
             for (int i = 0; i < participantsSplit.length; i++) {
                 if (!trimmedParticipantsList.get(i).matches(emailRegex)) {
                     emailValidation = false;
                     showToastSingleLiveEvent.setValue(application.getString(R.string.incorrect_email_format));
                     break;
                 } else {
+                    participantsResults.append(trimmedParticipantsList.get(i));
                     if (i + 1 < participantsSplit.length) {
-                        participantsResults.append(trimmedParticipantsList.get(i)).append(", ");
-                    } else {
-                        participantsResults.append(trimmedParticipantsList.get(i));
+                        participantsResults.append(", ");
                     }
                 }
             }
         }
 
 
-            LocalDate localDate = null;
-            LocalTime localTime = null;
+        LocalDate localDate = null;
+        LocalTime localTime = null;
 
-            String[] splitDayMonthYear = date.split("/");
-            if (splitDayMonthYear.length != 3) {
-                showToastSingleLiveEvent.setValue(application.getString(R.string.incorrect_date_format));
+        String[] splitDayMonthYear = date.split("/");
+        if (splitDayMonthYear.length != 3) {
+            showToastSingleLiveEvent.setValue(application.getString(R.string.incorrect_date_format));
+        } else {
+            String day = splitDayMonthYear[0];
+            String month = splitDayMonthYear[1];
+            String year = splitDayMonthYear[2];
+
+            localDate = LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+        }
+
+        String[] splitHourMinute = time.split(":");
+        if (splitHourMinute.length != 2) {
+            showToastSingleLiveEvent.setValue(application.getString(R.string.incorrect_hour_format));
+        } else {
+            String hour = splitHourMinute[0];
+            String minute = splitHourMinute[1];
+            String timeRegex = "[0-9]+";
+
+            if (hour.matches(timeRegex) && minute.matches(timeRegex)) {
+                localTime = LocalTime.of(Integer.parseInt(hour), Integer.parseInt(minute));
             } else {
-                String day = splitDayMonthYear[0];
-                String month = splitDayMonthYear[1];
-                String year = splitDayMonthYear[2];
-
-                localDate = LocalDate.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));
+                showToastSingleLiveEvent.setValue(application.getString(R.string.hour_characters));
             }
+        }
 
-            String[] splitHourMinute = time.split(":");
-            if (splitHourMinute.length != 2) {
-                showToastSingleLiveEvent.setValue(application.getString(R.string.incorrect_hour_format));
+        String selectedRoom = roomMutableLiveData.getValue();
+
+        if (emailValidation && localDate != null && localTime != null && selectedRoom != null) {
+            boolean success = meetingRepository.addMeeting(
+                LocalDateTime.of(localDate, localTime),
+                selectedRoom,
+                meetingSubject,
+                participantsResults.toString()
+            );
+
+            if (success) {
+                closeActivitySingleLiveEvent.call();
             } else {
-                String hour = splitHourMinute[0];
-                String minute = splitHourMinute[1];
-                String timeRegex = "[0-9]+";
-
-                if (hour.matches(timeRegex) && minute.matches(timeRegex)) {
-                    localTime = LocalTime.of(Integer.parseInt(hour), Integer.parseInt(minute));
-                } else {
-                    showToastSingleLiveEvent.setValue(application.getString(R.string.hour_characters));
-
-                }
-            }
-
-            String selectedRoom = roomMutableLiveData.getValue();
-
-            if (emailValidation && localDate != null && localTime != null && selectedRoom != null) {
-                boolean success = meetingRepository.addMeeting(
-                    LocalDateTime.of(localDate, localTime),
-                    selectedRoom,
-                    meetingSubject,
-                    participantsResults.toString()
-                );
-
-                if (success) {
-                    closeActivitySingleLiveEvent.call();
-                } else {
-                    showToastSingleLiveEvent.setValue(application.getString(R.string.room_availability));
-                }
+                showToastSingleLiveEvent.setValue(application.getString(R.string.room_availability));
             }
         }
     }
+}

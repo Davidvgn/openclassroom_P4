@@ -11,12 +11,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.mareu.R;
 
 import com.example.mareu.databinding.MeetingsFragmentBinding;
 import com.example.mareu.ui.ViewModelFactory;
+
+import java.util.List;
 
 public class MeetingFragment extends Fragment {
 
@@ -48,10 +51,15 @@ public class MeetingFragment extends Fragment {
         }
 
         viewModel = new ViewModelProvider(this, ViewModelFactory.getInstance()).get(MeetingViewModel.class);
-        MeetingAdapter adapter = new MeetingAdapter(viewModel::onDeleteMeetingClicked);
+        MeetingAdapter adapter = new MeetingAdapter(meetingId -> viewModel.onDeleteMeetingClicked(meetingId));
         binding.meetingRv.setAdapter(adapter);
 
-        viewModel.getMeetingViewStateItemsLiveData().observe(getViewLifecycleOwner(), adapter::submitList);
+        viewModel.getMeetingViewStateItemsLiveData().observe(getViewLifecycleOwner(), new Observer<List<MeetingViewStateItem>>() {
+            @Override
+            public void onChanged(List<MeetingViewStateItem> list) {
+                adapter.submitList(list);
+            }
+        });
     }
 
     @SuppressLint("NonConstantResourceId")
