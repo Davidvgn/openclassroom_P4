@@ -142,7 +142,7 @@ public class MeetingActivityTest {
     }
 
     @Test
-    public void sorting_and_filtering_by_room() {//todo david à corriger
+    public void sorting_and_filtering_by_room() {
 
         create_2_meetings();
 
