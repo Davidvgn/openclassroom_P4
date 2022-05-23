@@ -117,7 +117,7 @@ public class AddMeetingViewModel extends ViewModel {
         StringBuilder participantsResults = new StringBuilder();
 
         if (!participants.isEmpty()) {
-            String[] participantsSplit = participants.split("[, ;/\n]");
+            String[] participantsSplit = participants.split("[,;/\n]");
 
             List<String> trimmedParticipantsList = new ArrayList<>(participantsSplit.length);
 
